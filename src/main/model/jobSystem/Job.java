@@ -1,6 +1,6 @@
 package main.model.jobSystem;
 
-import main.model.battleSystem.Ability;
+import main.model.jobSystem.jobAbilities.Ability;
 
 import java.util.ArrayList;
 import java.util.List;
