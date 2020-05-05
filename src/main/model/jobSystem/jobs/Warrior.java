@@ -13,12 +13,12 @@ public class Warrior extends Job {
 
     @Override
     protected void initializeAbilities() {
-        Ability club = new PhysicalAbility("Club", 18, 2, .70,
-                1, 1);
+        Ability club = new PhysicalAbility("Club", 2, 1, 1,
+                18, .90);
         Ability powerUp = new StatusEffectAbility("Power UP!", 4, 1, 1,
                 StatusEffectAbility.StatusType.ATTACK_BUFF);
-        Ability stone = new PhysicalAbility("Stone", 6, 1, .60,
-                4, 1);
+        Ability stone = new PhysicalAbility("Stone", 1, 4, 1,
+                8, .60);
         jobAbilityList.add(club);
         jobAbilityList.add(powerUp);
         jobAbilityList.add(stone);

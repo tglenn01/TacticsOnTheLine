@@ -1,15 +1,15 @@
 package main.model.battleSystem;
 
-import main.model.characterSystem.Character;
+import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 
 public class Battle {
-    private Character attacker;
+    private CharacterUnit attacker;
     private StatSheet attackerStatSheet;
-    private Character defender;
+    private CharacterUnit defender;
     private StatSheet defenderStatSheet;
 
-    public Battle(Character attacker, Character defender) {
+    public Battle(CharacterUnit attacker, CharacterUnit defender) {
         this.attacker = attacker;
         attackerStatSheet = attacker.getCharacterStatSheet();
         this.defender = defender;

@@ -2,7 +2,7 @@ package main.model.jobSystem.jobAbilities;
 
 public class MagicAbility extends DamageAbility {
 
-    public MagicAbility(String abilityName, int damage, int manaCost, double accuracy, int range, int areaOfEffect) {
-        super(abilityName, damage, manaCost, accuracy, range, areaOfEffect);
+    public MagicAbility(String abilityName, int manaCost, int range, int damage, int areaOfEffect, double accuracy) {
+        super(abilityName, manaCost, range, areaOfEffect, damage, accuracy);
     }
 }

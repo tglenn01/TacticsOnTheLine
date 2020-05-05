@@ -13,12 +13,12 @@ public class Noble extends Job {
 
     @Override
     protected void initializeAbilities() {
-        Ability strike = new PhysicalAbility("Strike", 15, 3, .80,
-                1, 1);
-        Ability daggerThrow = new PhysicalAbility("Dagger Throw", 8, 3, .70,
-                3, 1);
-        Ability desperation = new PhysicalAbility("Desperation", 30, 10, .50,
-                1, 2);
+        Ability strike = new PhysicalAbility("Strike", 3, 1, 1,
+                15, .80);
+        Ability daggerThrow = new PhysicalAbility("Dagger Throw", 3, 3, 1,
+                8, .70);
+        Ability desperation = new PhysicalAbility("Desperation", 10, 1, 2,
+                30, .50);
         jobAbilityList.add(strike);
         jobAbilityList.add(daggerThrow);
         jobAbilityList.add(desperation);

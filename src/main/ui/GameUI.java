@@ -1,13 +1,13 @@
 package main.ui;
 
-import main.model.characterSystem.PlayableCharacter;
+import main.model.characterSystem.PlayableCharacterUnit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameUI {
-    private List<PlayableCharacter> playableCharacterList;
+    private List<PlayableCharacterUnit> playableCharacterList;
 
     public GameUI() {
         initializeCharacters();
@@ -15,7 +15,7 @@ public class GameUI {
     }
 
     private void initializeCharacters() {
-        PlayableCharacter hero = new PlayableCharacter("hero");
+        PlayableCharacterUnit hero = new PlayableCharacterUnit("hero");
         playableCharacterList.add(hero);
     }
 

@@ -1,6 +1,6 @@
 package main.model.jobSystem.jobAbilities;
 
-public class DamageAbility extends Ability {
+public abstract class DamageAbility extends Ability {
     protected int damage;
     protected double accuracy;
 
