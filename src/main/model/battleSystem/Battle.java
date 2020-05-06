@@ -1,28 +1,15 @@
 package main.model.battleSystem;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.StatSheet;
+import main.model.scenarioSystem.Scenario;
+
+import java.util.List;
 
 public class Battle {
-    private CharacterUnit attacker;
-    private StatSheet attackerStatSheet;
-    private CharacterUnit defender;
-    private StatSheet defenderStatSheet;
+    private TurnOrderCompiler turnOrder;
 
-    public Battle(CharacterUnit attacker, CharacterUnit defender) {
-        this.attacker = attacker;
-        attackerStatSheet = attacker.getCharacterStatSheet();
-        this.defender = defender;
-        defenderStatSheet = defender.getCharacterStatSheet();
-        Attack();
-    }
-
-    private void Attack() {
-        int defenderHealth = defenderStatSheet.getHealth();
-        int damage = attackerStatSheet.getStrength() - defenderStatSheet.getArmour();
-        defenderHealth = defenderHealth - damage;
-        if (defenderHealth <= 0) {
-            // throw dead exception
-        }
+    public Battle(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies, Scenario scenario) {
+        turnOrder = new TurnOrderCompiler();
+        turnOrder.setCharactersInBattleToTurnOrder(playableCharacters, enemies);
     }
 }
