@@ -8,8 +8,8 @@ import java.util.List;
 public class Battle {
     private TurnOrderCompiler turnOrder;
 
-    public Battle(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies, Scenario scenario) {
+    public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
         turnOrder = new TurnOrderCompiler();
-        turnOrder.setCharactersInBattleToTurnOrder(playableCharacters, enemies);
+        turnOrder.setCharactersInBattleToTurnOrder(playableCharacters, scenario.getEnemies());
     }
 }

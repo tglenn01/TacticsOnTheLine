@@ -1,21 +1,25 @@
 package main.ui;
 
+import main.model.battleSystem.Battle;
+import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.PlayableCharacterUnit;
+import main.model.scenarioSystem.ScenarioOne;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameUI {
-    private List<PlayableCharacterUnit> playableCharacterList;
+    private List<CharacterUnit> playableCharacterList;
 
     public GameUI() {
-        initializeCharacters();
         playableCharacterList = new ArrayList<>();
+        initializeCharacters();
+        new Battle(playableCharacterList, new ScenarioOne());
     }
 
     private void initializeCharacters() {
-        PlayableCharacterUnit hero = new PlayableCharacterUnit("hero");
+        CharacterUnit hero = new PlayableCharacterUnit("Hero");
         playableCharacterList.add(hero);
     }
 
