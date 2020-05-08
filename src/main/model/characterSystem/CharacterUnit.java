@@ -14,7 +14,7 @@ public class CharacterUnit {
         this.characterStatSheet = new StatSheet(characterJob);
     }
 
-    public void assignJobToCharacter(Job job) {
+    public void setJob(Job job) {
         this.characterJob = job;
     }
 

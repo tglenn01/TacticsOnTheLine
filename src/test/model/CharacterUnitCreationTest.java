@@ -23,7 +23,7 @@ public class CharacterUnitCreationTest {
 
     @Test
     void testChangeCharacterJob() {
-        testCharacterUnit.assignJobToCharacter(new Archer());
+        testCharacterUnit.setJob(new Archer());
         assertEquals("Archer", testCharacterUnit.getCharacterJob().getJobTitle());
     }
 }

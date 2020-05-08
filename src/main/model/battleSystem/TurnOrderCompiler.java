@@ -13,12 +13,9 @@ public class TurnOrderCompiler {
     private List<CharacterUnit> activeCharacter;
 
 
-    public TurnOrderCompiler() {
+    public TurnOrderCompiler(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies) {
         fieldedCharacters = new LinkedHashMap<>();
         activeCharacter =  new ArrayList<>();
-    }
-
-    public void setCharactersInBattleToTurnOrder(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies) {
         insertListIntoActiveCharacters(playableCharacters);
         insertListIntoActiveCharacters(enemies);
     }

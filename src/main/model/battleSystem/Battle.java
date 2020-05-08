@@ -9,7 +9,6 @@ public class Battle {
     private TurnOrderCompiler turnOrder;
 
     public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
-        turnOrder = new TurnOrderCompiler();
-        turnOrder.setCharactersInBattleToTurnOrder(playableCharacters, scenario.getEnemies());
+        turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getEnemies());
     }
 }
