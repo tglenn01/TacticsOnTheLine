@@ -1,9 +1,9 @@
 package main.model.jobSystem.jobs;
 
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobAbilities.Ability;
-import main.model.jobSystem.jobAbilities.PhysicalAbility;
-import main.model.jobSystem.jobAbilities.StatusEffectAbility;
+import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.PhysicalAbility;
+import main.model.combatSystem.abilities.StatusEffectAbility;
 
 public class Warrior extends Job {
 
@@ -13,6 +13,7 @@ public class Warrior extends Job {
 
     @Override
     protected void initializeAbilities() {
+        super.initializeAbilities();
         Ability club = new PhysicalAbility("Club", 2, 1, 1,
                 18, .90);
         Ability powerUp = new StatusEffectAbility("Power UP!", 4, 1, 1,

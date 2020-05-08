@@ -1,4 +1,4 @@
-package main.model.battleSystem;
+package main.model.combatSystem;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;

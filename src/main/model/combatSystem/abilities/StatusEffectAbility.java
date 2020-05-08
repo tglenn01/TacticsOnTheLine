@@ -1,4 +1,6 @@
-package main.model.jobSystem.jobAbilities;
+package main.model.combatSystem.abilities;
+
+import main.model.combatSystem.Ability;
 
 public class StatusEffectAbility extends Ability {
     public enum StatusType {HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF}

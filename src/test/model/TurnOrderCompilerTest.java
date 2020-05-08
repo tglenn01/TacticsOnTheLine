@@ -1,6 +1,6 @@
 package test.model;
 
-import main.model.battleSystem.TurnOrderCompiler;
+import main.ui.TurnOrderCompiler;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.characterSystem.PlayableCharacterUnit;

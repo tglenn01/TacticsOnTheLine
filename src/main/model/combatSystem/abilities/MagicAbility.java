@@ -1,4 +1,4 @@
-package main.model.jobSystem.jobAbilities;
+package main.model.combatSystem.abilities;
 
 public class MagicAbility extends DamageAbility {
 

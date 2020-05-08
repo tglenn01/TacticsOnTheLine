@@ -1,6 +1,5 @@
 package main.ui;
 
-import main.model.battleSystem.Battle;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.jobSystem.Job;
@@ -42,7 +41,7 @@ public class TurnBaseBattle {
             System.out.println(job.getJobTitle());
         }
 
-        Job characterJob = setJob(waitForInput());
+        Job characterJob = askUserForJob();
 
         CharacterUnit partyMember = new PlayableCharacterUnit(characterJob.getJobTitle());
         partyMember.setJob(characterJob);
@@ -57,21 +56,9 @@ public class TurnBaseBattle {
         availableJobs.add(new Warrior());
     }
 
-    private String waitForInput() {
-        boolean waitingForInput = true;
-        String command = null;
-        input = new Scanner(System.in);
-
-        while (waitingForInput) {
-            command = input.next();
-            if (command != null) {
-                return command;
-            }
-        }
-        return "error";
-    }
-
-    private Job setJob(String command) {
+    private Job askUserForJob() {
+        UserInput input = new UserInput();
+        String command = input.getInput();
         Job characterJob = new Noble(); // noble is default job
         for (Job job : availableJobs) {
             if (command.equals(job.getJobTitle())) {

@@ -1,4 +1,4 @@
-package main.model.jobSystem.jobAbilities;
+package main.model.combatSystem;
 
 public abstract class Ability {
     protected String abilityName;
@@ -9,6 +9,10 @@ public abstract class Ability {
 
     public Ability(String abilityName, int manaCost, int range, int areaOfEffect) {
 
+    }
+
+    public String getAbilityName() {
+        return abilityName;
     }
 
 }

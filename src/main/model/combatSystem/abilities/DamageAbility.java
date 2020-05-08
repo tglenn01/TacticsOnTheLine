@@ -1,4 +1,6 @@
-package main.model.jobSystem.jobAbilities;
+package main.model.combatSystem.abilities;
+
+import main.model.combatSystem.Ability;
 
 public abstract class DamageAbility extends Ability {
     protected int damage;

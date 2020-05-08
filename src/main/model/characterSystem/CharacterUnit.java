@@ -2,11 +2,12 @@ package main.model.characterSystem;
 
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.Noble;
+import main.ui.Battle;
 
-public class CharacterUnit {
-    private String characterName;
-    private Job characterJob;
-    private StatSheet characterStatSheet;
+public abstract class CharacterUnit {
+    protected String characterName;
+    protected Job characterJob;
+    protected StatSheet characterStatSheet;
 
     public CharacterUnit(String name) {
         this.characterName = name;
@@ -25,4 +26,10 @@ public class CharacterUnit {
     public Job getCharacterJob() {
         return characterJob;
     }
+
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    public abstract void takeAction(Battle battle);
 }

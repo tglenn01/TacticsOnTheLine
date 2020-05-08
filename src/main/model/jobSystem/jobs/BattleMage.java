@@ -1,9 +1,9 @@
 package main.model.jobSystem.jobs;
 
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobAbilities.Ability;
-import main.model.jobSystem.jobAbilities.MagicAbility;
-import main.model.jobSystem.jobAbilities.StatusEffectAbility;
+import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.MagicAbility;
+import main.model.combatSystem.abilities.StatusEffectAbility;
 
 public class BattleMage extends Job {
 
@@ -13,6 +13,7 @@ public class BattleMage extends Job {
 
     @Override
     protected void initializeAbilities() {
+        super.initializeAbilities();
         Ability zap = new MagicAbility("Zap", 2, 4, 16,
                 1, .90);
         Ability scorch = new MagicAbility("Scorch", 6, 3, 10,

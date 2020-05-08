@@ -1,8 +1,8 @@
 package main.model.jobSystem.jobs;
 
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobAbilities.Ability;
-import main.model.jobSystem.jobAbilities.PhysicalAbility;
+import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.PhysicalAbility;
 
 // default/base class
 public class Noble extends Job {
@@ -13,6 +13,7 @@ public class Noble extends Job {
 
     @Override
     protected void initializeAbilities() {
+        super.initializeAbilities();
         Ability strike = new PhysicalAbility("Strike", 3, 1, 1,
                 15, .80);
         Ability daggerThrow = new PhysicalAbility("Dagger Throw", 3, 3, 1,
