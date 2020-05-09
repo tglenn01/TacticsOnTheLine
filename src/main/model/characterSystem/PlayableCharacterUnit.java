@@ -1,5 +1,8 @@
 package main.model.characterSystem;
 
+import main.exception.AttackMissedException;
+import main.exception.OutOfManaException;
+import main.exception.UnitIsDeadException;
 import main.model.combatSystem.*;
 import main.ui.Battle;
 import main.ui.UserInput;
@@ -33,7 +36,7 @@ public class PlayableCharacterUnit extends CharacterUnit {
 
         for (Ability ability : characterJob.getJobAbilityList()) {
             if (command.equals(ability.getAbilityName())) {
-                new Action(this, getDefendingEnemy(battle), ability);
+                abilityTakeAction(battle, ability);
             }
         }
     }
@@ -55,5 +58,19 @@ public class PlayableCharacterUnit extends CharacterUnit {
             }
         }
         return choosenEnemy;
+    }
+
+    private void abilityTakeAction(Battle battle, Ability ability) {
+        try {
+            ability.takeAction(this, getDefendingEnemy(battle));
+        } catch (OutOfManaException e) {
+            System.out.println("Insufficent Mana: you have: " + this.characterStatSheet.getMana() + " left");
+            System.out.println("Choose a different ability");
+            getChoosenAbility(battle);
+        } catch (AttackMissedException e) {
+            System.out.println("You're attack missed :(");
+        } catch (UnitIsDeadException e) {
+            System.out.println(e.getDeadUnit().characterName + "has died");
+        }
     }
 }

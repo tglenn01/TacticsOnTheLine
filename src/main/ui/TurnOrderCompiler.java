@@ -33,7 +33,8 @@ public class TurnOrderCompiler {
             Integer turnValue = entry.getValue();
             int newValue = updateCharactersPosition(unit, turnValue);
             if (isCharactersAction(newValue)) {
-                newValue = addCharacterToActiveCharacters(unit);
+                activeCharacters.add(unit);
+                newValue = HIGHEST_VALUE;
             }
             entry.setValue(newValue); // put back in the new value
         }
@@ -46,11 +47,6 @@ public class TurnOrderCompiler {
 
     private boolean isCharactersAction(Integer newValue) {
         return newValue <= 0;
-    }
-
-    private int addCharacterToActiveCharacters(CharacterUnit unit) {
-        activeCharacters.add(unit);
-        return HIGHEST_VALUE; // reset
     }
 
     public List<CharacterUnit> getAliveEnemyCharacters() {

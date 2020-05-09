@@ -33,8 +33,6 @@ public class TurnBaseBattle {
     }
 
     private void createNewPartyMember(int characterPosition) {
-        String command;
-
         System.out.println("Party Member " + characterPosition + "!");
         System.out.println("Choose One:");
         for (Job job : availableJobs) {

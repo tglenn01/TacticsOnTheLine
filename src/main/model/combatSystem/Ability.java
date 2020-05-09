@@ -1,5 +1,10 @@
 package main.model.combatSystem;
 
+import main.exception.AttackMissedException;
+import main.exception.OutOfManaException;
+import main.exception.UnitIsDeadException;
+import main.model.characterSystem.CharacterUnit;
+
 public abstract class Ability {
     protected String abilityName;
     protected int manaCost;
@@ -14,5 +19,7 @@ public abstract class Ability {
     public String getAbilityName() {
         return abilityName;
     }
+
+    public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit) throws OutOfManaException, AttackMissedException, UnitIsDeadException;
 
 }

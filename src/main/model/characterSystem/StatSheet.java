@@ -105,4 +105,12 @@ public class StatSheet {
         return movement;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
 }
