@@ -18,7 +18,8 @@ public class StatusEffectAbility extends Ability {
 
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit) throws OutOfManaException, AttackMissedException, UnitIsDeadException {
+    public void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit)
+            throws OutOfManaException, AttackMissedException, UnitIsDeadException {
 
     }
 }

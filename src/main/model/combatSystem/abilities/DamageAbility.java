@@ -47,8 +47,12 @@ public abstract class DamageAbility extends Ability {
         defenderHealth = defenderHealth - damage;
         if (defenderHealth <= 0) {
             recivingUnitStatSheet.setHealth(0);
+            recivingUnit.setAlive(false);
             throw new UnitIsDeadException(recivingUnit);
         }
+        System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +
+                recivingUnit.getCharacterName() + ", " +
+                recivingUnit.getCharacterName() + " is now at " + defenderHealth + "!");
         recivingUnitStatSheet.setHealth(defenderHealth);
     }
 

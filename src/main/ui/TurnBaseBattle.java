@@ -8,14 +8,12 @@ import main.model.scenarioSystem.ScenarioOne;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class TurnBaseBattle {
     private static int PARTY_SIZE = 4;
     private List<CharacterUnit> partyMemberList;
     private List<Job> availableJobs;
-    private Scanner input;
 
     public TurnBaseBattle() {
         partyMemberList = new ArrayList<>();
@@ -23,6 +21,14 @@ public class TurnBaseBattle {
         initializeJobs();
         initializeCharacters();
         new Battle(partyMemberList, new ScenarioOne());
+    }
+
+    private void initializeJobs() {
+        availableJobs.add(new Archer());
+        availableJobs.add(new BattleMage());
+        availableJobs.add(new Cleric());
+        availableJobs.add(new Noble());
+        availableJobs.add(new Warrior());
     }
 
     private void initializeCharacters() {
@@ -43,15 +49,8 @@ public class TurnBaseBattle {
 
         CharacterUnit partyMember = new PlayableCharacterUnit(characterJob.getJobTitle());
         partyMember.setJob(characterJob);
+        partyMemberList.add(partyMember);
         System.out.println("You have choosen a " + characterJob.getJobTitle() + "!");
-    }
-
-    private void initializeJobs() {
-        availableJobs.add(new Archer());
-        availableJobs.add(new BattleMage());
-        availableJobs.add(new Cleric());
-        availableJobs.add(new Noble());
-        availableJobs.add(new Warrior());
     }
 
     private Job askUserForJob() {

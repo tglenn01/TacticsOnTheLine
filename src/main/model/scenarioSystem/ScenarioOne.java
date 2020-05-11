@@ -9,6 +9,6 @@ public class ScenarioOne extends Scenario {
     }
 
     protected void createListOfEnemies() {
-        enemies.add(new NPC("Practice Dummy"));
+        enemies.add(new NPC("Dummy"));
     }
 }

@@ -13,13 +13,20 @@ public abstract class Ability {
 
 
     public Ability(String abilityName, int manaCost, int range, int areaOfEffect) {
-
+        this.abilityName = abilityName;
+        this.manaCost = manaCost;
+        this.range = range;
+        this.areaOfEffect = areaOfEffect;
     }
 
     public String getAbilityName() {
         return abilityName;
     }
 
-    public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit) throws OutOfManaException, AttackMissedException, UnitIsDeadException;
+    public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit)
+            throws OutOfManaException, AttackMissedException, UnitIsDeadException;
 
+    public int getManaCost() {
+        return manaCost;
+    }
 }

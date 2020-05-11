@@ -2,6 +2,7 @@ package main.ui;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
+import main.model.characterSystem.PlayableCharacterUnit;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,12 +12,13 @@ import java.util.Map;
 public class TurnOrderCompiler {
     private static int HIGHEST_VALUE = 100;
     private Map<CharacterUnit, Integer> fieldedCharacters;
-    private List<CharacterUnit> activeCharacters;
-
+    private List<CharacterUnit> charactersReadyToTakeAction;
+    private List<CharacterUnit> charactersThatDiedThisRound;
 
     public TurnOrderCompiler(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies) {
         fieldedCharacters = new LinkedHashMap<>();
-        activeCharacters =  new ArrayList<>();
+        charactersReadyToTakeAction = new ArrayList<>();
+        charactersThatDiedThisRound = new ArrayList<>();
         insertListIntoActiveCharacters(playableCharacters);
         insertListIntoActiveCharacters(enemies);
     }
@@ -33,12 +35,12 @@ public class TurnOrderCompiler {
             Integer turnValue = entry.getValue();
             int newValue = updateCharactersPosition(unit, turnValue);
             if (isCharactersAction(newValue)) {
-                activeCharacters.add(unit);
+                charactersReadyToTakeAction.add(unit);
                 newValue = HIGHEST_VALUE;
             }
             entry.setValue(newValue); // put back in the new value
         }
-        return activeCharacters;
+        return charactersReadyToTakeAction;
     }
 
     private int updateCharactersPosition(CharacterUnit unit, Integer turnValue) {
@@ -51,11 +53,42 @@ public class TurnOrderCompiler {
 
     public List<CharacterUnit> getAliveEnemyCharacters() {
         List<CharacterUnit> aliveEnemies = new ArrayList<>();
-        for (CharacterUnit unit: activeCharacters) {
-            if (unit.getClass() == NPC.class) {
+        for (Map.Entry<CharacterUnit, Integer> entry : fieldedCharacters.entrySet()) {
+            CharacterUnit unit = entry.getKey();
+            if (unit.getClass() == NPC.class && !charactersThatDiedThisRound.contains(unit)) {
                 aliveEnemies.add(unit);
             }
         }
         return aliveEnemies;
+    }
+
+    public List<CharacterUnit> getAlivePlayableCharacters() {
+        List<CharacterUnit> alivePlayableCharacters = new ArrayList<>();
+        for (Map.Entry<CharacterUnit, Integer> entry : fieldedCharacters.entrySet()) {
+            CharacterUnit unit = entry.getKey();
+            if (unit.getClass() == PlayableCharacterUnit.class) {
+                alivePlayableCharacters.add(unit);
+            }
+        }
+        return alivePlayableCharacters;
+    }
+
+    public List<CharacterUnit> getCharactersReadyToTakeAction() {
+        return charactersReadyToTakeAction;
+    }
+
+    public void addDeadCharacterToListOfDeadCharacters(CharacterUnit deadCharacter) {
+        charactersThatDiedThisRound.add(deadCharacter);
+    }
+
+    public boolean isBattleOver() {
+        return getAlivePlayableCharacters().isEmpty() || getAliveEnemyCharacters().isEmpty();
+    }
+
+    public void removeAllDeadCharacters() {
+        for (CharacterUnit unit : charactersThatDiedThisRound) {
+            fieldedCharacters.remove(unit);
+        }
+        charactersThatDiedThisRound = new ArrayList<>();
     }
 }

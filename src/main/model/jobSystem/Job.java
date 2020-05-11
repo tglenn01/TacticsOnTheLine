@@ -13,6 +13,7 @@ public abstract class Job {
 
     public Job() {
         jobAbilityList = new ArrayList<>();
+        initializeAbilities();
     }
 
     protected void initializeAbilities() {
