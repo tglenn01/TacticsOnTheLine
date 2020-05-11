@@ -2,9 +2,9 @@ package main.model.combatSystem.abilities;
 
 public class MagicAbility extends DamageAbility {
 
-    public MagicAbility(String abilityName, int manaCost, int range, int damage, int areaOfEffect, double accuracy,
-                        String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, damage, accuracy, abilityDescription);
+    public MagicAbility(String abilityName, int manaCost, int range, int areaOfEffect,
+                        AbilityType abilityType, int damage, double accuracy, String abilityDescription) {
+        super(abilityName, manaCost, range, areaOfEffect, abilityType, damage, accuracy, abilityDescription);
     }
 
     @Override

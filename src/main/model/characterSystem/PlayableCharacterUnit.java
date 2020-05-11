@@ -15,15 +15,16 @@ public class PlayableCharacterUnit extends CharacterUnit {
     @Override
     public void takeAction(Battle battle) {
         System.out.println("It is " + this.characterName + "'s turn");
-        displayAbilties();
+        displayAbilities();
         getChoosenAbility(battle);
     }
 
 
-    private void displayAbilties() {
-        List<Ability> availableAbilites = characterJob.getJobAbilityList();
-        for (Ability ability : availableAbilites) {
-            System.out.println(ability.getAbilityName() + ": " + ability.getManaCost() + " mana");
+    private void displayAbilities() {
+        List<Ability> availableAbilities = characterJob.getJobAbilityList();
+        for (Ability ability : availableAbilities) {
+            System.out.println(ability.getAbilityName() + " (" + ability.getManaCost() + " mana): " +
+                    ability.getAbilityDescription());
         }
     }
 
@@ -38,22 +39,34 @@ public class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
+    @Override
     protected CharacterUnit getDefendingEnemy(Battle battle) {
         List<CharacterUnit> aliveEnemies = battle.getTurnOrder().getAliveEnemyCharacters();
         System.out.println("Choose an enemy to target");
-        for (CharacterUnit enemy : aliveEnemies) {
-            System.out.println(enemy.characterName);
+        return askUserToChooseUnit(aliveEnemies);
+    }
+
+    @Override
+    protected CharacterUnit getSupportedAlly(Battle battle) {
+        List<CharacterUnit> aliveAllies = battle.getTurnOrder().getAlivePlayableCharacters();
+        System.out.println("Choose an ally to target");
+        return askUserToChooseUnit(aliveAllies);
+    }
+
+    private CharacterUnit askUserToChooseUnit(List<CharacterUnit> unitOptions) {
+        for (CharacterUnit unit : unitOptions) {
+            System.out.println(unit.getCharacterName());
         }
 
         UserInput input = new UserInput();
         String command = input.getInput();
-        CharacterUnit choosenEnemy = null;
+        CharacterUnit choosenUnit = null;
 
-        for (CharacterUnit enemy : aliveEnemies) {
-            if (command.equals(enemy.characterName)) {
-                choosenEnemy = enemy;
+        for (CharacterUnit unit : unitOptions) {
+            if (command.equals(unit.characterName)) {
+                choosenUnit = unit;
             }
         }
-        return choosenEnemy;
+        return choosenUnit;
     }
 }

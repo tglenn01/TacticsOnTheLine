@@ -49,14 +49,18 @@ public abstract class CharacterUnit {
 
     protected abstract CharacterUnit getDefendingEnemy(Battle battle);
 
+    protected abstract CharacterUnit getSupportedAlly(Battle battle);
+
     protected abstract void getChoosenAbility(Battle battle);
 
     protected void abilityTakeAction(Battle battle, Ability ability) {
-        CharacterUnit targetedEnemy = getDefendingEnemy(battle);
+        CharacterUnit targetedUnit;
+        targetedUnit = getTargetEnemy(battle, ability);
+
         try {
-            ability.takeAction(this, targetedEnemy);
+            ability.takeAction(this, targetedUnit);
         } catch (OutOfManaException e) {
-            System.out.println("Insufficent Mana: you have: " + this.characterStatSheet.getMana() + " left");
+            System.out.println("Insufficient Mana: you have " + this.characterStatSheet.getMana() + " left");
             System.out.println("Choose a different ability");
             getChoosenAbility(battle);
         } catch (AttackMissedException e) {
@@ -65,5 +69,22 @@ public abstract class CharacterUnit {
             System.out.println(e.getDeadUnit().getCharacterName() + " has died");
             battle.removeDeadCharacter(e.getDeadUnit());
         }
+    }
+
+    private CharacterUnit getTargetEnemy(Battle battle, Ability ability) {
+        CharacterUnit targetedUnit;
+        if (abilityTargetsAlly(ability)) {
+            targetedUnit = getSupportedAlly(battle);
+        } else {
+            targetedUnit = getDefendingEnemy(battle);
+        }
+        return targetedUnit;
+    }
+
+    // return true Ability is of type HEAL, ATTACK_BUFF, or DEFENSE_BUFF
+    private boolean abilityTargetsAlly(Ability ability) {
+        return ability.getAbilityType() == Ability.AbilityType.HEAL ||
+                ability.getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
+                ability.getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
     }
 }

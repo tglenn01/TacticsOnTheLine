@@ -8,17 +8,13 @@ import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 
 public class StatusEffectAbility extends Ability {
-
-    public enum StatusType {HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF}
     private static int HEAL_CONSTANT = 10;
     private static int STRENGTH_CONSTANT = 3;
     private static int DEFENSE_CONSTANT = 2;
-    private StatusType statusType;
 
-    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, StatusType statusType,
+    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType,
                                String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityDescription);
-        this.statusType = statusType;
+        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
     }
 
 
@@ -28,15 +24,15 @@ public class StatusEffectAbility extends Ability {
         hasEnoughMana(activeUnit);
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
-        if (this.statusType == StatusType.HEAL) {
+        if (this.abilityType == AbilityType.HEAL) {
             healUnit(activeUnitStatSheet, receivingUnitStatSheet);
-        } if (this.statusType == StatusType.ATTACK_BUFF) {
+        } if (this.abilityType == AbilityType.ATTACK_BUFF) {
             buffAttack(receivingUnitStatSheet);
-        } if (this.statusType == StatusType.DEFENSE_BUFF) {
+        } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
             buffDefense(receivingUnitStatSheet);
-        } if (this.statusType == StatusType.ATTACK_DEBUFF) {
+        } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
             debuffAttack(receivingUnitStatSheet);
-        } if (this.statusType == StatusType.DEFENSE_DEBUFF) {
+        } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             debuffDefense(receivingUnitStatSheet);
         }
     }

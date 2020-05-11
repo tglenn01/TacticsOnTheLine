@@ -24,6 +24,11 @@ public class NPC extends CharacterUnit {
         return partyList.get(partyMemeberSelector.nextInt(partyList.size()));
     }
 
+    @Override
+    protected CharacterUnit getSupportedAlly(Battle battle) {
+        return this;
+    }
+
     protected void getChoosenAbility(Battle battle) {
         CharacterUnit choosenPlayableCharacter = getDefendingEnemy(battle);
         abilityTakeAction(battle, this.characterJob.getJobAbilityList().get(0)); // Ability is attack
