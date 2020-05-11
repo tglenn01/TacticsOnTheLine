@@ -11,13 +11,15 @@ public abstract class Ability {
     protected int manaCost;
     protected int range;
     protected int areaOfEffect;
+    protected String abilityDescription;
 
 
-    public Ability(String abilityName, int manaCost, int range, int areaOfEffect) {
+    public Ability(String abilityName, int manaCost, int range, int areaOfEffect, String abilityDescription) {
         this.abilityName = abilityName;
         this.manaCost = manaCost;
         this.range = range;
         this.areaOfEffect = areaOfEffect;
+        this.abilityDescription = abilityDescription;
     }
 
     public String getAbilityName() {

@@ -15,8 +15,9 @@ public class StatusEffectAbility extends Ability {
     private static int DEFENSE_CONSTANT = 2;
     private StatusType statusType;
 
-    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, StatusType statusType) {
-        super(abilityName, manaCost, range, areaOfEffect);
+    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, StatusType statusType,
+                               String abilityDescription) {
+        super(abilityName, manaCost, range, areaOfEffect, abilityDescription);
         this.statusType = statusType;
     }
 
@@ -53,7 +54,7 @@ public class StatusEffectAbility extends Ability {
 
     private void buffDefense(StatSheet receivingUnitStatSheet) {
         int initialDefense = receivingUnitStatSheet.getArmour();
-        receivingUnitStatSheet.setArmour(initialDefense + 2);
+        receivingUnitStatSheet.setArmour(initialDefense + DEFENSE_CONSTANT);
     }
 
     private void debuffAttack(StatSheet receivingUnitStatSheet) {
@@ -73,12 +74,4 @@ public class StatusEffectAbility extends Ability {
             receivingUnitStatSheet.setArmour(0);
         }
     }
-
-
-
-
-
-
-
-
 }

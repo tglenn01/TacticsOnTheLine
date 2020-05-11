@@ -15,8 +15,9 @@ public abstract class DamageAbility extends Ability {
     protected StatSheet activeUnitStatSheet;
     protected StatSheet receivingUnitStatSheet;
 
-    public DamageAbility(String abilityName, int manaCost, int range, int areaOfEffect, int damage, double accuracy) {
-        super(abilityName, manaCost, range, areaOfEffect);
+    public DamageAbility(String abilityName, int manaCost, int range, int areaOfEffect, int damage, double accuracy,
+                         String abilityDescription) {
+        super(abilityName, manaCost, range, areaOfEffect, abilityDescription);
         this.damage = damage;
         this.accuracy = accuracy;
     }

@@ -18,9 +18,9 @@ public abstract class Job {
 
     protected void initializeAbilities() {
         Ability attack = new PhysicalAbility("Attack", 0, 1, 1,
-                0, .90);
+                0, .90, "Attack an enemy");
         Ability defend = new StatusEffectAbility("Defend", 0, 0, 1,
-                StatusEffectAbility.StatusType.DEFENSE_BUFF);
+                StatusEffectAbility.StatusType.DEFENSE_BUFF, "Strengthen one's own defenses");
         jobAbilityList.add(attack);
         jobAbilityList.add(defend);
     }
