@@ -8,6 +8,6 @@ public class PhysicalAbility extends DamageAbility {
 
     @Override
     protected int calculateDamage() {
-        return (activeUnitStatSheet.getStrength() + this.damage) - recivingUnitStatSheet.getArmour();
+        return (activeUnitStatSheet.getStrength() + this.damage) - receivingUnitStatSheet.getArmour();
     }
 }

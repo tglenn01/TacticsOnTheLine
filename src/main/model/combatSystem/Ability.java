@@ -4,6 +4,7 @@ import main.exception.AttackMissedException;
 import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.StatSheet;
 
 public abstract class Ability {
     protected String abilityName;
@@ -28,5 +29,14 @@ public abstract class Ability {
 
     public int getManaCost() {
         return manaCost;
+    }
+
+    protected void hasEnoughMana(CharacterUnit activeUnit) throws OutOfManaException {
+        StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
+        if (activeUnitStatSheet.getMana() >= manaCost) {
+            activeUnitStatSheet.setMana(activeUnitStatSheet.getMana() - manaCost);
+        } else {
+            throw new OutOfManaException();
+        }
     }
 }

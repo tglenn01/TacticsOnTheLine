@@ -11,9 +11,9 @@ public abstract class DamageAbility extends Ability {
     protected int damage;
     protected double accuracy;
     protected CharacterUnit activeUnit;
-    protected CharacterUnit recivingUnit;
+    protected CharacterUnit receivingUnit;
     protected StatSheet activeUnitStatSheet;
-    protected StatSheet recivingUnitStatSheet;
+    protected StatSheet receivingUnitStatSheet;
 
     public DamageAbility(String abilityName, int manaCost, int range, int areaOfEffect, int damage, double accuracy) {
         super(abilityName, manaCost, range, areaOfEffect);
@@ -22,43 +22,35 @@ public abstract class DamageAbility extends Ability {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit) throws OutOfManaException,
+    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws OutOfManaException,
             AttackMissedException, UnitIsDeadException {
         this.activeUnit = activeUnit;
-        this.recivingUnit = reciveingUnit;
+        this.receivingUnit = receivingUnit;
         activeUnitStatSheet = activeUnit.getCharacterStatSheet();
-        recivingUnitStatSheet = recivingUnit.getCharacterStatSheet();
-        hasEnoughMana();
+        receivingUnitStatSheet = this.receivingUnit.getCharacterStatSheet();
+        hasEnoughMana(activeUnit);
         checkIfAbilityHit();
         calculateDamageDone();
     }
 
-    private void hasEnoughMana() throws OutOfManaException {
-        if (recivingUnitStatSheet.getMana() >= manaCost) {
-            recivingUnitStatSheet.setMana(recivingUnitStatSheet.getMana() - manaCost);
-        } else {
-            throw new OutOfManaException();
-        }
-    }
-
     private void calculateDamageDone() throws UnitIsDeadException {
-        int defenderHealth = recivingUnitStatSheet.getHealth();
+        int defenderHealth = receivingUnitStatSheet.getHealth();
         int damage =  calculateDamage();
         defenderHealth = defenderHealth - damage;
         if (defenderHealth <= 0) {
-            recivingUnitStatSheet.setHealth(0);
-            recivingUnit.setAlive(false);
-            throw new UnitIsDeadException(recivingUnit);
+            receivingUnitStatSheet.setHealth(0);
+            receivingUnit.setAlive(false);
+            throw new UnitIsDeadException(receivingUnit);
         }
         System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +
-                recivingUnit.getCharacterName() + ", " +
-                recivingUnit.getCharacterName() + " is now at " + defenderHealth + "!");
-        recivingUnitStatSheet.setHealth(defenderHealth);
+                receivingUnit.getCharacterName() + ", " +
+                receivingUnit.getCharacterName() + " is now at " + defenderHealth + "!");
+        receivingUnitStatSheet.setHealth(defenderHealth);
     }
 
     private void checkIfAbilityHit() throws AttackMissedException {
         double activeUnitChanceToHit = this.accuracy + (activeUnitStatSheet.getDexterity() / 100.00);
-        double reciveingUnitChanceToDodge = Math.random() + recivingUnitStatSheet.getDexterity() / 100.00;
+        double reciveingUnitChanceToDodge = Math.random() + receivingUnitStatSheet.getDexterity() / 100.00;
         if (reciveingUnitChanceToDodge > activeUnitChanceToHit) {
             throw new AttackMissedException();
         }

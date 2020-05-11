@@ -8,6 +8,6 @@ public class MagicAbility extends DamageAbility {
 
     @Override
     protected int calculateDamage() {
-        return (activeUnitStatSheet.getMagic() + this.damage) - recivingUnitStatSheet.getResistance();
+        return (activeUnitStatSheet.getMagic() + this.damage) - receivingUnitStatSheet.getResistance();
     }
 }

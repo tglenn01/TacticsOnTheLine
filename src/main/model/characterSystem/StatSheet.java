@@ -42,7 +42,7 @@ public class StatSheet {
     }
 
     private int baseStrength() {
-        return 40;
+        return 10;
     }
 
     private int baseMagic() {
@@ -111,6 +111,18 @@ public class StatSheet {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public void setMagic(int magic) {
+        this.magic = magic;
+    }
+
+    public void setArmour(int armour) {
+        this.armour = armour;
     }
 
 }
