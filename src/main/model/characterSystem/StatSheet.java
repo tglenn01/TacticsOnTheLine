@@ -16,10 +16,6 @@ public class StatSheet {
 
 
     public StatSheet(Job job) {
-        initializeStats(job);
-    }
-
-    private void initializeStats(Job job) {
         job.setBaseStats(this);
     }
 
@@ -96,6 +92,6 @@ public class StatSheet {
     }
 
     public void updateStatSheetAccordingToJob(Job job) {
-
+        job.setBaseStats(this);
     }
 }

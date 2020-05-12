@@ -55,11 +55,15 @@ public class TurnBaseBattle {
     private Job askUserForJob() {
         UserInput input = new UserInput();
         String command = input.getInput();
-        Job characterJob = new Noble(); // noble is default job
+        Job characterJob = null;
         for (Job job : availableJobs) {
             if (command.equals(job.getJobTitle())) {
                 characterJob = job;
             }
+        }
+        if (characterJob == null) {
+            System.out.println("Not A valid option, please choose again");
+            characterJob = askUserForJob();
         }
         return characterJob;
     }

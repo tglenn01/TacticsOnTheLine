@@ -68,6 +68,10 @@ public class PlayableCharacterUnit extends CharacterUnit {
                 choosenUnit = unit;
             }
         }
+        if (choosenUnit == null) {
+            System.out.println("Not a valid option, please choose again");
+            choosenUnit = askUserToChooseUnit(unitOptions);
+        }
         return choosenUnit;
     }
 }

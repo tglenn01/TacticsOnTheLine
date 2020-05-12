@@ -1,6 +1,7 @@
 package main.model.scenarioSystem;
 
 import main.model.characterSystem.NPC;
+import main.model.jobSystem.jobs.Noble;
 
 public class ScenarioOne extends Scenario {
 
@@ -9,6 +10,6 @@ public class ScenarioOne extends Scenario {
     }
 
     protected void createListOfEnemies() {
-        enemies.add(new NPC("Dummy"));
+        enemies.add(new NPC(new Noble(), "Dummy"));
     }
 }

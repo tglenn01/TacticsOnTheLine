@@ -22,8 +22,7 @@ public abstract class CharacterUnit {
 
     protected void abilityTakeAction(Battle battle, Ability ability) {
         CharacterUnit targetedUnit;
-        targetedUnit = getTargetEnemy(battle, ability);
-
+        targetedUnit = getTargetUnit(battle, ability);
         try {
             ability.takeAction(this, targetedUnit);
         } catch (OutOfManaException e) {
@@ -38,8 +37,9 @@ public abstract class CharacterUnit {
         }
     }
 
-    private CharacterUnit getTargetEnemy(Battle battle, Ability ability) {
+    private CharacterUnit getTargetUnit(Battle battle, Ability ability) {
         CharacterUnit targetedUnit;
+        if (ability.getAbilityName().equals("Defend")) return this;
         if (abilityTargetsAlly(ability)) {
             targetedUnit = getSupportedAlly(battle);
         } else {
