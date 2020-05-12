@@ -1,5 +1,6 @@
 package main.model.jobSystem;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -33,4 +34,7 @@ public abstract class Job {
     public List<Ability> getJobAbilityList() {
         return jobAbilityList;
     }
+
+    public abstract void setBaseStats(StatSheet statSheet);
+
 }

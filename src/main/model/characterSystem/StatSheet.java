@@ -3,7 +3,7 @@ package main.model.characterSystem;
 import main.model.jobSystem.Job;
 
 public class StatSheet {
-    private static int BASE_MOVEMENT = 4;
+    public static int BASE_MOVEMENT = 4;
     private int health;
     private int mana;
     private int strength;
@@ -13,60 +13,14 @@ public class StatSheet {
     private int speed;
     private int dexterity;
     private int movement;
-    private Job characterJob;
 
 
-    public StatSheet(Job characterJob) {
-        this.characterJob = characterJob;
-        initializeStats();
+    public StatSheet(Job job) {
+        initializeStats(job);
     }
 
-    private void initializeStats() {
-        health = baseHealth();
-        mana = baseMana();
-        strength = baseStrength();
-        magic = baseMagic();
-        armour = baseArmour();
-        resistance = baseResistance();
-        speed = baseSpeed();
-        dexterity = baseDexterity();
-        movement = baseMovement();
-    }
-
-    private int baseHealth() {
-        return 32;
-    }
-
-    private int baseMana() {
-        return 16;
-    }
-
-    private int baseStrength() {
-        return 10;
-    }
-
-    private int baseMagic() {
-        return 8;
-    }
-
-    private int baseArmour() {
-        return 4;
-    }
-
-    private int baseResistance() {
-        return 2;
-    }
-
-    private int baseSpeed() {
-        return 8;
-    }
-
-    private int baseDexterity() {
-        return 2;
-    }
-
-    private int baseMovement() {
-        return BASE_MOVEMENT;
+    private void initializeStats(Job job) {
+        job.setBaseStats(this);
     }
 
     public int getHealth() {
@@ -125,4 +79,23 @@ public class StatSheet {
         this.armour = armour;
     }
 
+    public void setResistance(int resistance) {
+        this.resistance = resistance;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setDexterity(int dexterity) {
+        this.dexterity = dexterity;
+    }
+
+    public void setMovement(int movement) {
+        this.movement = movement;
+    }
+
+    public void updateStatSheetAccordingToJob(Job job) {
+
+    }
 }

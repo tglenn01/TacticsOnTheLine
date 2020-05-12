@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.Job;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.MagicAbility;
@@ -25,5 +26,18 @@ public class BattleMage extends Job {
         jobAbilityList.add(zap);
         jobAbilityList.add(scorch);
         jobAbilityList.add(cripple);
+    }
+
+    @Override
+    public void setBaseStats(StatSheet statSheet) {
+        statSheet.setHealth(16);
+        statSheet.setMana(30);
+        statSheet.setStrength(6);
+        statSheet.setMagic(10);
+        statSheet.setArmour(2);
+        statSheet.setResistance(8);
+        statSheet.setSpeed(4);
+        statSheet.setDexterity(2);
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

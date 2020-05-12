@@ -5,7 +5,6 @@ import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobs.Noble;
 import main.ui.Battle;
 
 public abstract class CharacterUnit {
@@ -14,44 +13,12 @@ public abstract class CharacterUnit {
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
 
-    public CharacterUnit(String name) {
+    public CharacterUnit(Job job, String name) {
         this.characterName = name;
-        this.characterJob = new Noble(); // Default job is noble
-        this.characterStatSheet = new StatSheet(characterJob);
+        this.characterJob = job;
+        this.characterStatSheet = new StatSheet(this.characterJob);
         this.isAlive = true;
     }
-
-    public void setJob(Job job) {
-        this.characterJob = job;
-    }
-
-    public StatSheet getCharacterStatSheet() {
-        return characterStatSheet;
-    }
-
-    public Job getCharacterJob() {
-        return characterJob;
-    }
-
-    public String getCharacterName() {
-        return characterName;
-    }
-
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean deathStatus) {
-        this.isAlive = deathStatus;
-    }
-
-    public abstract void takeAction(Battle battle);
-
-    protected abstract CharacterUnit getDefendingEnemy(Battle battle);
-
-    protected abstract CharacterUnit getSupportedAlly(Battle battle);
-
-    protected abstract void getChoosenAbility(Battle battle);
 
     protected void abilityTakeAction(Battle battle, Ability ability) {
         CharacterUnit targetedUnit;
@@ -87,4 +54,37 @@ public abstract class CharacterUnit {
                 ability.getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
                 ability.getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
     }
+
+    public void setJob(Job job) {
+        this.characterJob = job;
+        characterStatSheet.updateStatSheetAccordingToJob(job);
+    }
+
+    public void setAlive(boolean deathStatus) {
+        this.isAlive = deathStatus;
+    }
+
+    public StatSheet getCharacterStatSheet() {
+        return characterStatSheet;
+    }
+
+    public Job getCharacterJob() {
+        return characterJob;
+    }
+
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    protected abstract void getChoosenAbility(Battle battle);
+
+    protected abstract CharacterUnit getDefendingEnemy(Battle battle);
+
+    protected abstract CharacterUnit getSupportedAlly(Battle battle);
+
+    public abstract void takeAction(Battle battle);
 }

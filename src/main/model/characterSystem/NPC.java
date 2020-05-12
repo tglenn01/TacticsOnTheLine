@@ -1,5 +1,6 @@
 package main.model.characterSystem;
 
+import main.model.jobSystem.Job;
 import main.ui.Battle;
 
 import java.util.List;
@@ -7,8 +8,8 @@ import java.util.Random;
 
 public class NPC extends CharacterUnit {
 
-    public NPC(String name) {
-        super(name);
+    public NPC(Job job, String name) {
+        super(job, name);
     }
 
     @Override

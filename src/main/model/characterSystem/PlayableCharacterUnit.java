@@ -1,6 +1,7 @@
 package main.model.characterSystem;
 
 import main.model.combatSystem.Ability;
+import main.model.jobSystem.Job;
 import main.ui.Battle;
 import main.ui.UserInput;
 
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class PlayableCharacterUnit extends CharacterUnit {
 
-    public PlayableCharacterUnit(String name) {
-        super(name);
+    public PlayableCharacterUnit(Job job, String name) {
+        super(job, name);
     }
 
     @Override

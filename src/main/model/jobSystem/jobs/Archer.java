@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.Job;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
@@ -27,5 +28,18 @@ public class Archer extends Job {
         jobAbilityList.add(snipe);
         jobAbilityList.add(hinder);
         jobAbilityList.add(rainOfArrows);
+    }
+
+    @Override
+    public void setBaseStats(StatSheet statSheet) {
+        statSheet.setHealth(20);
+        statSheet.setMana(24);
+        statSheet.setStrength(10);
+        statSheet.setMagic(7);
+        statSheet.setArmour(2);
+        statSheet.setResistance(6);
+        statSheet.setSpeed(10);
+        statSheet.setDexterity(8);
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.Job;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
@@ -25,5 +26,18 @@ public class Warrior extends Job {
         jobAbilityList.add(club);
         jobAbilityList.add(powerUp);
         jobAbilityList.add(stone);
+    }
+
+    @Override
+    public void setBaseStats(StatSheet statSheet) {
+        statSheet.setHealth(40);
+        statSheet.setMana(10);
+        statSheet.setStrength(16);
+        statSheet.setMagic(2);
+        statSheet.setArmour(8);
+        statSheet.setResistance(0);
+        statSheet.setSpeed(6);
+        statSheet.setDexterity(6);
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }
