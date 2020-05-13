@@ -18,8 +18,28 @@ public class NPC extends CharacterUnit {
     @Override
     public void takeAction(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
-        Ability choosenAbility = getChoosenAbility(battle);
+        Ability choosenAbility = getChosenAbility(battle);
         abilityTakeAction(battle, choosenAbility);
+    }
+
+    @Override
+    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
+        
+    }
+
+    @Override
+    protected void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException {
+
+    }
+
+    @Override
+    protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
+        return null;
+    }
+
+    @Override
+    protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
+        return null;
     }
 
     @Override
@@ -34,13 +54,18 @@ public class NPC extends CharacterUnit {
         return this;
     }
 
-    protected Ability getChoosenAbility(Battle battle) {
+    protected Ability getChosenAbility(Battle battle) {
         Ability ability = this.characterJob.getJobAbilityList().get(0); // Ability 0 is attack
         try {
             ability.hasEnoughMana(this);
         } catch (OutOfManaException e) {
-            getChoosenAbility(battle);
+            getChosenAbility(battle);
         }
         return ability;
+    }
+
+    @Override
+    protected CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions) {
+        return null;
     }
 }

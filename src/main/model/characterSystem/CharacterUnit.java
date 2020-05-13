@@ -7,6 +7,8 @@ import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
+import java.util.List;
+
 public abstract class CharacterUnit {
     protected String characterName;
     protected Job characterJob;
@@ -20,34 +22,35 @@ public abstract class CharacterUnit {
         this.isAlive = true;
     }
 
+    protected void abilityTakeAction(Battle battle, Ability ability, CharacterUnit receivingUnit)
+            throws BattleIsOverException {
+        try {
+            ability.takeAction(this, receivingUnit);
+        } catch (AttackMissedException attackMissedException) {
+            attackMissedException.printMissedAttackMessage();
+        } catch (UnitIsDeadException unitIsDeadException) {
+            unitIsDeadException.printDeathMessage();
+            battle.removeDeadCharacter(unitIsDeadException.getDeadUnit()); // throws BattleIsOverException
+        }
+    }
+
     public abstract void takeAction(Battle battle) throws BattleIsOverException;
 
-    protected void abilityTakeAction(Battle battle, Ability ability) throws BattleIsOverException {
-        CharacterUnit targetedUnit;
-        targetedUnit = getTargetUnit(battle, ability);
-        try {
-            ability.takeAction(this, targetedUnit);
-        } catch (AttackMissedException e) {
-            System.out.println("Their attack missed :(");
-        } catch (UnitIsDeadException e) {
-            System.out.println(e.getDeadUnit().getCharacterName() + " has died");
-            battle.removeDeadCharacter(e.getDeadUnit());
-        }
-    }
+    protected abstract void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException;
 
-    private CharacterUnit getTargetUnit(Battle battle, Ability ability) {
-        CharacterUnit targetedUnit;
-        if (ability.getAbilityName().equals("Defend")) return this;
-        if (abilityTargetsAlly(ability)) {
-            targetedUnit = getSupportedAlly(battle);
-        } else {
-            targetedUnit = getDefendingEnemy(battle);
-        }
-        return targetedUnit;
-    }
+    protected abstract void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException;
+
+    protected abstract List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets);
+
+    protected abstract CharacterUnit getSingleTarget(Battle battle, Ability ability);
+
+    protected abstract Ability getChosenAbility(Battle battle);
+
+    protected abstract CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions);
+
 
     // return true Ability is of type HEAL, ATTACK_BUFF, or DEFENSE_BUFF
-    private boolean abilityTargetsAlly(Ability ability) {
+    protected boolean abilityTargetsAlly(Ability ability) {
         return ability.getAbilityType() == Ability.AbilityType.HEAL ||
                 ability.getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
                 ability.getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
@@ -57,12 +60,6 @@ public abstract class CharacterUnit {
         this.characterJob = job;
         characterStatSheet.updateStatSheetAccordingToJob(job);
     }
-
-    protected abstract Ability getChoosenAbility(Battle battle);
-
-    protected abstract CharacterUnit getDefendingEnemy(Battle battle);
-
-    protected abstract CharacterUnit getSupportedAlly(Battle battle);
 
     public StatSheet getCharacterStatSheet() {
         return characterStatSheet;
@@ -83,6 +80,4 @@ public abstract class CharacterUnit {
     public void setAlive(boolean deathStatus) {
         this.isAlive = deathStatus;
     }
-
-
 }

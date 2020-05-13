@@ -52,7 +52,7 @@ public abstract class DamageAbility extends Ability {
         double activeUnitChanceToHit = this.accuracy + (activeUnitStatSheet.getDexterity() / 100.00);
         double reciveingUnitChanceToDodge = Math.random() + receivingUnitStatSheet.getDexterity() / 100.00;
         if (reciveingUnitChanceToDodge > activeUnitChanceToHit) {
-            throw new AttackMissedException();
+            throw new AttackMissedException(receivingUnit);
         }
     }
 

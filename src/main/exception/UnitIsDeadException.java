@@ -12,4 +12,8 @@ public class UnitIsDeadException extends Exception {
     public CharacterUnit getDeadUnit() {
         return deadUnit;
     }
+
+    public void printDeathMessage() {
+        System.out.println(deadUnit.getCharacterName() + " has died");
+    }
 }
