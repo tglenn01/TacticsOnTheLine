@@ -18,7 +18,7 @@ public class Warrior extends Job {
         Ability club = new PhysicalAbility("Club", 2, 1, 1,
                 Ability.AbilityType.DAMAGE,18, .70,
                 "Club a neighbouring enemy on the head with low accuracy");
-        Ability focus = new StatusEffectAbility("Focus", 4, 1, 1,
+        Ability focus = new StatusEffectAbility("Focus", 4, 1, 1, 3,
                 Ability.AbilityType.ATTACK_BUFF, "Buff the attack of a neighbouring ally");
         Ability stone = new PhysicalAbility("Stone", 1, 4, 1,
                 Ability.AbilityType.DAMAGE,8, .60,
@@ -30,16 +30,14 @@ public class Warrior extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        int initialHealth = 40;
-        statSheet.setHealth(initialHealth);
-        statSheet.setMaxHealth(initialHealth);
-        statSheet.setMana(10);
-        statSheet.setStrength(16);
-        statSheet.setMagic(2);
-        statSheet.setArmour(8);
-        statSheet.setResistance(0);
-        statSheet.setSpeed(6);
-        statSheet.setDexterity(6);
+        statSheet.setMaxHealth(40);
+        statSheet.setMaxMana(10);
+        statSheet.setBaseStrength(16);
+        statSheet.setBaseMagic(2);
+        statSheet.setBaseArmour(8);
+        statSheet.setBaseResistance(0);
+        statSheet.setBaseSpeed(6);
+        statSheet.setBaseDexterity(6);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

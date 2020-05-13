@@ -22,7 +22,7 @@ public class BattleMage extends Job {
                 Ability.AbilityType.DAMAGE,2, .70,
                 "deal light fire damage to multiple enemies from afar");
         Ability cripple = new StatusEffectAbility("Cripple", 6, 2, 1,
-                Ability.AbilityType.ATTACK_DEBUFF, "Lower a nearby enemies attack");
+                3, Ability.AbilityType.ATTACK_DEBUFF, "Lower a nearby enemies attack");
         jobAbilityList.add(zap);
         jobAbilityList.add(scorch);
         jobAbilityList.add(cripple);
@@ -30,16 +30,14 @@ public class BattleMage extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        int initialHealth = 16;
-        statSheet.setHealth(initialHealth);
-        statSheet.setMaxHealth(initialHealth);
-        statSheet.setMana(30);
-        statSheet.setStrength(6);
-        statSheet.setMagic(10);
-        statSheet.setArmour(2);
-        statSheet.setResistance(8);
-        statSheet.setSpeed(4);
-        statSheet.setDexterity(2);
+        statSheet.setMaxHealth(16);
+        statSheet.setMaxMana(30);
+        statSheet.setBaseStrength(6);
+        statSheet.setBaseMagic(10);
+        statSheet.setBaseArmour(2);
+        statSheet.setBaseResistance(8);
+        statSheet.setBaseSpeed(4);
+        statSheet.setBaseDexterity(2);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

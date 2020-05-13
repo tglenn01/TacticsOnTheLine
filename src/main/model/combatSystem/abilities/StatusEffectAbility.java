@@ -10,10 +10,12 @@ public class StatusEffectAbility extends Ability {
     private static int HEAL_CONSTANT = 10;
     private static int STRENGTH_CONSTANT = 3;
     private static int DEFENSE_CONSTANT = 2;
+    private int duration;
 
-    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType,
-                               String abilityDescription) {
+    public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, int duration,
+                               AbilityType abilityType, String abilityDescription) {
         super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+        this.duration = duration;
     }
 
 
@@ -35,6 +37,7 @@ public class StatusEffectAbility extends Ability {
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             debuffDefense(receivingUnitStatSheet);
         }
+        receivingUnit.addStatusEffect(this.abilityType, this.duration);
     }
 
     private void healUnit(StatSheet activeUnitStatSheet, StatSheet receivingUnitStatSheet) {
@@ -76,5 +79,9 @@ public class StatusEffectAbility extends Ability {
             receivingUnitStatSheet.setArmour(0);
         }
         System.out.println("Defense is now debuffed");
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }

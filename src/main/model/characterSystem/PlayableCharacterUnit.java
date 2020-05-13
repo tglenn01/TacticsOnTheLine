@@ -18,7 +18,9 @@ public class PlayableCharacterUnit extends CharacterUnit {
 
     @Override
     public void startTurn(Battle battle) throws BattleIsOverException {
-        System.out.println("It is " + this.characterName + "'s turn");
+        System.out.println("It is " + this.characterName + "'s turn, they have " +
+                characterStatSheet.getMana() + " mana");
+        updateStatusEffect();
         displayAbilities();
         Ability chosenAbility = getChosenAbility(battle);
         if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);

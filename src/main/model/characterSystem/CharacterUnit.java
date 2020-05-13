@@ -8,7 +8,9 @@ import main.model.jobSystem.Job;
 import main.ui.Battle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class CharacterUnit {
     protected enum CharacterType {ALLY, ENEMY};
@@ -16,12 +18,14 @@ public abstract class CharacterUnit {
     protected Job characterJob;
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
+    protected Map<Ability.AbilityType, Integer> statusEffectDuration;
 
     public CharacterUnit(Job job, String name) {
         this.characterName = name;
         this.characterJob = job;
         this.characterStatSheet = new StatSheet(this.characterJob);
         this.isAlive = true;
+        statusEffectDuration = new HashMap<>();
     }
 
     public abstract void startTurn(Battle battle) throws BattleIsOverException;
@@ -39,6 +43,7 @@ public abstract class CharacterUnit {
             unitIsDeadException.printDeathMessage();
             battle.removeDeadCharacter(unitIsDeadException.getDeadUnit()); // throws BattleIsOverException
         }
+
     }
 
     protected abstract void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException;
@@ -96,5 +101,40 @@ public abstract class CharacterUnit {
 
     public void setAlive(boolean deathStatus) {
         this.isAlive = deathStatus;
+    }
+
+    public void addStatusEffect(Ability.AbilityType statusEffect, int duration) {
+        if (statusEffectDuration.containsKey(statusEffect)) {
+            int value = statusEffectDuration.get(statusEffect);
+            int newValue = value + duration;
+            statusEffectDuration.put(statusEffect, newValue);
+        } else statusEffectDuration.put(statusEffect, duration);
+    }
+
+    protected void updateStatusEffect() {
+        for (Map.Entry<Ability.AbilityType, Integer> entry : statusEffectDuration.entrySet()) {
+            int newDuration = entry.getValue();
+            newDuration--;
+            if (newDuration == 0) {
+                statusEffectDuration.remove(entry.getKey());
+                System.out.println(entry.getKey() + " Has ended");
+                removeStatusEffect(entry);
+            } else {
+                entry.setValue(newDuration);
+                System.out.println(entry.getKey() + " for " + newDuration);
+            }
+        }
+    }
+
+    private void removeStatusEffect(Map.Entry<Ability.AbilityType, Integer> entry) {
+        Ability.AbilityType statusEffect = entry.getKey();
+        if (statusEffect == Ability.AbilityType.ATTACK_BUFF ||
+                statusEffect == Ability.AbilityType.ATTACK_DEBUFF) {
+            getCharacterStatSheet().revertStrength();
+        } if (statusEffect == Ability.AbilityType.DEFENSE_BUFF ||
+                statusEffect == Ability.AbilityType.DEFENSE_DEBUFF) {
+            getCharacterStatSheet().revertArmour();
+        }
+        statusEffectDuration.remove(entry);
     }
 }

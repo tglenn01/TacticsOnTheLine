@@ -19,6 +19,7 @@ public class NPC extends CharacterUnit {
     @Override
     public void startTurn(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
+        updateStatusEffect();
         Ability chosenAbility = getChosenAbility(battle);
         if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
         else takeActionOnce(battle, chosenAbility);
