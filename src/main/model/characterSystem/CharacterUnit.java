@@ -35,7 +35,6 @@ public abstract class CharacterUnit {
     protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit)
             throws BattleIsOverException {
         try {
-            System.out.println(this.characterName + " used " + ability.getAbilityName());
             ability.takeAction(this, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
@@ -46,7 +45,10 @@ public abstract class CharacterUnit {
 
     }
 
-    protected abstract void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException;
+    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
+        CharacterUnit receivingUnit = getSingleTarget(battle, ability);
+        takeAction(battle, ability, receivingUnit);
+    }
 
     protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
         if (ability.getAbilityName().equals("Defend")) return this;
@@ -121,7 +123,7 @@ public abstract class CharacterUnit {
                 removeStatusEffect(entry);
             } else {
                 entry.setValue(newDuration);
-                System.out.println(entry.getKey() + " for " + newDuration);
+                System.out.println(entry.getKey() + " for " + newDuration + " more turns");
             }
         }
     }

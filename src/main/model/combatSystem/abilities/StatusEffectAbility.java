@@ -28,6 +28,7 @@ public class StatusEffectAbility extends Ability {
             healUnit(activeUnitStatSheet, receivingUnitStatSheet);
             System.out.println(receivingUnit.getCharacterName() + " health is now " +
                     receivingUnitStatSheet.getHealth());
+            return;
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
             buffAttack(receivingUnitStatSheet);
         } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
@@ -41,12 +42,15 @@ public class StatusEffectAbility extends Ability {
     }
 
     private void healUnit(StatSheet activeUnitStatSheet, StatSheet receivingUnitStatSheet) {
-        int initialHeal = receivingUnitStatSheet.getHealth();
+        int initialHealth = receivingUnitStatSheet.getHealth();
         int healAmount = activeUnitStatSheet.getMagic() + HEAL_CONSTANT;
-        int newHealth = initialHeal + healAmount;
-        if (newHealth > receivingUnitStatSheet.getMaxHealth()) newHealth = receivingUnitStatSheet.getMaxHealth();
+        int newHealth = initialHealth + healAmount;
+        if (newHealth > receivingUnitStatSheet.getMaxHealth()) {
+            newHealth = receivingUnitStatSheet.getMaxHealth();
+            healAmount = newHealth - initialHealth;
+        }
         receivingUnitStatSheet.setHealth(newHealth);
-        System.out.println("It was healed " + healAmount);
+        System.out.println("They was healed " + healAmount);
     }
 
     private void buffAttack(StatSheet receivingUnitStatSheet) {

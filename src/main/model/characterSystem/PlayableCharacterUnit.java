@@ -55,17 +55,16 @@ public class PlayableCharacterUnit extends CharacterUnit {
             System.out.println("Not a valid ability, please choose again");
             chosenAbility = getChosenAbility(battle);
         }
+        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
         return chosenAbility;
-    }
-
-    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
-        CharacterUnit receivingUnit = getSingleTarget(battle, ability);
-        takeAction(battle, ability, receivingUnit);
     }
 
     protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
         List<CharacterUnit> chosenTargets = new ArrayList<>();
-        for (int i = 1; i <= ability.getAreaOfEffect(); i++) {
+        int amountOfTimesCast = ability.getAreaOfEffect();
+        int amountOfEnemies = possibleTargets.size();
+        if (amountOfTimesCast > amountOfEnemies) amountOfTimesCast = amountOfEnemies;
+        for (int i = amountOfTimesCast; i != 0; i--) {
             System.out.println("Choose " + i + " more targets");
             CharacterUnit receivingUnit = getReceivingUnit(possibleTargets);
             chosenTargets.add(receivingUnit);

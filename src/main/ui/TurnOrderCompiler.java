@@ -14,12 +14,10 @@ public class TurnOrderCompiler {
     private static int HIGHEST_VALUE = 100;
     private Map<CharacterUnit, Integer> fieldedCharacters;
     private List<CharacterUnit> charactersReadyToTakeAction;
-    private List<CharacterUnit> charactersThatDiedThisRound;
 
     public TurnOrderCompiler(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies) {
         fieldedCharacters = new LinkedHashMap<>();
         charactersReadyToTakeAction = new ArrayList<>();
-        charactersThatDiedThisRound = new ArrayList<>();
         insertListIntoActiveCharacters(playableCharacters);
         insertListIntoActiveCharacters(enemies);
     }
@@ -56,7 +54,7 @@ public class TurnOrderCompiler {
         List<CharacterUnit> aliveEnemies = new ArrayList<>();
         for (Map.Entry<CharacterUnit, Integer> entry : fieldedCharacters.entrySet()) {
             CharacterUnit unit = entry.getKey();
-            if (unit.getClass() == NPC.class && !charactersThatDiedThisRound.contains(unit)) {
+            if (unit.getClass() == NPC.class) {
                 aliveEnemies.add(unit);
             }
         }

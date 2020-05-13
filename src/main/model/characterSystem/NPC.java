@@ -26,20 +26,16 @@ public class NPC extends CharacterUnit {
     }
 
     protected Ability getChosenAbility(Battle battle) {
-        Ability ability = this.characterJob.getJobAbilityList().get(4); // Ability 0 is attack
+        Random randomAbilitySelector = new Random();
+        List<Ability> jobAbilityList = this.getCharacterJob().getJobAbilityList();
+        Ability chosenAbility = jobAbilityList.get(randomAbilitySelector.nextInt(jobAbilityList.size()));
         try {
-            ability.hasEnoughMana(this);
+            chosenAbility.hasEnoughMana(this);
         } catch (OutOfManaException e) {
-            ability = this.characterJob.getJobAbilityList().get(0);
-            //getChosenAbility(battle);
+            getChosenAbility(battle); // keep repeating till it gets valid ability
         }
-        return ability;
-    }
-
-    @Override
-    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
-        CharacterUnit receivingUnit = getSingleTarget(battle, ability);
-        takeAction(battle, ability, receivingUnit);
+        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
+        return chosenAbility;
     }
 
     @Override
@@ -62,6 +58,4 @@ public class NPC extends CharacterUnit {
         Random receivingUnitSelector = new Random();
         return unitOptions.get(receivingUnitSelector.nextInt(unitOptions.size()));
     }
-
-
 }
