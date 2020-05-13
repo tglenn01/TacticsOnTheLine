@@ -38,14 +38,15 @@ public abstract class DamageAbility extends Ability {
         int defenderHealth = receivingUnitStatSheet.getHealth();
         int damage =  calculateDamage();
         defenderHealth = defenderHealth - damage;
+        if (defenderHealth < 0) defenderHealth = 0;
+        System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +
+                receivingUnit.getCharacterName() + ", " +
+                receivingUnit.getCharacterName() + " is now at " + defenderHealth + "!");
         if (defenderHealth <= 0) {
             receivingUnitStatSheet.setHealth(0);
             receivingUnit.setAlive(false);
             throw new UnitIsDeadException(receivingUnit);
         }
-        System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +
-                receivingUnit.getCharacterName() + ", " +
-                receivingUnit.getCharacterName() + " is now at " + defenderHealth + "!");
         receivingUnitStatSheet.setHealth(defenderHealth);
     }
 

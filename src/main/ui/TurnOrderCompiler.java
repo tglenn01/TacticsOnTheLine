@@ -1,5 +1,6 @@
 package main.ui;
 
+import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.characterSystem.PlayableCharacterUnit;
@@ -77,18 +78,16 @@ public class TurnOrderCompiler {
         return charactersReadyToTakeAction;
     }
 
-    public void addDeadCharacterToListOfDeadCharacters(CharacterUnit deadCharacter) {
-        charactersThatDiedThisRound.add(deadCharacter);
+    public void removeDeadCharacterFromFieldedCharacters(CharacterUnit deadCharacter) throws BattleIsOverException {
+        fieldedCharacters.remove(deadCharacter);
+        if (isBattleOver()) throw new BattleIsOverException();
     }
 
     public boolean isBattleOver() {
         return getAlivePlayableCharacters().isEmpty() || getAliveEnemyCharacters().isEmpty();
     }
 
-    public void removeAllDeadCharacters() {
-        for (CharacterUnit unit : charactersThatDiedThisRound) {
-            fieldedCharacters.remove(unit);
-        }
-        charactersThatDiedThisRound = new ArrayList<>();
+    public boolean didUserWin() {
+        return getAliveEnemyCharacters().isEmpty();
     }
 }

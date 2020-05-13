@@ -4,7 +4,9 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.*;
+import main.model.scenarioSystem.Scenario;
 import main.model.scenarioSystem.ScenarioOne;
+import main.model.scenarioSystem.ScenarioTwo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ public class TurnBaseBattle {
         availableJobs = new ArrayList<>();
         initializeJobs();
         initializeCharacters();
-        new Battle(partyMemberList, new ScenarioOne());
+        Scenario scenario = initializeScenario();
+        new Battle(partyMemberList, scenario);
     }
 
     private void initializeJobs() {
@@ -66,5 +69,33 @@ public class TurnBaseBattle {
             characterJob = askUserForJob();
         }
         return characterJob;
+    }
+
+    private Scenario initializeScenario() {
+        List<Scenario> scenarioList = getAndListScenarios();
+        UserInput input = new UserInput();
+        String command = input.getInput();
+        Scenario battleScenario = null;
+        for (Scenario scenario : scenarioList) {
+            if (command.equals(scenario.getScenarioName())) {
+                battleScenario = scenario;
+            }
+        }
+        if (battleScenario == null) {
+            System.out.println("Not a valid option, please choose again");
+            battleScenario = initializeScenario();
+        }
+        return battleScenario;
+    }
+
+    private List<Scenario> getAndListScenarios() {
+        List<Scenario> scenarioList = new ArrayList<>();
+        Scenario scenarioOne = new ScenarioOne();
+        Scenario scenarioTwo = new ScenarioTwo();
+        System.out.println(scenarioOne.getScenarioName());
+        System.out.println(scenarioTwo.getScenarioName());
+        scenarioList.add(scenarioOne);
+        scenarioList.add(scenarioTwo);
+        return scenarioList;
     }
 }

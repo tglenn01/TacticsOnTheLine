@@ -7,9 +7,10 @@ public class ScenarioOne extends Scenario {
 
     public ScenarioOne() {
         super();
+        scenarioName = "Training";
     }
 
     protected void createListOfEnemies() {
-        enemies.add(new NPC(new Noble(), "Dummy"));
+        listOfEnemies.add(new NPC(new Noble(), "Dummy"));
     }
 }

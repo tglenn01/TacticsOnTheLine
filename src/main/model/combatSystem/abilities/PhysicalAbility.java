@@ -9,6 +9,8 @@ public class PhysicalAbility extends DamageAbility {
 
     @Override
     protected int calculateDamage() {
-        return (activeUnitStatSheet.getStrength() + this.damage) - receivingUnitStatSheet.getArmour();
+        int damage = (activeUnitStatSheet.getStrength() + this.damage) - receivingUnitStatSheet.getArmour();
+        if (damage < 0) damage = 0;
+        return damage;
     }
 }

@@ -1,5 +1,6 @@
 package main.model.characterSystem;
 
+import main.exception.BattleIsOverException;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
@@ -14,10 +15,11 @@ public class PlayableCharacterUnit extends CharacterUnit {
     }
 
     @Override
-    public void takeAction(Battle battle) {
+    public void takeAction(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
         displayAbilities();
-        getChoosenAbility(battle);
+        Ability choosenAbility = getChoosenAbility(battle);
+        abilityTakeAction(battle, choosenAbility);
     }
 
 
@@ -29,15 +31,20 @@ public class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
-    protected void getChoosenAbility(Battle battle) {
+    protected Ability getChoosenAbility(Battle battle) {
         UserInput input = new UserInput();
         String command = input.getInput();
-
+        Ability choosenAbility = null;
         for (Ability ability : characterJob.getJobAbilityList()) {
             if (command.equals(ability.getAbilityName())) {
-                abilityTakeAction(battle, ability);
+                choosenAbility = ability;
             }
         }
+        if (choosenAbility == null) {
+            System.out.println("Not a valid ability, please choose again");
+            choosenAbility = getChoosenAbility(battle);
+        }
+        return choosenAbility;
     }
 
     @Override

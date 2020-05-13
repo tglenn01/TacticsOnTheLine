@@ -22,12 +22,12 @@ public class Archer extends Job {
         Ability hinder = new StatusEffectAbility("Hinder", 7, 6, 1,
                 Ability.AbilityType.DEFENSE_DEBUFF, "Fire a trap to lower an enemies " +
                 "defense from afar");
-        Ability rainOfArrows = new PhysicalAbility("Rain Of Arrows", 7, 6, 2,
+        Ability flurry = new PhysicalAbility("Flurry", 7, 6, 2,
                 Ability.AbilityType.DAMAGE,8, .95,
                 "Hit multiple enemies from afar for light damage");
         jobAbilityList.add(snipe);
         jobAbilityList.add(hinder);
-        jobAbilityList.add(rainOfArrows);
+        jobAbilityList.add(flurry);
     }
 
     @Override

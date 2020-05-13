@@ -1,6 +1,7 @@
 package main.model.characterSystem;
 
 import main.exception.AttackMissedException;
+import main.exception.BattleIsOverException;
 import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.combatSystem.Ability;
@@ -20,7 +21,9 @@ public abstract class CharacterUnit {
         this.isAlive = true;
     }
 
-    protected void abilityTakeAction(Battle battle, Ability ability) {
+    public abstract void takeAction(Battle battle) throws BattleIsOverException;
+
+    protected void abilityTakeAction(Battle battle, Ability ability) throws BattleIsOverException {
         CharacterUnit targetedUnit;
         targetedUnit = getTargetUnit(battle, ability);
         try {
@@ -60,9 +63,11 @@ public abstract class CharacterUnit {
         characterStatSheet.updateStatSheetAccordingToJob(job);
     }
 
-    public void setAlive(boolean deathStatus) {
-        this.isAlive = deathStatus;
-    }
+    protected abstract Ability getChoosenAbility(Battle battle);
+
+    protected abstract CharacterUnit getDefendingEnemy(Battle battle);
+
+    protected abstract CharacterUnit getSupportedAlly(Battle battle);
 
     public StatSheet getCharacterStatSheet() {
         return characterStatSheet;
@@ -80,11 +85,9 @@ public abstract class CharacterUnit {
         return isAlive;
     }
 
-    protected abstract void getChoosenAbility(Battle battle);
+    public void setAlive(boolean deathStatus) {
+        this.isAlive = deathStatus;
+    }
 
-    protected abstract CharacterUnit getDefendingEnemy(Battle battle);
 
-    protected abstract CharacterUnit getSupportedAlly(Battle battle);
-
-    public abstract void takeAction(Battle battle);
 }

@@ -1,5 +1,7 @@
 package main.model.characterSystem;
 
+import main.exception.BattleIsOverException;
+import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
@@ -13,9 +15,10 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
-    public void takeAction(Battle battle) {
+    public void takeAction(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
-        getChoosenAbility(battle);
+        Ability choosenAbility = getChoosenAbility(battle);
+        abilityTakeAction(battle, choosenAbility);
     }
 
     @Override
@@ -30,8 +33,7 @@ public class NPC extends CharacterUnit {
         return this;
     }
 
-    protected void getChoosenAbility(Battle battle) {
-        CharacterUnit choosenPlayableCharacter = getDefendingEnemy(battle);
-        abilityTakeAction(battle, this.characterJob.getJobAbilityList().get(0)); // Ability is attack
+    protected Ability getChoosenAbility(Battle battle) {
+        return this.characterJob.getJobAbilityList().get(0); // Ability 0 is attack
     }
 }

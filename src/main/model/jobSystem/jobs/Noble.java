@@ -18,7 +18,7 @@ public class Noble extends Job {
         Ability strike = new PhysicalAbility("Strike", 3, 1, 1,
                 Ability.AbilityType.DAMAGE, 15, .80,
                 "Strike an enemy with increased force");
-        Ability daggerThrow = new PhysicalAbility("Dagger Throw", 3, 3, 1,
+        Ability dagger = new PhysicalAbility("Dagger", 3, 3, 1,
                 Ability.AbilityType.DAMAGE,8, .70,
                 "Strike an nearby enemy with an light dagger");
         Ability desperation = new PhysicalAbility("Desperation", 10, 1, 2,
@@ -26,7 +26,7 @@ public class Noble extends Job {
                 "Spend a lot of mana for a low chance to deal a lot " +
                 "of damage to multiple neighbouring enemies");
         jobAbilityList.add(strike);
-        jobAbilityList.add(daggerThrow);
+        jobAbilityList.add(dagger);
         jobAbilityList.add(desperation);
     }
 

@@ -6,16 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Scenario {
-    protected List<CharacterUnit> enemies;
+    protected String scenarioName;
+    protected List<CharacterUnit> listOfEnemies;
 
     public Scenario() {
-        enemies = new ArrayList<>();
+        listOfEnemies = new ArrayList<>();
         createListOfEnemies();
     }
 
     protected abstract void createListOfEnemies();
 
-    public List<CharacterUnit> getEnemies() {
-        return enemies;
+    public List<CharacterUnit> getListOfEnemies() {
+        return listOfEnemies;
+    }
+
+    public String getScenarioName() {
+        return scenarioName;
     }
 }

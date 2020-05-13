@@ -13,18 +13,20 @@ public class Battle {
 
     public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
         this.scenario = scenario;
-        turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getEnemies());
+        turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
         try {
             updateNextRound();
         } catch (BattleIsOverException e) {
             System.out.println("The Battle is over");
+            if (turnOrder.didUserWin()) {
+                System.out.println("You have won");
+            } else System.out.println("You have lost");
         }
     }
 
     private void updateNextRound() throws BattleIsOverException {
         List<CharacterUnit> activeCharacters = turnOrder.updateTurnOrder();
         takeAction(activeCharacters);
-        turnOrder.removeAllDeadCharacters();
         updateNextRound();
     }
 
@@ -35,9 +37,6 @@ public class Battle {
                 activeCharacter.takeAction(this);
                 iterator.remove();
             }
-            if (turnOrder.isBattleOver()) { // If all of one side is dead end the loop
-                throw new BattleIsOverException();
-            }
         }
 
     }
@@ -46,7 +45,7 @@ public class Battle {
         return turnOrder;
     }
 
-    public void removeDeadCharacter(CharacterUnit deadCharacter) {
-        turnOrder.addDeadCharacterToListOfDeadCharacters(deadCharacter);
+    public void removeDeadCharacter(CharacterUnit deadCharacter) throws BattleIsOverException {
+        turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
     }
 }
