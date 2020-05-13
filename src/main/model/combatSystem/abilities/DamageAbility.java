@@ -1,7 +1,6 @@
 package main.model.combatSystem.abilities;
 
 import main.exception.AttackMissedException;
-import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
@@ -23,13 +22,12 @@ public abstract class DamageAbility extends Ability {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws OutOfManaException,
+    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws
             AttackMissedException, UnitIsDeadException {
         this.activeUnit = activeUnit;
         this.receivingUnit = receivingUnit;
         activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         receivingUnitStatSheet = this.receivingUnit.getCharacterStatSheet();
-        hasEnoughMana(activeUnit);
         checkIfAbilityHit();
         calculateDamageDone();
     }

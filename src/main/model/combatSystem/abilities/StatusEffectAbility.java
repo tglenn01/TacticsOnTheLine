@@ -1,7 +1,6 @@
 package main.model.combatSystem.abilities;
 
 import main.exception.AttackMissedException;
-import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
@@ -20,8 +19,7 @@ public class StatusEffectAbility extends Ability {
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
-            throws OutOfManaException, AttackMissedException, UnitIsDeadException {
-        hasEnoughMana(activeUnit);
+            throws AttackMissedException, UnitIsDeadException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         if (this.abilityType == AbilityType.HEAL) {

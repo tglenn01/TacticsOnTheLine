@@ -31,7 +31,7 @@ public abstract class Ability {
     }
 
     public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit reciveingUnit)
-            throws OutOfManaException, AttackMissedException, UnitIsDeadException;
+            throws AttackMissedException, UnitIsDeadException;
 
     public int getManaCost() {
         return manaCost;
@@ -45,7 +45,7 @@ public abstract class Ability {
         return this.abilityType;
     }
 
-    protected void hasEnoughMana(CharacterUnit activeUnit) throws OutOfManaException {
+    public void hasEnoughMana(CharacterUnit activeUnit) throws OutOfManaException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         if (activeUnitStatSheet.getMana() >= manaCost) {
             activeUnitStatSheet.setMana(activeUnitStatSheet.getMana() - manaCost);

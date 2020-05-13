@@ -52,6 +52,7 @@ public class TurnBaseBattle {
 
         CharacterUnit partyMember = new PlayableCharacterUnit(characterJob, characterJob.getJobTitle());
         partyMemberList.add(partyMember);
+        availableJobs.remove(characterJob);
         System.out.println("You have choosen a " + characterJob.getJobTitle() + "!");
     }
 

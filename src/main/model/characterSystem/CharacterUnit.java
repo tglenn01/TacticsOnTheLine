@@ -2,7 +2,6 @@ package main.model.characterSystem;
 
 import main.exception.AttackMissedException;
 import main.exception.BattleIsOverException;
-import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
@@ -28,10 +27,6 @@ public abstract class CharacterUnit {
         targetedUnit = getTargetUnit(battle, ability);
         try {
             ability.takeAction(this, targetedUnit);
-        } catch (OutOfManaException e) {
-            System.out.println("Insufficient Mana: you have " + this.characterStatSheet.getMana() + " left");
-            System.out.println("Choose a different ability");
-            getChoosenAbility(battle);
         } catch (AttackMissedException e) {
             System.out.println("Their attack missed :(");
         } catch (UnitIsDeadException e) {

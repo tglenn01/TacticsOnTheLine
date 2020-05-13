@@ -1,6 +1,7 @@
 package main.model.characterSystem;
 
 import main.exception.BattleIsOverException;
+import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
@@ -34,17 +35,24 @@ public class PlayableCharacterUnit extends CharacterUnit {
     protected Ability getChoosenAbility(Battle battle) {
         UserInput input = new UserInput();
         String command = input.getInput();
-        Ability choosenAbility = null;
+        Ability chosenAbility = null;
         for (Ability ability : characterJob.getJobAbilityList()) {
             if (command.equals(ability.getAbilityName())) {
-                choosenAbility = ability;
+                try {
+                    ability.hasEnoughMana(this);
+                    chosenAbility = ability;
+                } catch (OutOfManaException e) {
+                    System.out.println("Insufficient Mana: you have " + this.characterStatSheet.getMana() + " left");
+                    System.out.println("Choose a different ability");
+                    chosenAbility = getChoosenAbility(battle);
+                }
             }
         }
-        if (choosenAbility == null) {
+        if (chosenAbility == null) {
             System.out.println("Not a valid ability, please choose again");
-            choosenAbility = getChoosenAbility(battle);
+            chosenAbility = getChoosenAbility(battle);
         }
-        return choosenAbility;
+        return chosenAbility;
     }
 
     @Override

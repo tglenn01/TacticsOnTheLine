@@ -1,6 +1,7 @@
 package main.model.characterSystem;
 
 import main.exception.BattleIsOverException;
+import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
@@ -34,6 +35,12 @@ public class NPC extends CharacterUnit {
     }
 
     protected Ability getChoosenAbility(Battle battle) {
-        return this.characterJob.getJobAbilityList().get(0); // Ability 0 is attack
+        Ability ability = this.characterJob.getJobAbilityList().get(0); // Ability 0 is attack
+        try {
+            ability.hasEnoughMana(this);
+        } catch (OutOfManaException e) {
+            getChoosenAbility(battle);
+        }
+        return ability;
     }
 }
