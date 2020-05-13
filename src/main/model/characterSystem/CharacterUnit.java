@@ -7,9 +7,11 @@ import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CharacterUnit {
+    protected enum CharacterType {ALLY, ENEMY};
     protected String characterName;
     protected Job characterJob;
     protected StatSheet characterStatSheet;
@@ -22,9 +24,14 @@ public abstract class CharacterUnit {
         this.isAlive = true;
     }
 
-    protected void abilityTakeAction(Battle battle, Ability ability, CharacterUnit receivingUnit)
+    public abstract void startTurn(Battle battle) throws BattleIsOverException;
+
+    protected abstract Ability getChosenAbility(Battle battle);
+
+    protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit)
             throws BattleIsOverException {
         try {
+            System.out.println(this.characterName + " used " + ability.getAbilityName());
             ability.takeAction(this, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
@@ -34,27 +41,37 @@ public abstract class CharacterUnit {
         }
     }
 
-    public abstract void takeAction(Battle battle) throws BattleIsOverException;
-
     protected abstract void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException;
 
-    protected abstract void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException;
+    protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
+        if (ability.getAbilityName().equals("Defend")) return this;
+        List<CharacterUnit> unitOptions;
+        if (ability.targetsAlly()) {
+            unitOptions = getUnitOptions(battle, CharacterType.ALLY);
+        } else {
+            unitOptions = getUnitOptions(battle, CharacterType.ENEMY);
+        }
+        return getReceivingUnit(unitOptions);
+    }
+
+    protected void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException {
+        List<CharacterUnit> possibleTargets;
+        if (ability.targetsAlly()) {
+            possibleTargets = new ArrayList<>(getUnitOptions(battle, CharacterType.ALLY));
+        } else {
+            possibleTargets = new ArrayList<>(getUnitOptions(battle, CharacterType.ENEMY));
+        }
+        List<CharacterUnit> chosenTargets = getMultipleTargets(ability, possibleTargets);
+        for (CharacterUnit chosenTarget : chosenTargets) {
+            takeAction(battle, ability, chosenTarget);
+        }
+    }
 
     protected abstract List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets);
 
-    protected abstract CharacterUnit getSingleTarget(Battle battle, Ability ability);
-
-    protected abstract Ability getChosenAbility(Battle battle);
+    protected abstract List<CharacterUnit> getUnitOptions(Battle battle, CharacterType type);
 
     protected abstract CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions);
-
-
-    // return true Ability is of type HEAL, ATTACK_BUFF, or DEFENSE_BUFF
-    protected boolean abilityTargetsAlly(Ability ability) {
-        return ability.getAbilityType() == Ability.AbilityType.HEAL ||
-                ability.getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
-                ability.getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
-    }
 
     public void setJob(Job job) {
         this.characterJob = job;

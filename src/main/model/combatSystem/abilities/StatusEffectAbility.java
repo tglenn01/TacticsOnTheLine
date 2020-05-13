@@ -40,7 +40,9 @@ public class StatusEffectAbility extends Ability {
     private void healUnit(StatSheet activeUnitStatSheet, StatSheet receivingUnitStatSheet) {
         int initialHeal = receivingUnitStatSheet.getHealth();
         int healAmount = activeUnitStatSheet.getMagic() + HEAL_CONSTANT;
-        receivingUnitStatSheet.setHealth(initialHeal + healAmount);
+        int newHealth = initialHeal + healAmount;
+        if (newHealth > receivingUnitStatSheet.getMaxHealth()) newHealth = receivingUnitStatSheet.getMaxHealth();
+        receivingUnitStatSheet.setHealth(newHealth);
         System.out.println("It was healed " + healAmount);
     }
 

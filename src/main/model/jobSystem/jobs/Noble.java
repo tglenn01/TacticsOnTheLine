@@ -32,7 +32,9 @@ public class Noble extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setHealth(32);
+        int initialHealth = 32;
+        statSheet.setHealth(initialHealth);
+        statSheet.setMaxHealth(initialHealth);
         statSheet.setMana(15);
         statSheet.setStrength(10);
         statSheet.setMagic(4);

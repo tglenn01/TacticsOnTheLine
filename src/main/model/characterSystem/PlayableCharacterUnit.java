@@ -17,7 +17,7 @@ public class PlayableCharacterUnit extends CharacterUnit {
     }
 
     @Override
-    public void takeAction(Battle battle) throws BattleIsOverException {
+    public void startTurn(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
         displayAbilities();
         Ability chosenAbility = getChosenAbility(battle);
@@ -58,44 +58,28 @@ public class PlayableCharacterUnit extends CharacterUnit {
 
     protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
         CharacterUnit receivingUnit = getSingleTarget(battle, ability);
-        abilityTakeAction(battle, ability, receivingUnit);
-    }
-
-    protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
-        CharacterUnit targetedUnit;
-        if (ability.getAbilityName().equals("Defend")) return this;
-        if (abilityTargetsAlly(ability)) {
-            System.out.println("Choose an Ally:");
-            targetedUnit = getReceivingUnit(battle.getTurnOrder().getAlivePlayableCharacters());
-        } else {
-            System.out.println("Choose an Enemy:");
-            targetedUnit = getReceivingUnit(battle.getTurnOrder().getAliveEnemyCharacters());
-        }
-        return targetedUnit;
-    }
-
-    protected void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException {
-        List<CharacterUnit> possibleTargets;
-        System.out.println("Choose " + ability.getAreaOfEffect() + " targets");
-        if (abilityTargetsAlly(ability)) {
-            possibleTargets = new ArrayList<>(battle.getTurnOrder().getAlivePlayableCharacters());
-        } else {
-            possibleTargets = new ArrayList<>(battle.getTurnOrder().getAliveEnemyCharacters());
-        }
-        List<CharacterUnit> chosenTargets = getMultipleTargets(ability, possibleTargets);
-        for (CharacterUnit chosenTarget : chosenTargets) {
-            abilityTakeAction(battle, ability, chosenTarget);
-        }
+        takeAction(battle, ability, receivingUnit);
     }
 
     protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
         List<CharacterUnit> chosenTargets = new ArrayList<>();
         for (int i = 1; i <= ability.getAreaOfEffect(); i++) {
+            System.out.println("Choose " + i + " more targets");
             CharacterUnit receivingUnit = getReceivingUnit(possibleTargets);
             chosenTargets.add(receivingUnit);
             possibleTargets.remove(receivingUnit);
         }
         return chosenTargets;
+    }
+
+    protected List<CharacterUnit> getUnitOptions(Battle battle, CharacterType type) {
+        if (type == CharacterType.ALLY) {
+            System.out.println("Choose from fielded allies:");
+            return battle.getTurnOrder().getAlivePlayableCharacters();
+        } else {
+            System.out.println("Choose from opposing enemies:");
+            return battle.getTurnOrder().getAliveEnemyCharacters();
+        }
     }
 
     protected CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions) {

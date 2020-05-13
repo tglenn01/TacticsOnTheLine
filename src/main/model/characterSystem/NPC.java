@@ -6,6 +6,7 @@ import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,56 +17,50 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
-    public void takeAction(Battle battle) throws BattleIsOverException {
+    public void startTurn(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
-        Ability choosenAbility = getChosenAbility(battle);
-        abilityTakeAction(battle, choosenAbility);
-    }
-
-    @Override
-    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
-        
-    }
-
-    @Override
-    protected void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException {
-
-    }
-
-    @Override
-    protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
-        return null;
-    }
-
-    @Override
-    protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
-        return null;
-    }
-
-    @Override
-    protected CharacterUnit getDefendingEnemy(Battle battle) {
-        List<CharacterUnit> partyList = battle.getTurnOrder().getAlivePlayableCharacters();
-        Random partyMemeberSelector = new Random();
-        return partyList.get(partyMemeberSelector.nextInt(partyList.size()));
-    }
-
-    @Override
-    protected CharacterUnit getSupportedAlly(Battle battle) {
-        return this;
+        Ability chosenAbility = getChosenAbility(battle);
+        if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
+        else takeActionOnce(battle, chosenAbility);
     }
 
     protected Ability getChosenAbility(Battle battle) {
-        Ability ability = this.characterJob.getJobAbilityList().get(0); // Ability 0 is attack
+        Ability ability = this.characterJob.getJobAbilityList().get(4); // Ability 0 is attack
         try {
             ability.hasEnoughMana(this);
         } catch (OutOfManaException e) {
-            getChosenAbility(battle);
+            ability = this.characterJob.getJobAbilityList().get(0);
+            //getChosenAbility(battle);
         }
         return ability;
     }
 
     @Override
-    protected CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions) {
-        return null;
+    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
+        CharacterUnit receivingUnit = getSingleTarget(battle, ability);
+        takeAction(battle, ability, receivingUnit);
     }
+
+    @Override
+    protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
+        List<CharacterUnit> chosenTargets = new ArrayList<>();
+        for (int i = 1; i <= ability.getAreaOfEffect(); i++) {
+            CharacterUnit receivingUnit = getReceivingUnit(possibleTargets);
+            chosenTargets.add(receivingUnit);
+            possibleTargets.remove(receivingUnit);
+        }
+        return chosenTargets;
+    }
+
+   protected List<CharacterUnit> getUnitOptions(Battle battle, CharacterType type) {
+        if (type == CharacterType.ALLY) return battle.getTurnOrder().getAliveEnemyCharacters();
+        else return battle.getTurnOrder().getAlivePlayableCharacters();
+   }
+
+    protected CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions) {
+        Random receivingUnitSelector = new Random();
+        return unitOptions.get(receivingUnitSelector.nextInt(unitOptions.size()));
+    }
+
+
 }

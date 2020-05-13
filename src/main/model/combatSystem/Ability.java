@@ -6,8 +6,6 @@ import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 
-import java.util.List;
-
 public abstract class Ability {
     public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF}
     protected String abilityName;
@@ -35,17 +33,6 @@ public abstract class Ability {
     public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
             throws AttackMissedException, UnitIsDeadException;
 
-    public void takeAction(CharacterUnit activeUnit, List<CharacterUnit> receivingUnits)
-            throws AttackMissedException, UnitIsDeadException {
-        for (CharacterUnit unit : receivingUnits) {
-            try {
-                takeAction(activeUnit, unit);
-            } catch (AttackMissedException e) {
-                System.out.println("Attack missed:");
-            }
-        }
-    }
-
     public int getManaCost() {
         return manaCost;
     }
@@ -71,5 +58,11 @@ public abstract class Ability {
 
     public boolean isAreaOfEffect() {
         return this.areaOfEffect != 1;
+    }
+
+    public boolean targetsAlly() {
+        return getAbilityType() == Ability.AbilityType.HEAL ||
+                getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
+                getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
     }
 }

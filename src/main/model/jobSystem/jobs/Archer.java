@@ -32,7 +32,9 @@ public class Archer extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setHealth(20);
+        int initialHealth = 20;
+        statSheet.setHealth(initialHealth);
+        statSheet.setMaxHealth(initialHealth);
         statSheet.setMana(24);
         statSheet.setStrength(10);
         statSheet.setMagic(7);

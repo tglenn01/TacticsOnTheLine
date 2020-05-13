@@ -5,6 +5,7 @@ import main.model.jobSystem.Job;
 public class StatSheet {
     public static int BASE_MOVEMENT = 4;
     private int health;
+    private int maxHealth;
     private int mana;
     private int strength;
     private int magic;
@@ -21,6 +22,10 @@ public class StatSheet {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     public int getMana() {
@@ -57,6 +62,10 @@ public class StatSheet {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     public void setMana(int mana) {

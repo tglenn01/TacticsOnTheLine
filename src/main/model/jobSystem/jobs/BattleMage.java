@@ -30,7 +30,9 @@ public class BattleMage extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setHealth(16);
+        int initialHealth = 16;
+        statSheet.setHealth(initialHealth);
+        statSheet.setMaxHealth(initialHealth);
         statSheet.setMana(30);
         statSheet.setStrength(6);
         statSheet.setMagic(10);

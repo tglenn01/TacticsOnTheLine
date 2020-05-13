@@ -30,7 +30,9 @@ public class Warrior extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setHealth(40);
+        int initialHealth = 40;
+        statSheet.setHealth(initialHealth);
+        statSheet.setMaxHealth(initialHealth);
         statSheet.setMana(10);
         statSheet.setStrength(16);
         statSheet.setMagic(2);

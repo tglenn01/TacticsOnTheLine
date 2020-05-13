@@ -34,7 +34,7 @@ public class Battle {
         for (Iterator<CharacterUnit> iterator = activeCharacters.iterator(); iterator.hasNext();) {
             CharacterUnit activeCharacter = iterator.next();
             if (activeCharacter.getIsAlive()) { // If unit is Alive it takes an action
-                activeCharacter.takeAction(this);
+                activeCharacter.startTurn(this);
                 iterator.remove();
             }
         }

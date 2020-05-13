@@ -19,8 +19,8 @@ public class Cleric extends Job {
                 Ability.AbilityType.HEAL, "Heal a neighbouring ally");
         Ability protect = new StatusEffectAbility("Protect", 8, 1, 1,
                 Ability.AbilityType.DEFENSE_BUFF, "Buff a neighbouring allies defense");
-        Ability holy = new MagicAbility("Holy", 10, 3, 20,
-                Ability.AbilityType.DAMAGE, 1, .80,
+        Ability holy = new MagicAbility("Holy", 10, 3, 1,
+                Ability.AbilityType.DAMAGE, 20, .80,
                 "Deal heavy light damage to a nearby enemy");
         jobAbilityList.add(heal);
         jobAbilityList.add(protect);
@@ -29,7 +29,9 @@ public class Cleric extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setHealth(30);
+        int initialHealth = 30;
+        statSheet.setHealth(initialHealth);
+        statSheet.setMaxHealth(initialHealth);
         statSheet.setMana(30);
         statSheet.setStrength(4);
         statSheet.setMagic(12);
