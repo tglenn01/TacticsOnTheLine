@@ -114,17 +114,21 @@ public abstract class CharacterUnit {
     }
 
     protected void updateStatusEffect() {
+        List<Map.Entry<Ability.AbilityType, Integer>> toRemove = new ArrayList<>();
         for (Map.Entry<Ability.AbilityType, Integer> entry : statusEffectDuration.entrySet()) {
             int newDuration = entry.getValue();
             newDuration--;
             if (newDuration == 0) {
-                statusEffectDuration.remove(entry.getKey());
-                System.out.println(entry.getKey() + " Has ended");
-                removeStatusEffect(entry);
+                toRemove.add(entry);
             } else {
                 entry.setValue(newDuration);
                 System.out.println(entry.getKey() + " for " + newDuration + " more turns");
             }
+        }
+        for (Map.Entry<Ability.AbilityType, Integer> entry : toRemove) {
+            statusEffectDuration.remove(entry);
+            System.out.println(entry.getKey() + " Has ended");
+            removeStatusEffect(entry);
         }
     }
 

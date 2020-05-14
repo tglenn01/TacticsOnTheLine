@@ -29,10 +29,10 @@ public class Cleric extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(30);
+        statSheet.setMaxHealth(34);
         statSheet.setMaxMana(30);
-        statSheet.setBaseStrength(4);
-        statSheet.setBaseMagic(12);
+        statSheet.setBaseStrength(6);
+        statSheet.setBaseMagic(10);
         statSheet.setBaseArmour(4);
         statSheet.setBaseResistance(12);
         statSheet.setBaseSpeed(4);

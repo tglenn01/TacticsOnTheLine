@@ -32,14 +32,14 @@ public class Archer extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(20);
+        statSheet.setMaxHealth(24);
         statSheet.setMaxMana(24);
         statSheet.setBaseStrength(10);
         statSheet.setBaseMagic(7);
-        statSheet.setBaseArmour(2);
-        statSheet.setBaseResistance(6);
-        statSheet.setBaseSpeed(10);
-        statSheet.setBaseDexterity(8);
+        statSheet.setBaseArmour(4);
+        statSheet.setBaseResistance(4);
+        statSheet.setBaseSpeed(12);
+        statSheet.setBaseDexterity(12);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

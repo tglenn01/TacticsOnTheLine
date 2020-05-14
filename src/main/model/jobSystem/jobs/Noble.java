@@ -36,10 +36,10 @@ public class Noble extends Job {
         statSheet.setMaxMana(15);
         statSheet.setBaseStrength(10);
         statSheet.setBaseMagic(4);
-        statSheet.setBaseArmour(4);
+        statSheet.setBaseArmour(8);
         statSheet.setBaseResistance(2);
         statSheet.setBaseSpeed(8);
-        statSheet.setBaseDexterity(2);
+        statSheet.setBaseDexterity(8);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 }

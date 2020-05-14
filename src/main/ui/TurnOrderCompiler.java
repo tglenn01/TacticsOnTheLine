@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class TurnOrderCompiler {
     private static int HIGHEST_VALUE = 100;
+    private static int SPEED_CONSTANT = 10;
     private Map<CharacterUnit, Integer> fieldedCharacters;
     private List<CharacterUnit> charactersReadyToTakeAction;
 
@@ -43,7 +44,7 @@ public class TurnOrderCompiler {
     }
 
     private int updateCharactersPosition(CharacterUnit unit, Integer turnValue) {
-        return turnValue - unit.getCharacterStatSheet().getSpeed();
+        return turnValue - (unit.getCharacterStatSheet().getSpeed() + SPEED_CONSTANT);
     }
 
     private boolean isCharactersAction(Integer newValue) {

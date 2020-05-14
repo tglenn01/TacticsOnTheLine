@@ -50,7 +50,7 @@ public class StatusEffectAbility extends Ability {
             healAmount = newHealth - initialHealth;
         }
         receivingUnitStatSheet.setHealth(newHealth);
-        System.out.println("They was healed " + healAmount);
+        System.out.println("They were healed " + healAmount);
     }
 
     private void buffAttack(StatSheet receivingUnitStatSheet) {

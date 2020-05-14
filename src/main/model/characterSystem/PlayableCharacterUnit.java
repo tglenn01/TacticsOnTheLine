@@ -23,6 +23,7 @@ public class PlayableCharacterUnit extends CharacterUnit {
         updateStatusEffect();
         displayAbilities();
         Ability chosenAbility = getChosenAbility(battle);
+        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
         if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
         else takeActionOnce(battle, chosenAbility);
     }
@@ -55,7 +56,6 @@ public class PlayableCharacterUnit extends CharacterUnit {
             System.out.println("Not a valid ability, please choose again");
             chosenAbility = getChosenAbility(battle);
         }
-        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
         return chosenAbility;
     }
 

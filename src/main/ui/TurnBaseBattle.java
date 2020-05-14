@@ -28,10 +28,13 @@ public class TurnBaseBattle {
 
     private void initializeJobs() {
         availableJobs.add(new Archer());
+        availableJobs.add(new Bard());
         availableJobs.add(new BattleMage());
         availableJobs.add(new Cleric());
+        availableJobs.add(new Lancer());
         availableJobs.add(new Noble());
         availableJobs.add(new Warrior());
+
     }
 
     private void initializeCharacters() {
