@@ -2,6 +2,9 @@ package main.ui;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.PlayableCharacterUnit;
+import main.model.combatSystem.Ability;
+import main.model.itemSystem.Consumable;
+import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.*;
 import main.model.scenarioSystem.Scenario;
@@ -22,6 +25,7 @@ public class TurnBaseBattle {
         availableJobs = new ArrayList<>();
         initializeJobs();
         initializeCharacters();
+        initializeItems();
         Scenario scenario = initializeScenario();
         new Battle(partyMemberList, scenario);
     }
@@ -34,7 +38,6 @@ public class TurnBaseBattle {
         availableJobs.add(new Lancer());
         availableJobs.add(new Noble());
         availableJobs.add(new Warrior());
-
     }
 
     private void initializeCharacters() {
@@ -75,8 +78,18 @@ public class TurnBaseBattle {
         return characterJob;
     }
 
+    private void initializeItems() {
+        ConsumableItemInventory consumables = ConsumableItemInventory.getInstance();
+        Consumable healthPotion = new Consumable("Health_Potion", 10,
+                1, Ability.AbilityType.HEAL);
+        Consumable manaPotion = new Consumable("Mana_Potion", 15,
+                1, Ability.AbilityType.MANA_GAIN);
+        consumables.addConsumableItem(healthPotion);
+        consumables.addConsumableItem(manaPotion);
+    }
+
     private Scenario initializeScenario() {
-        List<Scenario> scenarioList = getAndListScenarios();
+        List<Scenario> scenarioList = listScenarios();
         UserInput input = new UserInput();
         String command = input.getInput();
         Scenario battleScenario = null;
@@ -92,7 +105,7 @@ public class TurnBaseBattle {
         return battleScenario;
     }
 
-    private List<Scenario> getAndListScenarios() {
+    private List<Scenario> listScenarios() {
         List<Scenario> scenarioList = new ArrayList<>();
         Scenario scenarioOne = new ScenarioOne();
         Scenario scenarioTwo = new ScenarioTwo();

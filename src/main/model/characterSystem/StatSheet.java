@@ -1,8 +1,9 @@
 package main.model.characterSystem;
 
+import main.model.itemSystem.ResourceReplenishBonus;
 import main.model.jobSystem.Job;
 
-public class StatSheet {
+public class StatSheet implements ResourceReplenishBonus {
     public static int BASE_MOVEMENT = 4;
     private int health;
     private int maxHealth;
@@ -42,6 +43,8 @@ public class StatSheet {
     public int getMana() {
         return mana;
     }
+
+    public int getMaxMana() { return maxMana; }
 
     public int getStrength() {
         return strength;
@@ -168,4 +171,13 @@ public class StatSheet {
     }
 
 
+    @Override
+    public int getHealingBonus() {
+        return getMagic();
+    }
+
+    @Override
+    public int getManaGainBonus() {
+        return getMagic();
+    }
 }

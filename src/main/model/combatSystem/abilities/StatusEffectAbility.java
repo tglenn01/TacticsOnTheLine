@@ -4,30 +4,25 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.Ability;
+import main.model.itemSystem.ResourceReplenishBonus;
 
-public class StatusEffectAbility extends Ability {
-    private static int HEAL_CONSTANT = 10;
-    private static int STRENGTH_CONSTANT = 3;
-    private static int DEFENSE_CONSTANT = 2;
-    private int duration;
+public class StatusEffectAbility extends SupportiveAbility {
+    protected static int HEAL_CONSTANT = 10;
 
     public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, int duration,
                                AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
-        this.duration = duration;
+        super(abilityName, manaCost, range, areaOfEffect, duration, abilityType, abilityDescription);
     }
 
-
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
-            throws AttackMissedException, UnitIsDeadException {
+    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         if (this.abilityType == AbilityType.HEAL) {
-            healUnit(activeUnitStatSheet, receivingUnitStatSheet);
-            System.out.println(receivingUnit.getCharacterName() + " health is now " +
-                    receivingUnitStatSheet.getHealth());
+            healUnit(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
+            return; // can remove this if I add the regen ability
+        } if (this.abilityType == AbilityType.MANA_GAIN) {
+            gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
             return;
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
             buffAttack(receivingUnitStatSheet);
@@ -41,51 +36,12 @@ public class StatusEffectAbility extends Ability {
         receivingUnit.addStatusEffect(this.abilityType, this.duration);
     }
 
-    private void healUnit(StatSheet activeUnitStatSheet, StatSheet receivingUnitStatSheet) {
-        int initialHealth = receivingUnitStatSheet.getHealth();
-        int healAmount = activeUnitStatSheet.getMagic() + HEAL_CONSTANT;
-        int newHealth = initialHealth + healAmount;
-        if (newHealth > receivingUnitStatSheet.getMaxHealth()) {
-            newHealth = receivingUnitStatSheet.getMaxHealth();
-            healAmount = newHealth - initialHealth;
-        }
-        receivingUnitStatSheet.setHealth(newHealth);
-        System.out.println("They were healed " + healAmount);
+    protected int getHealAmount(ResourceReplenishBonus bonus) {
+        return bonus.getHealingBonus() + HEAL_CONSTANT;
     }
 
-    private void buffAttack(StatSheet receivingUnitStatSheet) {
-        int initialStrength = receivingUnitStatSheet.getStrength();
-        receivingUnitStatSheet.setStrength(initialStrength + STRENGTH_CONSTANT);
-        System.out.println("Attack is now buffed!");
-    }
-
-    private void buffDefense(StatSheet receivingUnitStatSheet) {
-        int initialDefense = receivingUnitStatSheet.getArmour();
-        receivingUnitStatSheet.setArmour(initialDefense + DEFENSE_CONSTANT);
-        System.out.println("Defense is now buffed!");
-    }
-
-    private void debuffAttack(StatSheet receivingUnitStatSheet) {
-        int initialStrength = receivingUnitStatSheet.getStrength();
-        if (initialStrength - STRENGTH_CONSTANT > 0) {
-            receivingUnitStatSheet.setStrength(initialStrength - STRENGTH_CONSTANT);
-        } else {
-            receivingUnitStatSheet.setStrength(0);
-        }
-        System.out.println("Attack is now debuffed.");
-    }
-
-    private void debuffDefense(StatSheet receivingUnitStatSheet) {
-        int initialDefense = receivingUnitStatSheet.getArmour();
-        if (initialDefense - DEFENSE_CONSTANT > 0) {
-            receivingUnitStatSheet.setArmour(initialDefense - DEFENSE_CONSTANT);
-        } else {
-            receivingUnitStatSheet.setArmour(0);
-        }
-        System.out.println("Defense is now debuffed");
-    }
-
-    public int getDuration() {
-        return duration;
+    @Override
+    protected int getManaGainAmount(ResourceReplenishBonus bonus) {
+        return bonus.getManaGainBonus();
     }
 }

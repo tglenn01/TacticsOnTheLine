@@ -2,6 +2,7 @@ package main.model.jobSystem;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 
@@ -23,8 +24,11 @@ public abstract class Job {
                 "Attack an enemy");
         Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
                 Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
+        Ability item = new ConsumableAbility("Item", 0, 1, 1,
+                Ability.AbilityType.ITEM, "Use an item on an ally");
         jobAbilityList.add(attack);
         jobAbilityList.add(defend);
+        jobAbilityList.add(item);
     }
 
     public String getJobTitle() {

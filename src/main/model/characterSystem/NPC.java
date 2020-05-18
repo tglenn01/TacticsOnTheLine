@@ -29,6 +29,9 @@ public class NPC extends CharacterUnit {
         Random randomAbilitySelector = new Random();
         List<Ability> jobAbilityList = this.getCharacterJob().getJobAbilityList();
         Ability chosenAbility = jobAbilityList.get(randomAbilitySelector.nextInt(jobAbilityList.size()));
+        if (chosenAbility.getAbilityType() == Ability.AbilityType.ITEM) {
+            chosenAbility = getChosenAbility(battle); // NPCs can't use items
+        }
         try {
             chosenAbility.hasEnoughMana(this);
         } catch (OutOfManaException e) {

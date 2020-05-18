@@ -3,6 +3,7 @@ package main.model.characterSystem;
 import main.exception.BattleIsOverException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
+import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 import main.ui.UserInput;
@@ -21,22 +22,14 @@ public class PlayableCharacterUnit extends CharacterUnit {
         System.out.println("It is " + this.characterName + "'s turn, they have " +
                 characterStatSheet.getMana() + " mana");
         updateStatusEffect();
-        displayAbilities();
         Ability chosenAbility = getChosenAbility(battle);
         System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
         if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
         else takeActionOnce(battle, chosenAbility);
     }
 
-    private void displayAbilities() {
-        List<Ability> availableAbilities = characterJob.getJobAbilityList();
-        for (Ability ability : availableAbilities) {
-            System.out.println(ability.getAbilityName() + " (" + ability.getManaCost() + " mana): " +
-                    ability.getAbilityDescription());
-        }
-    }
-
     protected Ability getChosenAbility(Battle battle) {
+        displayAbilities();
         UserInput input = new UserInput();
         String command = input.getInput();
         Ability chosenAbility = null;
@@ -56,7 +49,22 @@ public class PlayableCharacterUnit extends CharacterUnit {
             System.out.println("Not a valid ability, please choose again");
             chosenAbility = getChosenAbility(battle);
         }
+
+        if (chosenAbility.getAbilityType() == Ability.AbilityType.ITEM) {
+            if (ConsumableItemInventory.getInstance().isEmpty()) {
+                System.out.println("You do not have any items, choose a different ability");
+                getChosenAbility(battle);
+            }
+        }
         return chosenAbility;
+    }
+
+    private void displayAbilities() {
+        List<Ability> availableAbilities = characterJob.getJobAbilityList();
+        for (Ability ability : availableAbilities) {
+            System.out.println(ability.getAbilityName() + " (" + ability.getManaCost() + " mana): " +
+                    ability.getAbilityDescription());
+        }
     }
 
     protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {

@@ -7,7 +7,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 
 public abstract class Ability {
-    public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF}
+    public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM, MANA_GAIN}
     protected String abilityName;
     protected int manaCost;
     protected int range;
@@ -57,12 +57,13 @@ public abstract class Ability {
     }
 
     public boolean isAreaOfEffect() {
-        return this.areaOfEffect != 1;
+        return this.areaOfEffect > 1;
     }
 
     public boolean targetsAlly() {
-        return getAbilityType() == Ability.AbilityType.HEAL ||
-                getAbilityType() == Ability.AbilityType.ATTACK_BUFF ||
-                getAbilityType() == Ability.AbilityType.DEFENSE_BUFF;
+        return this.abilityType == Ability.AbilityType.HEAL ||
+                this.abilityType == Ability.AbilityType.ATTACK_BUFF ||
+                this.abilityType == Ability.AbilityType.DEFENSE_BUFF ||
+                this.abilityType == Ability.AbilityType.ITEM;
     }
 }
