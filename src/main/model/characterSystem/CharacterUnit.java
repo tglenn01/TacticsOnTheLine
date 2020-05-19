@@ -51,7 +51,7 @@ public abstract class CharacterUnit {
     }
 
     protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
-        if (ability.getAbilityName().equals("Defend")) return this;
+        if (ability.isSelfBuff()) return this;
         List<CharacterUnit> unitOptions;
         if (ability.targetsAlly()) {
             unitOptions = getUnitOptions(battle, CharacterType.ALLY);

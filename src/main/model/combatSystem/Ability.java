@@ -66,4 +66,9 @@ public abstract class Ability {
                 this.abilityType == Ability.AbilityType.DEFENSE_BUFF ||
                 this.abilityType == Ability.AbilityType.ITEM;
     }
+
+    public boolean isSelfBuff() {
+        return this.abilityName.equals("Defend") ||
+                this.abilityName.equals("Focus");
+    }
 }
