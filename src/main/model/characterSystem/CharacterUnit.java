@@ -19,6 +19,7 @@ public abstract class CharacterUnit {
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
     protected Map<Ability.AbilityType, Integer> statusEffectDuration;
+    protected int xAxisBoardPosition;
 
     public CharacterUnit(Job job, String name) {
         this.characterName = name;

@@ -1,6 +1,7 @@
 package main.model.scenarioSystem;
 
 import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.NPC;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +24,6 @@ public abstract class Scenario {
     public String getScenarioName() {
         return scenarioName;
     }
+
+    public abstract void setBoard(List<CharacterUnit> playableCharacter, List<NPC> enemies);
 }
