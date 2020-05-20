@@ -1,5 +1,6 @@
 package main.model.jobSystem;
 
+import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
@@ -40,5 +41,7 @@ public abstract class Job {
     }
 
     public abstract void setBaseStats(StatSheet statSheet);
+
+    public abstract XYChart.Series<Number, String> getJobStatData(StatSheet statSheet);
 
 }

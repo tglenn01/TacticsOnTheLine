@@ -1,7 +1,7 @@
 package main.model.scenarioSystem;
 
+import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.NPC;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import java.util.List;
 public abstract class Scenario {
     protected String scenarioName;
     protected List<CharacterUnit> listOfEnemies;
+    protected Board scenarioBoard;
 
     public Scenario() {
         listOfEnemies = new ArrayList<>();
@@ -25,5 +26,16 @@ public abstract class Scenario {
         return scenarioName;
     }
 
-    public abstract void setBoard(List<CharacterUnit> playableCharacter, List<NPC> enemies);
+    public void displayScenario(List<CharacterUnit> playableCharacter) {
+        setBoardLayout();
+        setAllyCharacters(playableCharacter);
+        setEnemies();
+        scenarioBoard.show();
+    }
+
+    protected abstract void setBoardLayout();
+
+    protected abstract void setAllyCharacters(List<CharacterUnit> playableCharacters);
+
+    protected abstract void setEnemies();
 }

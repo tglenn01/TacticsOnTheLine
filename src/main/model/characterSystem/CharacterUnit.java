@@ -3,6 +3,8 @@ package main.model.characterSystem;
 import main.exception.AttackMissedException;
 import main.exception.BattleIsOverException;
 import main.exception.UnitIsDeadException;
+import main.model.boardSystem.Board;
+import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
@@ -19,13 +21,15 @@ public abstract class CharacterUnit {
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
     protected Map<Ability.AbilityType, Integer> statusEffectDuration;
-    protected int xAxisBoardPosition;
+    protected BoardSpace boardSpace;
+    protected CharacterPortrait characterPortrait;
 
     public CharacterUnit(Job job, String name) {
         this.characterName = name;
         this.characterJob = job;
         this.characterStatSheet = new StatSheet(this.characterJob);
         this.isAlive = true;
+        this.characterPortrait = new CharacterPortrait();
         statusEffectDuration = new HashMap<>();
     }
 
@@ -83,6 +87,7 @@ public abstract class CharacterUnit {
 
     public void setJob(Job job) {
         this.characterJob = job;
+        System.out.println("Job was changed");
         characterStatSheet.updateStatSheetAccordingToJob(job);
     }
 
@@ -143,5 +148,20 @@ public abstract class CharacterUnit {
             getCharacterStatSheet().revertArmour();
         }
         statusEffectDuration.remove(entry);
+    }
+
+    public void setBoardSpace(int xValue, int yValue) {
+        this.boardSpace = Board.getInstance().getBoardSpace(xValue, yValue);
+        if (boardSpace.getOccupyingUnit() != this) {
+            Board.getInstance().setCharacterToBoardSpace(this, xValue, yValue);
+        }
+    }
+
+    public BoardSpace getBoardSpace() {
+        return this.boardSpace;
+    }
+
+    public CharacterPortrait getCharacterPortrait() {
+        return this.characterPortrait;
     }
 }

@@ -1,12 +1,15 @@
 package main.ui;
 
+import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.graphics.scenes.CharacterSelect;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.*;
 import main.model.scenarioSystem.Scenario;
+import main.model.scenarioSystem.ScenarioOne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,28 +18,22 @@ public class TacticBaseBattle {
     private static TacticBaseBattle tacticBaseBattle;
     private List<CharacterUnit> partyMemberList;
     private List<Job> availableJobs;
+    private Stage primaryStage;
 
     private TacticBaseBattle() {
         partyMemberList = new ArrayList<>();
         availableJobs = new ArrayList<>();
-        initializeGraphics();
         initializeJobs();
-        initializeCharacters();
         initializeItems();
-        Scenario scenario = initializeScenario();
-        new Battle(partyMemberList, scenario);
     }
 
     public static TacticBaseBattle getInstance() {
-        if (tacticBaseBattle == null) {
-            return new TacticBaseBattle();
-        } else return tacticBaseBattle;
+      if (tacticBaseBattle == null) {
+          tacticBaseBattle = new TacticBaseBattle();
+      }
+      return tacticBaseBattle;
     }
 
-    // show main menu screen
-    private void initializeGraphics() {
-
-    }
 
     private void initializeJobs() {
         availableJobs.add(new Archer());
@@ -46,11 +43,6 @@ public class TacticBaseBattle {
         availableJobs.add(new Lancer());
         availableJobs.add(new Noble());
         availableJobs.add(new Warrior());
-    }
-
-    // have the player choose the classes of the characters
-    private void initializeCharacters() {
-
     }
 
     private void initializeItems() {
@@ -63,9 +55,30 @@ public class TacticBaseBattle {
         consumables.addConsumableItem(manaPotion);
     }
 
-    // have the user pick a scenario
-    private Scenario initializeScenario() {
+    // have the player choose the classes of the characters
+    public void characterSelect() {
+        new CharacterSelect();
+    }
 
-        return null;
+    // have the user pick a scenario
+    public void scenarioSelect() {
+        Scenario scenario = new ScenarioOne();
+        scenario.displayScenario(partyMemberList);
+    }
+
+    public void startBattle(Scenario scenario) {
+        // start battle
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
+    }
+
+    public List<Job> getAvailableJobs() {
+        return this.availableJobs;
     }
 }
