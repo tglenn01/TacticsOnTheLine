@@ -32,10 +32,10 @@ public class Bard extends Job {
         statSheet.setMaxHealth(16);
         statSheet.setMaxMana(40);
         statSheet.setBaseStrength(2);
-        statSheet.setBaseMagic(2);
+        statSheet.setBaseMagic(6);
         statSheet.setBaseArmour(2);
-        statSheet.setBaseResistance(2);
-        statSheet.setBaseSpeed(2);
+        statSheet.setBaseResistance(8);
+        statSheet.setBaseSpeed(6);
         statSheet.setBaseDexterity(2);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }

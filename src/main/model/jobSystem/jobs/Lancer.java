@@ -34,7 +34,7 @@ public class Lancer extends Job {
         statSheet.setBaseStrength(14);
         statSheet.setBaseMagic(2);
         statSheet.setBaseArmour(8);
-        statSheet.setBaseResistance(8);
+        statSheet.setBaseResistance(3);
         statSheet.setBaseSpeed(10);
         statSheet.setBaseDexterity(10);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);

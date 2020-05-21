@@ -147,7 +147,6 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         statChart.setLegendVisible(false);
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setTickUnit(2);
         xAxis.setUpperBound(SCALE_REFERENCE);
 
         XYChart.Series<Number, String> series1;
