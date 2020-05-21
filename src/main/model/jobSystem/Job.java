@@ -44,7 +44,6 @@ public abstract class Job {
 
     public XYChart.Series<Number, String> getJobStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getMovement(), "Movement"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getResistance(), "Resistance"));
@@ -54,5 +53,47 @@ public abstract class Job {
         newSeries.getData().add(new XYChart.Data<>(statSheet.getMana(), "Mana"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getHealth(), "Health"));
         return newSeries;
+    }
+
+    public XYChart.Series<Number, String> getJobStatSimpleData(StatSheet statSheet) {
+        XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleDexterity(), "Dexterity"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleSpeed(), "Speed"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleResistance(), "Resistance"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleArmour(), "Armour"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleMagic(), "Magic"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleStrength(), "Strength"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleMana(), "Mana"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleHealth(), "Health"));
+        return newSeries;
+    }
+
+    public void getJobStatSimpleData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
+        for (XYChart.Data<Number, String> data : oldSeries.getData()) {
+            if (data.getYValue().equals("Health")) {
+                data.setXValue(statSheet.getSimpleHealth());
+            }
+            if (data.getYValue().equals("Mana")) {
+                data.setXValue(statSheet.getSimpleMana());
+            }
+            if (data.getYValue().equals("Strength")) {
+                data.setXValue(statSheet.getSimpleStrength());
+            }
+            if (data.getYValue().equals("Magic")) {
+                data.setXValue(statSheet.getSimpleMagic());
+            }
+            if (data.getYValue().equals("Armour")) {
+                data.setXValue(statSheet.getSimpleArmour());
+            }
+            if (data.getYValue().equals("Resistance")) {
+                data.setXValue(statSheet.getSimpleResistance());
+            }
+            if (data.getYValue().equals("Speed")) {
+                data.setXValue(statSheet.getSimpleSpeed());
+            }
+            if (data.getYValue().equals("Dexterity")) {
+                data.setXValue(statSheet.getSimpleDexterity());
+            }
+        }
     }
 }

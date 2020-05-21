@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static main.model.characterSystem.CharacterPortrait.ESTELLE_PORTRAIT;
+
 public abstract class CharacterUnit {
     protected enum CharacterType {ALLY, ENEMY};
     protected String characterName;
@@ -29,7 +31,7 @@ public abstract class CharacterUnit {
         this.characterJob = job;
         this.characterStatSheet = new StatSheet(this.characterJob);
         this.isAlive = true;
-        this.characterPortrait = new CharacterPortrait();
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
         statusEffectDuration = new HashMap<>();
     }
 
@@ -162,5 +164,9 @@ public abstract class CharacterUnit {
 
     public CharacterPortrait getCharacterPortrait() {
         return this.characterPortrait;
+    }
+
+    public void setCharacterPortrait(String fileLocation) {
+        this.characterPortrait = new CharacterPortrait(fileLocation);
     }
 }

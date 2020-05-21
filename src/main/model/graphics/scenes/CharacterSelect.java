@@ -24,35 +24,49 @@ import main.model.combatSystem.Ability;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobs.Noble;
+import main.model.jobSystem.jobs.*;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.model.characterSystem.CharacterPortrait.*;
+import static main.model.characterSystem.StatSheet.SCALE_REFERENCE;
+
 public class CharacterSelect extends DefaultScene implements EventHandler<ActionEvent> {
-    private CharacterUnit ally;
+    private final int PARTY_SIZE = 4;
+    private List<CharacterUnit> characterUnitList;
+    private CharacterUnit activeCharacter;
     private List<JobButton> jobButtonList;
     private Button advanceButton;
+    private Button previousButton;
     private BarChart<Number, String> statChart;
-
-
-/*    private final double portraitWidth = FINAL_WIDTH * (0.40);
-    private final double tableWidth = FINAL_WIDTH * (0.60);
-    private final double abilityWidth = FINAL_WIDTH;
-    private final double jobWidth = FINAL_WIDTH  * (0.80);
-    private final double nameWidth = FINAL_WIDTH * (0.60);
-    private final double portraitHeight = FINAL_HEIGHT * (0.80);
-    private final double tableHeight = FINAL_HEIGHT * (0.50);
-    private final double abilityHeight = FINAL_HEIGHT * (0.20);
-    private final double jobHeight = FINAL_HEIGHT * (0.20);
-    private final double nameHeight = FINAL_HEIGHT * (0.10);*/
-
+    private HBox abilities;
+    private ImageView portrait;
+    private Label characterName;
+    private int characterCursor = 0;
 
     public CharacterSelect() {
+        characterUnitList = new ArrayList<>();
         jobButtonList = new ArrayList<>();
-        ally = new PlayableCharacterUnit(new Noble(), "Graham");
+        initializeCharacterList();
         initializeGraphics();
+    }
+
+    private void initializeCharacterList() {
+        CharacterUnit joshua = new PlayableCharacterUnit(new Thief(), "Joshua");
+        joshua.setCharacterPortrait(JOSHUA_PORTRAIT);
+        CharacterUnit estelle = new PlayableCharacterUnit(new Lancer(), "Estelle");
+        estelle.setCharacterPortrait(ESTELLE_PORTRAIT);
+        CharacterUnit kloe = new PlayableCharacterUnit(new Cleric(), "Kloe");
+        kloe.setCharacterPortrait(KLOE_PORTRAIT);
+        CharacterUnit cassius = new PlayableCharacterUnit(new Noble(), "Cassius");
+        cassius.setCharacterPortrait(CASSIUS_PORTRAIT);
+        characterUnitList.add(joshua);
+        characterUnitList.add(estelle);
+        characterUnitList.add(kloe);
+        characterUnitList.add(cassius);
+        activeCharacter = characterUnitList.get(characterCursor);
     }
 
     protected void initializeGraphics() {
@@ -60,20 +74,24 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         //grid.setGridLinesVisible(true);
         grid.setPadding(new Insets(10, 10, 10, 10));
         HBox jobs = initializeJobButtons();
-        ImageView portrait = characterPortrait();
-        HBox abilities = abilityIcons();
-        BarChart<Number, String> statChart = statChart();
-        Label characterName = characterName();
-        Button advanceButton = advanceButton();
+        this.portrait = characterPortrait();
+        this.abilities = abilityIcons();
+        this.statChart = statChart();
+        this.characterName = characterName();
+        this.advanceButton = advanceButton();
+        this.previousButton = previousButton();
         grid.add(jobs, 0, 8, 10, 2);
         grid.add(portrait, 0, 0, 4, 8);
         grid.add(abilities, 4, 6, 6, 2);
         grid.add(statChart, 4, 2, 6, 4);
         grid.add(characterName, 4, 0, 6, 2);
         grid.add(advanceButton, 0, 9, 10, 2);
+        grid.add(previousButton, 0, 9, 10, 2);
         GridPane.setValignment(portrait, VPos.TOP);
         GridPane.setHalignment(advanceButton, HPos.RIGHT);
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
+        GridPane.setHalignment(previousButton, HPos.LEFT);
+        GridPane.setValignment(previousButton, VPos.BOTTOM);
         GridPane.setHalignment(abilities, HPos.CENTER);
         GridPane.setValignment(characterName, VPos.CENTER);
         Scene scene = new Scene(grid);
@@ -82,7 +100,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
 
     private HBox initializeJobButtons() {
         List<Job> jobList = TacticBaseBattle.getInstance().getAvailableJobs();
-       jobButtonList = new ArrayList<>();
+        jobButtonList = new ArrayList<>();
         for (Job job : jobList) {
             JobButton jobButton = new JobButton(job.getJobTitle(), job);
             jobButton.setOnAction(this);
@@ -99,7 +117,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private ImageView characterPortrait() {
-        CharacterPortrait characterPortrait = ally.getCharacterPortrait();
+        CharacterPortrait characterPortrait = activeCharacter.getCharacterPortrait();
         ImageView portrait = characterPortrait.getPortrait();
         portrait.setFitWidth(400);
         portrait.setFitHeight(550);
@@ -109,9 +127,11 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
 
     private HBox abilityIcons() {
         HBox hBox = new HBox();
-        for (Ability ability : ally.getCharacterJob().getJobAbilityList()) {
-            Label icon = new Label(ability.getAbilityName());
-            hBox.getChildren().add(icon);
+        for (Ability ability : activeCharacter.getCharacterJob().getJobAbilityList()) {
+            if (ability.isUnique()) {
+                Label icon = new Label(ability.getAbilityName());
+                hBox.getChildren().add(icon);
+            }
         }
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
@@ -122,13 +142,17 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     private BarChart<Number, String> statChart() {
         final NumberAxis xAxis = new NumberAxis();
         final CategoryAxis yAxis = new CategoryAxis();
-        xAxis.setLabel("Value");
         BarChart<Number,String> statChart = new BarChart<>(xAxis, yAxis);
+
         statChart.setLegendVisible(false);
+        xAxis.setAutoRanging(false);
+        xAxis.setLowerBound(0);
+        xAxis.setTickUnit(2);
+        xAxis.setUpperBound(SCALE_REFERENCE);
 
         XYChart.Series<Number, String> series1;
-        StatSheet statSheet = ally.getCharacterStatSheet();
-        series1 = ally.getCharacterJob().getJobStatData(statSheet);
+        StatSheet statSheet = activeCharacter.getCharacterStatSheet();
+        series1 = activeCharacter.getCharacterJob().getJobStatSimpleData(statSheet);
         statChart.getData().add(series1);
         statChart.setPrefSize(600, 360);
         this.statChart = statChart;
@@ -137,7 +161,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private Label characterName() {
-        Label characterName = new Label(ally.getCharacterName());
+        Label characterName = new Label(activeCharacter.getCharacterName());
         characterName.setMaxSize(600, 120);
         characterName.setMinSize(600, 120);
         characterName.setAlignment(Pos.CENTER);
@@ -151,20 +175,53 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         return advanceButton;
     }
 
+    private Button previousButton() {
+        this.previousButton = new Button("Previous");
+        previousButton.setAlignment(Pos.BOTTOM_RIGHT);
+        previousButton.setOnAction(this);
+        return previousButton;
+    }
+
     @Override
     public void handle(ActionEvent event) {
         for (JobButton jobButton : jobButtonList) {
             if (event.getSource() == jobButton) {
-                ally.setJob(jobButton.getJob());
-                XYChart.Series<Number, String> graph = ally.getCharacterJob().getJobStatData(ally.getCharacterStatSheet());
-                statChart.setAnimated(false);
-                statChart.getData().clear();
-                statChart.setAnimated(true);
-                statChart.getData().add(graph);
+                activeCharacter.setJob(jobButton.getJob());
+                updateData();
+            }
+        }
+        if (event.getSource() == previousButton) {
+            if (characterCursor == 0) new MainMenu();
+            else {
+                characterCursor--;
+                nextCharacter(characterCursor);
             }
         }
         if (event.getSource() == advanceButton) {
-            // advance to next character or choose scenario
+
+            if (characterCursor == (PARTY_SIZE - 1)) new ScenarioSelectScreen();
+            else {
+                characterCursor++;
+                nextCharacter(characterCursor);
+            }
         }
+    }
+
+    private void nextCharacter(int newCharacter) {
+        activeCharacter = characterUnitList.get(newCharacter);
+        updateData();
+        characterName.setText(activeCharacter.getCharacterName());
+        portrait.setImage(activeCharacter.getCharacterPortrait().getImage());
+    }
+
+    private void updateData() {
+        //XYChart.Series<Number, String> graph = activeCharacter.getCharacterJob().getJobStatSimpleData(activeCharacter.getCharacterStatSheet());
+       // statChart.setAnimated(false);
+        //statChart.getData().clear();
+       // statChart.setAnimated(true);
+        //statChart.getData().add(graph);
+        activeCharacter.getCharacterJob().getJobStatSimpleData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
+        abilities.getChildren().clear();
+        abilities.getChildren().add(abilityIcons());
     }
 }

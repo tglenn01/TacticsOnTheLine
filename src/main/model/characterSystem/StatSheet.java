@@ -6,22 +6,31 @@ import main.model.jobSystem.Job;
 public class StatSheet implements ResourceReplenishBonus {
     public static int BASE_MOVEMENT = 4;
     private int health;
-    private int maxHealth;
     private int mana;
-    private int maxMana;
     private int strength;
-    private int baseStrength;
     private int magic;
-    private int baseMagic;
     private int armour;
-    private int baseArmour;
     private int resistance;
-    private int baseResistance;
     private int speed;
-    private int baseSpeed;
     private int dexterity;
-    private int baseDexterity;
     private int movement;
+    private int maxHealth;
+    private int maxMana;
+    private int baseStrength;
+    private int baseMagic;
+    private int baseArmour;
+    private int baseResistance;
+    private int baseSpeed;
+    private int baseDexterity;
+    private static double HIGHEST_HEALTH;
+    private static double HIGHEST_MANA;
+    private static double HIGHEST_STRENGTH;
+    private static double HIGHEST_MAGIC;
+    private static double HIGHEST_ARMOUR;
+    private static double HIGHEST_RESISTANCE;
+    private static double HIGHEST_SPEED;
+    private static double HIGHEST_DEXTERITY;
+    public static double SCALE_REFERENCE = 10.00;
 
 
     public StatSheet(Job job) {
@@ -80,6 +89,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
+        if (maxHealth > HIGHEST_HEALTH) HIGHEST_HEALTH = maxHealth;
         setHealth(maxHealth);
     }
 
@@ -89,6 +99,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
+        if (maxMana > HIGHEST_MANA) HIGHEST_MANA = maxMana;
         setMana(maxMana);
     }
 
@@ -98,6 +109,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
+        if (baseStrength > HIGHEST_STRENGTH) HIGHEST_STRENGTH = baseStrength;
         setStrength(baseStrength);
     }
 
@@ -107,6 +119,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseMagic(int baseMagic) {
         this.baseMagic = baseMagic;
+        if (baseMagic > HIGHEST_MAGIC) HIGHEST_MAGIC = baseMagic;
         setMagic(baseMagic);
     }
 
@@ -116,6 +129,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseArmour(int baseArmour) {
         this.baseArmour = baseArmour;
+        if (baseArmour > HIGHEST_ARMOUR) HIGHEST_ARMOUR = baseArmour;
         setArmour(baseArmour);
     }
 
@@ -125,6 +139,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseResistance(int baseResistance) {
         this.baseResistance = baseResistance;
+        if (baseResistance > HIGHEST_RESISTANCE) HIGHEST_RESISTANCE = baseResistance;
         setResistance(baseResistance);
     }
 
@@ -134,6 +149,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseSpeed(int baseSpeed) {
         this.baseSpeed = baseSpeed;
+        if (baseSpeed > HIGHEST_SPEED) HIGHEST_SPEED = baseSpeed;
         setSpeed(baseSpeed);
     }
 
@@ -143,6 +159,7 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setBaseDexterity(int baseDexterity) {
         this.baseDexterity = baseDexterity;
+        if (baseDexterity > HIGHEST_DEXTERITY) HIGHEST_DEXTERITY = baseDexterity;
         setDexterity(baseDexterity);
     }
 
@@ -179,5 +196,38 @@ public class StatSheet implements ResourceReplenishBonus {
     @Override
     public int getManaGainBonus() {
         return getMagic();
+    }
+
+    // SCALE_REFERENCE * (current / max)
+    public double getSimpleHealth() {
+        return SCALE_REFERENCE * (maxHealth / HIGHEST_HEALTH);
+    }
+
+    public double getSimpleMana() {
+        return SCALE_REFERENCE * (maxMana / HIGHEST_MANA);
+    }
+
+    public double getSimpleStrength() {
+        return SCALE_REFERENCE * (baseStrength / HIGHEST_STRENGTH);
+    }
+
+    public double getSimpleMagic() {
+        return SCALE_REFERENCE * (baseMagic / HIGHEST_MAGIC);
+    }
+
+    public double getSimpleArmour() {
+        return SCALE_REFERENCE * (baseArmour / HIGHEST_ARMOUR);
+    }
+
+    public double getSimpleResistance() {
+        return SCALE_REFERENCE * (baseResistance / HIGHEST_RESISTANCE);
+    }
+
+    public double getSimpleSpeed() {
+        return SCALE_REFERENCE * (baseSpeed / HIGHEST_SPEED);
+    }
+
+    public double getSimpleDexterity() {
+        return SCALE_REFERENCE * (baseDexterity / HIGHEST_DEXTERITY);
     }
 }

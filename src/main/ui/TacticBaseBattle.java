@@ -42,6 +42,7 @@ public class TacticBaseBattle {
         availableJobs.add(new Cleric());
         availableJobs.add(new Lancer());
         availableJobs.add(new Noble());
+        availableJobs.add(new Thief());
         availableJobs.add(new Warrior());
     }
 

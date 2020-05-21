@@ -71,4 +71,10 @@ public abstract class Ability {
         return this.abilityName.equals("Defend") ||
                 this.abilityName.equals("Focus");
     }
+
+    public boolean isUnique() {
+        return !this.abilityName.equals("Attack") &&
+                !this.abilityName.equals("Defend") &&
+                !this.abilityName.equals("Item");
+    }
 }
