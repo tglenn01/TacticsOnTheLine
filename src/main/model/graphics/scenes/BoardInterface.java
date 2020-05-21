@@ -31,7 +31,7 @@ public class BoardInterface extends DefaultScene {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(boardLayout);
         //boardLayout.setMaxSize(board.getBoardWidth(), board.getBoardHeight());
-        Scene newScene = new Scene(scrollPane, MAX_WIDTH, MAX_HEIGHT);
+        Scene newScene = new Scene(scrollPane, FINAL_WIDTH, FINAL_HEIGHT);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(newScene);
     }
 }

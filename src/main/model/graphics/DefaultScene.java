@@ -1,8 +1,8 @@
 package main.model.graphics;
 
 public abstract class DefaultScene {
-    public static int MAX_WIDTH = 1200;
-    public static int MAX_HEIGHT = 800;
+    public final static int FINAL_WIDTH = 1040;
+    public final static int FINAL_HEIGHT = 820;
 
     protected abstract void initializeGraphics();
 }

@@ -2,8 +2,10 @@ package main.model.graphics.scenes;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -32,7 +34,19 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     private CharacterUnit ally;
     private List<JobButton> jobButtonList;
     private Button advanceButton;
-    private BarChart<Number, String> bc;
+    private BarChart<Number, String> statChart;
+
+
+/*    private final double portraitWidth = FINAL_WIDTH * (0.40);
+    private final double tableWidth = FINAL_WIDTH * (0.60);
+    private final double abilityWidth = FINAL_WIDTH;
+    private final double jobWidth = FINAL_WIDTH  * (0.80);
+    private final double nameWidth = FINAL_WIDTH * (0.60);
+    private final double portraitHeight = FINAL_HEIGHT * (0.80);
+    private final double tableHeight = FINAL_HEIGHT * (0.50);
+    private final double abilityHeight = FINAL_HEIGHT * (0.20);
+    private final double jobHeight = FINAL_HEIGHT * (0.20);
+    private final double nameHeight = FINAL_HEIGHT * (0.10);*/
 
 
     public CharacterSelect() {
@@ -42,22 +56,27 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     protected void initializeGraphics() {
-        GridPane characterSelectScreen = new GridPane();
-        characterSelectScreen.setGridLinesVisible(true);
-        characterSelectScreen.setPadding(new Insets(10, 10, 10, 10));
+        GridPane grid = new GridPane();
+        //grid.setGridLinesVisible(true);
+        grid.setPadding(new Insets(10, 10, 10, 10));
         HBox jobs = initializeJobButtons();
-        HBox portrait = characterPortrait();
+        ImageView portrait = characterPortrait();
         HBox abilities = abilityIcons();
         BarChart<Number, String> statChart = statChart();
-        HBox characterName = characterName();
+        Label characterName = characterName();
         Button advanceButton = advanceButton();
-        characterSelectScreen.add(jobs, 1, 5, 4, 1);
-        characterSelectScreen.add(portrait, 0, 0, 2, 3);
-        characterSelectScreen.add(abilities, 2, 2, 3, 1);
-        characterSelectScreen.add(statChart, 2, 1, 3, 1);
-        characterSelectScreen.add(characterName, 4, 0, 1, 1);
-        characterSelectScreen.add(advanceButton, 5, 5, 1, 1);
-        Scene scene = new Scene(characterSelectScreen, MAX_WIDTH, MAX_HEIGHT);
+        grid.add(jobs, 0, 8, 10, 2);
+        grid.add(portrait, 0, 0, 4, 8);
+        grid.add(abilities, 4, 6, 6, 2);
+        grid.add(statChart, 4, 2, 6, 4);
+        grid.add(characterName, 4, 0, 6, 2);
+        grid.add(advanceButton, 0, 9, 10, 2);
+        GridPane.setValignment(portrait, VPos.TOP);
+        GridPane.setHalignment(advanceButton, HPos.RIGHT);
+        GridPane.setValignment(advanceButton, VPos.BOTTOM);
+        GridPane.setHalignment(abilities, HPos.CENTER);
+        GridPane.setValignment(characterName, VPos.CENTER);
+        Scene scene = new Scene(grid);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 
@@ -72,35 +91,31 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         }
 
         HBox hBox = new HBox();
-        //hBox.setPrefSize(1000, 250);
         hBox.setSpacing(10);
-        hBox.setPrefSize(1000, 200);
-        hBox.getChildren().addAll(jobButtonList);
         hBox.setAlignment(Pos.CENTER);
+        hBox.setMinSize(1000, 160);
+        hBox.getChildren().addAll(jobButtonList);
         return hBox;
     }
 
-    private HBox characterPortrait() {
+    private ImageView characterPortrait() {
         CharacterPortrait characterPortrait = ally.getCharacterPortrait();
         ImageView portrait = characterPortrait.getPortrait();
-        portrait.setFitHeight(500);
         portrait.setFitWidth(400);
-        //portrait.preserveRatioProperty();
-        HBox hBox = new HBox();
-        hBox.getChildren().add(portrait);
-        return hBox;
+        portrait.setFitHeight(550);
+        //portrait.setPreserveRatio(true);
+        return portrait;
     }
 
     private HBox abilityIcons() {
         HBox hBox = new HBox();
         for (Ability ability : ally.getCharacterJob().getJobAbilityList()) {
             Label icon = new Label(ability.getAbilityName());
-           // icon.setPrefSize();
             hBox.getChildren().add(icon);
         }
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
-       // hBox.setPrefSize(500, 250);
+        hBox.setPrefSize(600, 120);
         return hBox;
     }
 
@@ -108,32 +123,31 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         final NumberAxis xAxis = new NumberAxis();
         final CategoryAxis yAxis = new CategoryAxis();
         xAxis.setLabel("Value");
-        yAxis.setLabel("Stat");
-        BarChart<Number,String> bc = new BarChart<>(xAxis, yAxis);
-        bc.setLegendVisible(false);
+        BarChart<Number,String> statChart = new BarChart<>(xAxis, yAxis);
+        statChart.setLegendVisible(false);
 
-        XYChart.Series<Number, String> series1 = new XYChart.Series<>();
+        XYChart.Series<Number, String> series1;
         StatSheet statSheet = ally.getCharacterStatSheet();
         series1 = ally.getCharacterJob().getJobStatData(statSheet);
-        bc.getData().add(series1);
-        //bc.setPrefSize(500, 250);
-        this.bc = bc;
-        return bc;
+        statChart.getData().add(series1);
+        statChart.setPrefSize(600, 360);
+        this.statChart = statChart;
+
+        return statChart;
     }
 
-    private HBox characterName() {
-        HBox hBox = new HBox();
+    private Label characterName() {
         Label characterName = new Label(ally.getCharacterName());
-        hBox.getChildren().add(characterName);
-        hBox.setAlignment(Pos.CENTER);
-       // hBox.setPrefSize(375, 250);
-        return hBox;
+        characterName.setMaxSize(600, 120);
+        characterName.setMinSize(600, 120);
+        characterName.setAlignment(Pos.CENTER);
+        return characterName;
     }
 
     private Button advanceButton() {
         this.advanceButton = new Button("Advance");
-        advanceButton.setOnAction(this);
         advanceButton.setAlignment(Pos.BOTTOM_RIGHT);
+        advanceButton.setOnAction(this);
         return advanceButton;
     }
 
@@ -143,10 +157,10 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
             if (event.getSource() == jobButton) {
                 ally.setJob(jobButton.getJob());
                 XYChart.Series<Number, String> graph = ally.getCharacterJob().getJobStatData(ally.getCharacterStatSheet());
-                bc.setAnimated(false);
-                bc.getData().clear();
-                bc.setAnimated(true);
-                bc.getData().add(graph);
+                statChart.setAnimated(false);
+                statChart.getData().clear();
+                statChart.setAnimated(true);
+                statChart.getData().add(graph);
             }
         }
         if (event.getSource() == advanceButton) {

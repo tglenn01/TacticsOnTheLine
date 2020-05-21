@@ -1,10 +1,9 @@
 package main.model.jobSystem.jobs;
 
-import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatSheet;
-import main.model.jobSystem.Job;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
+import main.model.jobSystem.Job;
 
 // default/base class
 public class Noble extends Job {
@@ -42,20 +41,5 @@ public class Noble extends Job {
         statSheet.setBaseSpeed(8);
         statSheet.setBaseDexterity(8);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
-    }
-
-    @Override
-    public XYChart.Series<Number, String> getJobStatData(StatSheet statSheet) {
-        XYChart.Series<Number, String> series1 = new XYChart.Series<>();
-        series1.getData().add(new XYChart.Data<>(statSheet.getHealth(), "Health"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getMana(), "Mana"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getStrength(), "Strength"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getMagic(), "Magic"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getArmour(), "Armour"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getResistance(), "Resistance"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
-        series1.getData().add(new XYChart.Data<>(statSheet.getMovement(), "Movement"));
-        return series1;
     }
 }

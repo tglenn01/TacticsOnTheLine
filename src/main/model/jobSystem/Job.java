@@ -42,6 +42,17 @@ public abstract class Job {
 
     public abstract void setBaseStats(StatSheet statSheet);
 
-    public abstract XYChart.Series<Number, String> getJobStatData(StatSheet statSheet);
-
+    public XYChart.Series<Number, String> getJobStatData(StatSheet statSheet) {
+        XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getMovement(), "Movement"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getResistance(), "Resistance"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getArmour(), "Armour"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getMagic(), "Magic"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getStrength(), "Strength"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getMana(), "Mana"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getHealth(), "Health"));
+        return newSeries;
+    }
 }

@@ -87,7 +87,6 @@ public abstract class CharacterUnit {
 
     public void setJob(Job job) {
         this.characterJob = job;
-        System.out.println("Job was changed");
         characterStatSheet.updateStatSheetAccordingToJob(job);
     }
 
