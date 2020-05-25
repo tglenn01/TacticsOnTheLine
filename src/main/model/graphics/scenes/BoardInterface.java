@@ -1,9 +1,7 @@
 package main.model.graphics.scenes;
 
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Rectangle;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.graphics.DefaultScene;
@@ -21,17 +19,18 @@ public class BoardInterface extends DefaultScene {
         GridPane boardLayout = new GridPane();
         for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
-                Rectangle space = boardSpace.getSpace();
                 int xCoordinate = boardSpace.getXCoordinate();
                 int yCoordinate = boardSpace.getYCoordinate();
-                boardLayout.add(space, xCoordinate, yCoordinate, 1, 1);
+                boardLayout.add(boardSpace.getBoardSpace(), xCoordinate, yCoordinate, 1, 1);
             }
         }
-        boardLayout.setMaxSize(board.getBoardWidth(), board.getBoardHeight());
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(boardLayout);
-        //boardLayout.setMaxSize(board.getBoardWidth(), board.getBoardHeight());
-        Scene newScene = new Scene(scrollPane, FINAL_WIDTH, FINAL_HEIGHT);
+        //ScrollPane scrollPane = new ScrollPane();
+        //scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        //scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        //scrollPane.setFitToWidth(true);
+        //scrollPane.setFitToHeight(true);
+        //scrollPane.setContent(boardLayout);
+        Scene newScene = new Scene(boardLayout);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(newScene);
     }
 }

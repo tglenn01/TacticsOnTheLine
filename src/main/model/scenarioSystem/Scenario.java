@@ -2,6 +2,7 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
+import main.model.graphics.scenes.BoardInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public abstract class Scenario {
         setBoardLayout();
         setAllyCharacters(playableCharacter);
         setEnemies();
-        scenarioBoard.show();
+        new BoardInterface(this.scenarioBoard);
     }
 
     protected abstract void setBoardLayout();

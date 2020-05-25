@@ -20,11 +20,14 @@ import main.model.characterSystem.CharacterPortrait;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.Ability;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
+import main.model.graphics.icons.AbilityIcons;
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobs.*;
+import main.model.jobSystem.jobs.Cleric;
+import main.model.jobSystem.jobs.Lancer;
+import main.model.jobSystem.jobs.Noble;
+import main.model.jobSystem.jobs.Thief;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -35,19 +38,19 @@ import static main.model.characterSystem.StatSheet.SCALE_REFERENCE;
 
 public class CharacterSelect extends DefaultScene implements EventHandler<ActionEvent> {
     private final int PARTY_SIZE = 4;
-    private List<CharacterUnit> characterUnitList;
+    private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
     private List<JobButton> jobButtonList;
     private Button advanceButton;
     private Button previousButton;
     private BarChart<Number, String> statChart;
-    private HBox abilities;
+    private AbilityIcons abilities;
     private ImageView portrait;
     private Label characterName;
     private int characterCursor = 0;
 
     public CharacterSelect() {
-        characterUnitList = new ArrayList<>();
+        partyMemberList = new ArrayList<>();
         jobButtonList = new ArrayList<>();
         initializeCharacterList();
         initializeGraphics();
@@ -62,11 +65,11 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         kloe.setCharacterPortrait(KLOE_PORTRAIT);
         CharacterUnit cassius = new PlayableCharacterUnit(new Noble(), "Cassius");
         cassius.setCharacterPortrait(CASSIUS_PORTRAIT);
-        characterUnitList.add(joshua);
-        characterUnitList.add(estelle);
-        characterUnitList.add(kloe);
-        characterUnitList.add(cassius);
-        activeCharacter = characterUnitList.get(characterCursor);
+        partyMemberList.add(joshua);
+        partyMemberList.add(estelle);
+        partyMemberList.add(kloe);
+        partyMemberList.add(cassius);
+        activeCharacter = partyMemberList.get(characterCursor);
     }
 
     protected void initializeGraphics() {
@@ -125,18 +128,9 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         return portrait;
     }
 
-    private HBox abilityIcons() {
-        HBox hBox = new HBox();
-        for (Ability ability : activeCharacter.getCharacterJob().getJobAbilityList()) {
-            if (ability.isUnique()) {
-                Label icon = new Label(ability.getAbilityName());
-                hBox.getChildren().add(icon);
-            }
-        }
-        hBox.setSpacing(10);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.setPrefSize(600, 120);
-        return hBox;
+    private AbilityIcons abilityIcons() {
+        AbilityIcons icons = new AbilityIcons(activeCharacter.getCharacterJob().getJobAbilityList());
+        return icons;
     }
 
     private BarChart<Number, String> statChart() {
@@ -197,8 +191,10 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
             }
         }
         if (event.getSource() == advanceButton) {
-
-            if (characterCursor == (PARTY_SIZE - 1)) new ScenarioSelectScreen();
+            if (characterCursor == (PARTY_SIZE - 1)) {
+                TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
+                new ScenarioSelectScreen();
+            }
             else {
                 characterCursor++;
                 nextCharacter(characterCursor);
@@ -207,18 +203,13 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private void nextCharacter(int newCharacter) {
-        activeCharacter = characterUnitList.get(newCharacter);
+        activeCharacter = partyMemberList.get(newCharacter);
         updateData();
         characterName.setText(activeCharacter.getCharacterName());
         portrait.setImage(activeCharacter.getCharacterPortrait().getImage());
     }
 
     private void updateData() {
-        //XYChart.Series<Number, String> graph = activeCharacter.getCharacterJob().getJobStatSimpleData(activeCharacter.getCharacterStatSheet());
-       // statChart.setAnimated(false);
-        //statChart.getData().clear();
-       // statChart.setAnimated(true);
-        //statChart.getData().add(graph);
         activeCharacter.getCharacterJob().getJobStatSimpleData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
         abilities.getChildren().clear();
         abilities.getChildren().add(abilityIcons());

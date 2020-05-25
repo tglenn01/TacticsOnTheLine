@@ -1,35 +1,29 @@
 package main.model.boardSystem;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.graphics.scenes.BoardInterface;
 
 public class Board {
-    private static Board board;
-    private int boardWidth;
-    private int boardHeight;
+    private double boardWidth;
+    private double boardHeight;
     private BoardSpace[][] boardSpaces;
 
     public Board(int boardWidth, int boardHeight) {
-        this.boardWidth = boardWidth * BoardSpace.BOARD_SPACE_SIZE;
-        this.boardHeight = boardHeight * BoardSpace.BOARD_SPACE_SIZE;
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        boardSpaces = new BoardSpace[boardWidth][boardHeight];
         createBoardGraphics();
-        board = this;
-    }
-
-    public static Board getInstance() {
-        return board;
     }
 
     private void createBoardGraphics() {
         for (int xValue = 0; xValue < boardWidth; xValue++) {
             for (int yValue = 0; yValue < boardHeight; yValue++) {
-                boardSpaces[xValue][yValue] = new BoardSpace(xValue, yValue);
+                boardSpaces[xValue][yValue] = new BoardSpace(BoardSpace.LandType.GRASS, xValue, yValue);
             }
         }
     }
 
     public BoardSpace getBoardSpace(int xValue, int yValue) {
-        return boardSpaces[xValue][yValue];
+        return this.boardSpaces[xValue][yValue];
     }
 
     // get the boardSpace from the unit then use the unitMovement to display valid spaces within that range.
@@ -46,15 +40,11 @@ public class Board {
         chosenBoardSpace.setOccupyingUnit(unit);
     }
 
-    public void show() {
-        new BoardInterface(this);
-    }
-
-    public int getBoardWidth() {
+    public double getBoardWidth() {
         return this.boardWidth;
     }
 
-    public int getBoardHeight() {
+    public double getBoardHeight() {
         return this.boardHeight;
     }
 }

@@ -19,12 +19,12 @@ public class Lancer extends Job {
         Ability overwhelm = new StatusEffectAbility("Overwhelm", 20, 2, 4,
                 3, Ability.AbilityType.DEFENSE_DEBUFF,
                 "Scare all neighbouring enemies, weakening their defense");
-        Ability weakpoint = new PhysicalAbility("Weakpoint", 6, 1, 1,
+        Ability weakPoint = new PhysicalAbility("Weakpoint", 6, 1, 1,
                 Ability.AbilityType.DAMAGE,16, .80,
                 "Strike an Enemies weakpoint with the blunt of your spear");
         jobAbilityList.add(lunge);
         jobAbilityList.add(overwhelm);
-        jobAbilityList.add(weakpoint);
+        jobAbilityList.add(weakPoint);
     }
 
     @Override

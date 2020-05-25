@@ -1,19 +1,18 @@
 package main.model.boardSystem;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.Pane;
+import main.model.boardSystem.tiles.Tile;
 import main.model.characterSystem.CharacterUnit;
 
-public class BoardSpace {
-    public enum LandType {GRASS, WATER};
-    public static int BOARD_SPACE_SIZE = 50;
+public class BoardSpace extends Pane {
+    private Tile landType;
     private CharacterUnit occupyingUnit;
     private int xCoordinate;
     private int yCoordinate;
-    private LandType landType;
+    public final static int BOARD_SPACE_SIZE = 50;
 
-    public BoardSpace(int xCoordinate, int yCoordinate) {
+    public BoardSpace(Tile landType, int xCoordinate, int yCoordinate) {
+        setLandType(landType);
         setXValue(xCoordinate);
         setYValue(yCoordinate);
     }
@@ -28,8 +27,9 @@ public class BoardSpace {
 
     public void setOccupyingUnit(CharacterUnit occupyingUnit) {
         this.occupyingUnit = occupyingUnit;
+        this.getChildren().add(occupyingUnit.getSprite());
         if (occupyingUnit.getBoardSpace() != this) {
-            occupyingUnit.setBoardSpace(this.xCoordinate, this.yCoordinate);
+            occupyingUnit.setBoardSpace(this);
         }
     }
 
@@ -37,7 +37,7 @@ public class BoardSpace {
         return this.occupyingUnit;
     }
 
-    public void setLandType(LandType landType) {
+    public void setLandType(Tile landType) {
         this.landType = landType;
     }
 
@@ -53,17 +53,7 @@ public class BoardSpace {
         return this.yCoordinate;
     }
 
-    public Rectangle getSpace() {
-        Rectangle space = new Rectangle();
-        if (this.landType == LandType.GRASS) {
-            Paint green = new Color(0, 200, 0, 100.00);
-            space.setFill(green);
-        } if (this.landType == LandType.WATER) {
-            Paint blue = new Color(0, 0, 200, 100.00);
-            space.setFill(blue);
-        }
-        space.setHeight(BOARD_SPACE_SIZE);
-        space.setWidth(BOARD_SPACE_SIZE);
-        return space;
+    public BoardSpace getBoardSpace() {
+        return this;
     }
 }

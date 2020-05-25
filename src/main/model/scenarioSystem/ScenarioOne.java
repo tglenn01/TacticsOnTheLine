@@ -8,6 +8,9 @@ import main.model.jobSystem.jobs.Noble;
 
 import java.util.List;
 
+import static main.model.graphics.DefaultScene.FINAL_HEIGHT;
+import static main.model.graphics.DefaultScene.FINAL_WIDTH;
+
 public class ScenarioOne extends Scenario {
 
     public ScenarioOne() {
@@ -21,10 +24,12 @@ public class ScenarioOne extends Scenario {
 
     @Override
     protected void setBoardLayout() {
-        this.scenarioBoard = new Board(10, 10);
+        this.scenarioBoard = new Board(8, 8);
         for (BoardSpace[] boardSpaceArray : scenarioBoard.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 boardSpace.setLandType(BoardSpace.LandType.GRASS);
+                boardSpace.setWidth(FINAL_WIDTH / scenarioBoard.getBoardWidth());
+                boardSpace.setHeight(FINAL_HEIGHT / scenarioBoard.getBoardHeight());
             }
         }
         scenarioBoard.getBoardSpace(5, 5).setLandType(BoardSpace.LandType.WATER);
@@ -43,7 +48,7 @@ public class ScenarioOne extends Scenario {
     protected void setEnemies() {
         int i = 0;
         for (CharacterUnit enemy : listOfEnemies) {
-            scenarioBoard.setCharacterToBoardSpace(enemy, i, 0);
+            scenarioBoard.setCharacterToBoardSpace(enemy, i, 3);
             i++;
         }
     }

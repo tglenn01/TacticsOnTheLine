@@ -1,9 +1,9 @@
 package main.model.characterSystem;
 
+import javafx.scene.image.ImageView;
 import main.exception.AttackMissedException;
 import main.exception.BattleIsOverException;
 import main.exception.UnitIsDeadException;
-import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
@@ -25,6 +25,7 @@ public abstract class CharacterUnit {
     protected Map<Ability.AbilityType, Integer> statusEffectDuration;
     protected BoardSpace boardSpace;
     protected CharacterPortrait characterPortrait;
+    protected ImageView sprite;
 
     public CharacterUnit(Job job, String name) {
         this.characterName = name;
@@ -151,10 +152,10 @@ public abstract class CharacterUnit {
         statusEffectDuration.remove(entry);
     }
 
-    public void setBoardSpace(int xValue, int yValue) {
-        this.boardSpace = Board.getInstance().getBoardSpace(xValue, yValue);
+    public void setBoardSpace(BoardSpace boardSpace) {
+        this.boardSpace = boardSpace;
         if (boardSpace.getOccupyingUnit() != this) {
-            Board.getInstance().setCharacterToBoardSpace(this, xValue, yValue);
+            boardSpace.setOccupyingUnit(this);
         }
     }
 
@@ -168,5 +169,9 @@ public abstract class CharacterUnit {
 
     public void setCharacterPortrait(String fileLocation) {
         this.characterPortrait = new CharacterPortrait(fileLocation);
+    }
+
+    public ImageView getSprite() {
+        return this.sprite;
     }
 }

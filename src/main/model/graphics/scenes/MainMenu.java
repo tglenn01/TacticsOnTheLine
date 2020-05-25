@@ -27,7 +27,7 @@ public class MainMenu extends DefaultScene implements EventHandler<ActionEvent> 
         layout.getChildren().addAll(tacticOnTheLine, chooseCharacterButton);
         layout.setAlignment(Pos.CENTER_LEFT);
         layout.setSpacing(10.00);
-        Scene scene = new Scene(layout, 500, 500);
+        Scene scene = new Scene(layout, FINAL_WIDTH, FINAL_HEIGHT);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 

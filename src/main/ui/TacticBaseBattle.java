@@ -68,11 +68,15 @@ public class TacticBaseBattle {
     }
 
     public void startBattle(Scenario scenario) {
-        // start battle
+        scenario.displayScenario(partyMemberList);
     }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    public void setPartyMemberList(List<CharacterUnit> partyMemberList) {
+        this.partyMemberList = partyMemberList;
     }
 
     public Stage getPrimaryStage() {
