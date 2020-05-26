@@ -3,9 +3,9 @@ package main.model.jobSystem;
 import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
+import main.model.itemSystem.ConsumableItemInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,7 @@ public abstract class Job {
                 "Attack an enemy");
         Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
                 Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
-        Ability item = new ConsumableAbility("Item", 0, 1, 1,
-                Ability.AbilityType.ITEM, "Use an item on an ally");
+        Ability item = ConsumableItemInventory.getInstance().getItemAbility();
         jobAbilityList.add(attack);
         jobAbilityList.add(defend);
         jobAbilityList.add(item);

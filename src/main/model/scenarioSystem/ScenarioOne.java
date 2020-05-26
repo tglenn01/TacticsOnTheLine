@@ -2,14 +2,15 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
+import main.model.boardSystem.tiles.GrassTile;
+import main.model.boardSystem.tiles.WaterTile;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.jobSystem.jobs.Noble;
 
 import java.util.List;
 
-import static main.model.graphics.DefaultScene.FINAL_HEIGHT;
-import static main.model.graphics.DefaultScene.FINAL_WIDTH;
+import static main.model.boardSystem.BoardSpace.BOARD_SPACE_SIZE;
 
 public class ScenarioOne extends Scenario {
 
@@ -24,15 +25,15 @@ public class ScenarioOne extends Scenario {
 
     @Override
     protected void setBoardLayout() {
-        this.scenarioBoard = new Board(8, 8);
+        this.scenarioBoard = new Board(10, 10);
         for (BoardSpace[] boardSpaceArray : scenarioBoard.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
-                boardSpace.setLandType(BoardSpace.LandType.GRASS);
-                boardSpace.setWidth(FINAL_WIDTH / scenarioBoard.getBoardWidth());
-                boardSpace.setHeight(FINAL_HEIGHT / scenarioBoard.getBoardHeight());
+                boardSpace.setLandType(new GrassTile());
+                boardSpace.setMaxSize(BOARD_SPACE_SIZE, BOARD_SPACE_SIZE);
+                boardSpace.setMinSize(BOARD_SPACE_SIZE, BOARD_SPACE_SIZE);
             }
         }
-        scenarioBoard.getBoardSpace(5, 5).setLandType(BoardSpace.LandType.WATER);
+        scenarioBoard.getBoardSpace(5, 5).setLandType(new WaterTile());
     }
 
     @Override
@@ -46,9 +47,10 @@ public class ScenarioOne extends Scenario {
 
     @Override
     protected void setEnemies() {
-        int i = 0;
+        int i = 1;
         for (CharacterUnit enemy : listOfEnemies) {
-            scenarioBoard.setCharacterToBoardSpace(enemy, i, 3);
+            scenarioBoard.setCharacterToBoardSpace(enemy, (int) (scenarioBoard.getBoardWidth() - i),
+                    (int) (scenarioBoard.getBoardHeight() - i));
             i++;
         }
     }

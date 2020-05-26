@@ -1,15 +1,16 @@
 package main.ui;
 
 import javafx.stage.Stage;
+import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.graphics.scenes.CharacterSelect;
+import main.model.graphics.scenes.ScenarioSelectScreen;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.*;
 import main.model.scenarioSystem.Scenario;
-import main.model.scenarioSystem.ScenarioOne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class TacticBaseBattle {
     private List<CharacterUnit> partyMemberList;
     private List<Job> availableJobs;
     private Stage primaryStage;
+    private Board currentBoard;
 
     private TacticBaseBattle() {
         partyMemberList = new ArrayList<>();
@@ -63,8 +65,7 @@ public class TacticBaseBattle {
 
     // have the user pick a scenario
     public void scenarioSelect() {
-        Scenario scenario = new ScenarioOne();
-        scenario.displayScenario(partyMemberList);
+        new ScenarioSelectScreen();
     }
 
     public void startBattle(Scenario scenario) {
@@ -79,11 +80,23 @@ public class TacticBaseBattle {
         this.partyMemberList = partyMemberList;
     }
 
+    public void setCurrentBoard(Board board) {
+        this.currentBoard = board;
+    }
+
     public Stage getPrimaryStage() {
         return this.primaryStage;
     }
 
     public List<Job> getAvailableJobs() {
         return this.availableJobs;
+    }
+
+    public Board getCurrentBoard() {
+        return this.currentBoard;
+    }
+
+    public List<CharacterUnit> getPartyMemberList() {
+        return this.partyMemberList;
     }
 }

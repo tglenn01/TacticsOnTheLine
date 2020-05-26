@@ -1,7 +1,7 @@
 package main.ui;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.PlayableCharacterUnit;
+import main.model.characterSystem.characterList.Estelle;
 import main.model.combatSystem.Ability;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
@@ -56,7 +56,7 @@ public class TurnBaseBattle {
 
         Job characterJob = askUserForJob();
 
-        CharacterUnit partyMember = new PlayableCharacterUnit(characterJob, characterJob.getJobTitle());
+        CharacterUnit partyMember = new Estelle();
         partyMemberList.add(partyMember);
         availableJobs.remove(characterJob);
         System.out.println("You have choosen a " + characterJob.getJobTitle() + "!");

@@ -2,7 +2,8 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
-import main.model.graphics.scenes.BoardInterface;
+import main.model.graphics.scenes.BattleInterface;
+import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,8 @@ public abstract class Scenario {
         setBoardLayout();
         setAllyCharacters(playableCharacter);
         setEnemies();
-        new BoardInterface(this.scenarioBoard);
+        TacticBaseBattle.getInstance().setCurrentBoard(this.scenarioBoard);
+        new BattleInterface(this.scenarioBoard, this);
     }
 
     protected abstract void setBoardLayout();

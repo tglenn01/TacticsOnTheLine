@@ -18,8 +18,6 @@ public class Main extends Application {
         TacticBaseBattle.getInstance().setPrimaryStage(primaryStage);
         primaryStage.setTitle("Tactics On The Line");
         primaryStage.setMinWidth(FINAL_WIDTH);
-        primaryStage.setMaxWidth(FINAL_WIDTH);
-        primaryStage.setMaxHeight(FINAL_HEIGHT);
         primaryStage.setMinHeight(FINAL_HEIGHT);
         new MainMenu();
         primaryStage.show();

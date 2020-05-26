@@ -1,71 +1,51 @@
 package main.model.characterSystem;
 
+import javafx.scene.control.Label;
+import javafx.stage.Popup;
 import main.exception.BattleIsOverException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
+import main.model.graphics.menus.AbilityMenu;
+import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.model.jobSystem.Job;
 import main.ui.Battle;
 import main.ui.UserInput;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayableCharacterUnit extends CharacterUnit {
+public abstract class PlayableCharacterUnit extends CharacterUnit {
 
-    public PlayableCharacterUnit(Job job, String name) {
-        super(job, name);
+    public PlayableCharacterUnit() {
     }
 
     @Override
     public void startTurn(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn, they have " +
                 characterStatSheet.getMana() + " mana");
-        updateStatusEffect();
-        Ability chosenAbility = getChosenAbility(battle);
-        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
-        if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
-        else takeActionOnce(battle, chosenAbility);
+        statusEffects.updateStatusEffect(this);
+        new AbilityMenu(this, battle, characterJob.getJobAbilityList());
     }
 
-    protected Ability getChosenAbility(Battle battle) {
-        displayAbilities();
-        UserInput input = new UserInput();
-        String command = input.getInput();
-        Ability chosenAbility = null;
-        for (Ability ability : characterJob.getJobAbilityList()) {
-            if (command.equals(ability.getAbilityName())) {
-                try {
-                    ability.hasEnoughMana(this);
-                    chosenAbility = ability;
-                } catch (OutOfManaException e) {
-                    System.out.println("Insufficient Mana: you have " + this.characterStatSheet.getMana() + " left");
-                    System.out.println("Choose a different ability");
-                    chosenAbility = getChosenAbility(battle);
-                }
-            }
-        }
-        if (chosenAbility == null) {
-            System.out.println("Not a valid ability, please choose again");
-            chosenAbility = getChosenAbility(battle);
-        }
-
-        if (chosenAbility.getAbilityType() == Ability.AbilityType.ITEM) {
-            if (ConsumableItemInventory.getInstance().isEmpty()) {
-                System.out.println("You do not have any items, choose a different ability");
-                getChosenAbility(battle);
-            }
-        }
-        return chosenAbility;
-    }
-
-    private void displayAbilities() {
-        List<Ability> availableAbilities = characterJob.getJobAbilityList();
-        for (Ability ability : availableAbilities) {
-            System.out.println(ability.getAbilityName() + " (" + ability.getManaCost() + " mana): " +
-                    ability.getAbilityDescription());
+    public void useAbility(Battle battle, Ability chosenAbility) {
+        try {
+            chosenAbility.hasEnoughMana(this);
+            chosenAbility.displayAbilityRange(this);
+            CharacterUnit receivingUnit = this.getTarget(battle, chosenAbility);
+            this.takeAction(battle, chosenAbility, receivingUnit);
+        } catch (OutOfManaException e) {
+            Popup outOfManaMessage = new Popup();
+            outOfManaMessage.getContent().add(new Label("Out of Mana Choose Again"));
         }
     }
+
+    public void useItem(Battle battle, Consumable item) {
+        Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
+        itemAbility.displayAbilityRange(this);
+        CharacterUnit receivingUnit = this.getTarget(battle, itemAbility);
+        itemAbility.takeAction(this, receivingUnit, item);
+    }
+
 
     protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
         List<CharacterUnit> chosenTargets = new ArrayList<>();

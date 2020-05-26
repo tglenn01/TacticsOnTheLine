@@ -4,15 +4,14 @@ import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.scenarioSystem.Scenario;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class Battle {
     private TurnOrderCompiler turnOrder;
-    private Scenario scenario;
+    private List<CharacterUnit> activeCharacters;
+    private CharacterUnit activeCharacter;
 
     public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
-        this.scenario = scenario;
         turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
         try {
             updateNextRound();
@@ -25,27 +24,36 @@ public class Battle {
     }
 
     private void updateNextRound() throws BattleIsOverException {
-        List<CharacterUnit> activeCharacters = turnOrder.updateTurnOrder();
-        takeAction(activeCharacters);
+        this.activeCharacters = turnOrder.updateTurnOrder();
+        if (!activeCharacters.isEmpty()) startNewTurn(activeCharacters.iterator().next());
         updateNextRound();
     }
 
-    private void takeAction(List<CharacterUnit> activeCharacters) throws BattleIsOverException {
-        for (Iterator<CharacterUnit> iterator = activeCharacters.iterator(); iterator.hasNext();) {
-            CharacterUnit activeCharacter = iterator.next();
-            if (activeCharacter.getIsAlive()) { // If unit is Alive it takes an action
-                activeCharacter.startTurn(this);
-                iterator.remove();
-            }
-        }
+    private void startNewTurn(CharacterUnit activeCharacter) throws BattleIsOverException {
+        TacticBaseBattle.getInstance().getCurrentBoard().setActiveCharacter(activeCharacter);
+        this.activeCharacter = activeCharacter;
+        activeCharacter.startTurn(this);
+        //activeCharacters.iterator().remove();
+    }
 
+    public void endTurn() throws BattleIsOverException {
+        if (activeCharacters.iterator().hasNext()) {
+            startNewTurn(activeCharacters.iterator().next());
+        } else updateNextRound();
     }
 
     public TurnOrderCompiler getTurnOrder() {
         return turnOrder;
     }
 
-    public void removeDeadCharacter(CharacterUnit deadCharacter) throws BattleIsOverException {
-        turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
+    public CharacterUnit getActiveCharacter() { return activeCharacter; }
+
+    public void removeDeadCharacter(CharacterUnit deadCharacter) {
+        try{
+            turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
+        } catch (BattleIsOverException e) {
+            //if (turnOrder.didUserWin()) new VictoryScreen();
+            //else new DefeatScreen();
+        }
     }
 }

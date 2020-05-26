@@ -7,7 +7,6 @@ import main.model.characterSystem.StatSheet;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.itemSystem.ResourceReplenishBonus;
-import main.ui.UserInput;
 
 public class ConsumableAbility extends SupportiveAbility {
 
@@ -19,53 +18,30 @@ public class ConsumableAbility extends SupportiveAbility {
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
             throws AttackMissedException, UnitIsDeadException {
-        Consumable consumable = getChosenItem();
+        System.out.println("Must have an item");
+    }
+
+    @Override
+    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit, Consumable item) {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
-        if (consumable.getAbilityType() == AbilityType.HEAL) {
-            healUnit(receivingUnit, receivingUnitStatSheet, consumable);
-        } if (consumable.getAbilityType() == AbilityType.MANA_GAIN) {
-            gainMana(receivingUnit, receivingUnitStatSheet, consumable);
-        } if (consumable.getAbilityType() == AbilityType.ATTACK_BUFF) {
+        if (item.getAbilityType() == AbilityType.HEAL) {
+            healUnit(receivingUnit, receivingUnitStatSheet, item);
+        } if (item.getAbilityType() == AbilityType.MANA_GAIN) {
+            gainMana(receivingUnit, receivingUnitStatSheet, item);
+        } if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
             buffAttack(receivingUnitStatSheet);
-            receivingUnit.addStatusEffect(consumable.getAbilityType(), consumable.getDuration());
-        } if (consumable.getAbilityType() == AbilityType.DEFENSE_BUFF) {
+            receivingUnit.getStatusEffects().addStatusEffect(item.getAbilityType(), item.getDuration());
+        } if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
             buffDefense(receivingUnitStatSheet);
-            receivingUnit.addStatusEffect(consumable.getAbilityType(), consumable.getDuration());
-        } if (consumable.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
+            receivingUnit.getStatusEffects().addStatusEffect(item.getAbilityType(), item.getDuration());
+        } if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
             debuffAttack(receivingUnitStatSheet);
-            receivingUnit.addStatusEffect(consumable.getAbilityType(), consumable.getDuration());
-        } if (consumable.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
+            receivingUnit.getStatusEffects().addStatusEffect(item.getAbilityType(), item.getDuration());
+        } if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
             debuffDefense(receivingUnitStatSheet);
-            receivingUnit.addStatusEffect(consumable.getAbilityType(), consumable.getDuration());
+            receivingUnit.getStatusEffects().addStatusEffect(item.getAbilityType(), item.getDuration());
         }
-        ConsumableItemInventory.getInstance().removeConsumableItem(consumable);
-    }
-
-    private Consumable getChosenItem() {
-        listConsumableItems();
-        UserInput input = new UserInput();
-        String command = input.getInput();
-        Consumable chosenConsumable = null;
-
-        for (Consumable consumable : ConsumableItemInventory.getInstance()) {
-            if (command.equals(consumable.getConsumableName())) {
-                chosenConsumable = consumable;
-                break; // if multiple of one item it will take the first one in the inventory
-            }
-        }
-
-        if (chosenConsumable == null) {
-            System.out.println("Not a valid item, please choose again");
-            getChosenItem();
-        }
-        return chosenConsumable;
-    }
-
-    private void listConsumableItems() {
-        System.out.println("Choose an item to use");
-        for (Consumable consumable : ConsumableItemInventory.getInstance()) {
-            System.out.println(consumable.getConsumableName());
-        }
+        ConsumableItemInventory.getInstance().removeConsumableItem(item);
     }
 
     @Override

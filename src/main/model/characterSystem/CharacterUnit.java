@@ -6,15 +6,12 @@ import main.exception.BattleIsOverException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
+import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static main.model.characterSystem.CharacterPortrait.ESTELLE_PORTRAIT;
 
 public abstract class CharacterUnit {
     protected enum CharacterType {ALLY, ENEMY};
@@ -22,38 +19,39 @@ public abstract class CharacterUnit {
     protected Job characterJob;
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
-    protected Map<Ability.AbilityType, Integer> statusEffectDuration;
+    protected CharacterStatusEffects statusEffects;
     protected BoardSpace boardSpace;
     protected CharacterPortrait characterPortrait;
-    protected ImageView sprite;
+    protected CharacterSprite sprite;
 
-    public CharacterUnit(Job job, String name) {
-        this.characterName = name;
-        this.characterJob = job;
-        this.characterStatSheet = new StatSheet(this.characterJob);
+
+    public CharacterUnit() {
         this.isAlive = true;
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
-        statusEffectDuration = new HashMap<>();
+        statusEffects = new CharacterStatusEffects();
     }
 
     public abstract void startTurn(Battle battle) throws BattleIsOverException;
 
-    protected abstract Ability getChosenAbility(Battle battle);
+    public abstract void useAbility(Battle battle, Ability chosenAbility);
 
-    protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit)
-            throws BattleIsOverException {
+    public abstract void useItem(Battle battle, Consumable item);
+
+    protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit) {
         try {
             ability.takeAction(this, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();
-            battle.removeDeadCharacter(unitIsDeadException.getDeadUnit()); // throws BattleIsOverException
+            battle.removeDeadCharacter(unitIsDeadException.getDeadUnit());
         }
-
     }
 
-    protected void takeActionOnce(Battle battle, Ability ability) throws BattleIsOverException {
+    public CharacterUnit getTarget(Battle battle, Ability ability) {
+        return null; // get character
+    }
+
+    public void takeActionOnce(Battle battle, Ability ability) {
         CharacterUnit receivingUnit = getSingleTarget(battle, ability);
         takeAction(battle, ability, receivingUnit);
     }
@@ -69,7 +67,7 @@ public abstract class CharacterUnit {
         return getReceivingUnit(unitOptions);
     }
 
-    protected void takeActionMultipleTimes(Battle battle, Ability ability) throws BattleIsOverException {
+    public void takeActionMultipleTimes(Battle battle, Ability ability) {
         List<CharacterUnit> possibleTargets;
         if (ability.targetsAlly()) {
             possibleTargets = new ArrayList<>(getUnitOptions(battle, CharacterType.ALLY));
@@ -88,68 +86,13 @@ public abstract class CharacterUnit {
 
     protected abstract CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions);
 
+    public void movementComplete() {
+        // take away action token
+    }
+
     public void setJob(Job job) {
         this.characterJob = job;
         characterStatSheet.updateStatSheetAccordingToJob(job);
-    }
-
-    public StatSheet getCharacterStatSheet() {
-        return characterStatSheet;
-    }
-
-    public Job getCharacterJob() {
-        return characterJob;
-    }
-
-    public String getCharacterName() {
-        return characterName;
-    }
-
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean deathStatus) {
-        this.isAlive = deathStatus;
-    }
-
-    public void addStatusEffect(Ability.AbilityType statusEffect, int duration) {
-        if (statusEffectDuration.containsKey(statusEffect)) {
-            int value = statusEffectDuration.get(statusEffect);
-            int newValue = value + duration;
-            statusEffectDuration.put(statusEffect, newValue);
-        } else statusEffectDuration.put(statusEffect, duration);
-    }
-
-    protected void updateStatusEffect() {
-        List<Map.Entry<Ability.AbilityType, Integer>> toRemove = new ArrayList<>();
-        for (Map.Entry<Ability.AbilityType, Integer> entry : statusEffectDuration.entrySet()) {
-            int newDuration = entry.getValue();
-            newDuration--;
-            if (newDuration == 0) {
-                toRemove.add(entry);
-            } else {
-                entry.setValue(newDuration);
-                System.out.println(entry.getKey() + " for " + newDuration + " more turns");
-            }
-        }
-        for (Map.Entry<Ability.AbilityType, Integer> entry : toRemove) {
-            statusEffectDuration.remove(entry);
-            System.out.println(entry.getKey() + " Has ended");
-            removeStatusEffect(entry);
-        }
-    }
-
-    private void removeStatusEffect(Map.Entry<Ability.AbilityType, Integer> entry) {
-        Ability.AbilityType statusEffect = entry.getKey();
-        if (statusEffect == Ability.AbilityType.ATTACK_BUFF ||
-                statusEffect == Ability.AbilityType.ATTACK_DEBUFF) {
-            getCharacterStatSheet().revertStrength();
-        } if (statusEffect == Ability.AbilityType.DEFENSE_BUFF ||
-                statusEffect == Ability.AbilityType.DEFENSE_DEBUFF) {
-            getCharacterStatSheet().revertArmour();
-        }
-        statusEffectDuration.remove(entry);
     }
 
     public void setBoardSpace(BoardSpace boardSpace) {
@@ -159,19 +102,40 @@ public abstract class CharacterUnit {
         }
     }
 
-    public BoardSpace getBoardSpace() {
-        return this.boardSpace;
-    }
-
-    public CharacterPortrait getCharacterPortrait() {
-        return this.characterPortrait;
-    }
-
     public void setCharacterPortrait(String fileLocation) {
         this.characterPortrait = new CharacterPortrait(fileLocation);
     }
 
+
+    public void setCharacterSprite(String fileLocation) {
+        this.sprite = new CharacterSprite(this, fileLocation);
+    }
+
+    public void setAlive(boolean deathStatus) { this.isAlive = deathStatus; }
+
+    public String getCharacterName() { return characterName; }
+
+    public Job getCharacterJob() { return characterJob; }
+
+    public StatSheet getCharacterStatSheet() {
+        return characterStatSheet;
+    }
+
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    public CharacterStatusEffects getStatusEffects() { return this.statusEffects; }
+
+    public BoardSpace getBoardSpace() {
+        return this.boardSpace;
+    }
+
+    public ImageView getCharacterPortrait() {
+        return this.characterPortrait.getPortrait();
+    }
+
     public ImageView getSprite() {
-        return this.sprite;
+        return this.sprite.getSprite();
     }
 }

@@ -3,6 +3,7 @@ package main.model.characterSystem;
 import main.exception.BattleIsOverException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
+import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
 
@@ -10,19 +11,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static main.model.characterSystem.CharacterPortrait.ENEMY_PORTRAIT;
+import static main.model.characterSystem.CharacterSprite.ENEMY_SPRITE;
+
 public class NPC extends CharacterUnit {
 
     public NPC(Job job, String name) {
-        super(job, name);
+        this.characterName = name;
+        this.characterJob = job;
+        this.characterStatSheet = new StatSheet(this.characterJob);
+        this.setCharacterPortrait(ENEMY_PORTRAIT);
+        this.setCharacterSprite(ENEMY_SPRITE);
     }
 
     @Override
     public void startTurn(Battle battle) throws BattleIsOverException {
         System.out.println("It is " + this.characterName + "'s turn");
-        updateStatusEffect();
+        statusEffects.updateStatusEffect(this);
         Ability chosenAbility = getChosenAbility(battle);
         if (chosenAbility.isAreaOfEffect()) takeActionMultipleTimes(battle, chosenAbility);
         else takeActionOnce(battle, chosenAbility);
+    }
+
+    @Override
+    public void useAbility(Battle battle, Ability chosenAbility) {
+        // stub
+    }
+
+    @Override
+    public void useItem(Battle battle, Consumable item) {
+        // stub
     }
 
     protected Ability getChosenAbility(Battle battle) {

@@ -16,24 +16,22 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import main.model.characterSystem.CharacterPortrait;
+import javafx.scene.layout.Pane;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
+import main.model.characterSystem.characterList.Cassius;
+import main.model.characterSystem.characterList.Estelle;
+import main.model.characterSystem.characterList.Joshua;
+import main.model.characterSystem.characterList.Kloe;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
 import main.model.graphics.icons.AbilityIcons;
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobs.Cleric;
-import main.model.jobSystem.jobs.Lancer;
-import main.model.jobSystem.jobs.Noble;
-import main.model.jobSystem.jobs.Thief;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.model.characterSystem.CharacterPortrait.*;
 import static main.model.characterSystem.StatSheet.SCALE_REFERENCE;
 
 public class CharacterSelect extends DefaultScene implements EventHandler<ActionEvent> {
@@ -45,7 +43,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     private Button previousButton;
     private BarChart<Number, String> statChart;
     private AbilityIcons abilities;
-    private ImageView portrait;
+    private Pane portrait;
     private Label characterName;
     private int characterCursor = 0;
 
@@ -57,14 +55,10 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private void initializeCharacterList() {
-        CharacterUnit joshua = new PlayableCharacterUnit(new Thief(), "Joshua");
-        joshua.setCharacterPortrait(JOSHUA_PORTRAIT);
-        CharacterUnit estelle = new PlayableCharacterUnit(new Lancer(), "Estelle");
-        estelle.setCharacterPortrait(ESTELLE_PORTRAIT);
-        CharacterUnit kloe = new PlayableCharacterUnit(new Cleric(), "Kloe");
-        kloe.setCharacterPortrait(KLOE_PORTRAIT);
-        CharacterUnit cassius = new PlayableCharacterUnit(new Noble(), "Cassius");
-        cassius.setCharacterPortrait(CASSIUS_PORTRAIT);
+        CharacterUnit joshua = new Joshua();
+        CharacterUnit estelle = new Estelle();
+        CharacterUnit kloe = new Kloe();
+        CharacterUnit cassius = new Cassius();
         partyMemberList.add(joshua);
         partyMemberList.add(estelle);
         partyMemberList.add(kloe);
@@ -74,9 +68,9 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
 
     protected void initializeGraphics() {
         GridPane grid = new GridPane();
-        //grid.setGridLinesVisible(true);
+        grid.setGridLinesVisible(true);
         grid.setPadding(new Insets(10, 10, 10, 10));
-        HBox jobs = initializeJobButtons();
+        Pane jobs = initializeJobButtons();
         this.portrait = characterPortrait();
         this.abilities = abilityIcons();
         this.statChart = statChart();
@@ -90,6 +84,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         grid.add(characterName, 4, 0, 6, 2);
         grid.add(advanceButton, 0, 9, 10, 2);
         grid.add(previousButton, 0, 9, 10, 2);
+
         GridPane.setValignment(portrait, VPos.TOP);
         GridPane.setHalignment(advanceButton, HPos.RIGHT);
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
@@ -97,7 +92,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         GridPane.setValignment(previousButton, VPos.BOTTOM);
         GridPane.setHalignment(abilities, HPos.CENTER);
         GridPane.setValignment(characterName, VPos.CENTER);
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 
@@ -107,7 +102,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         for (Job job : jobList) {
             JobButton jobButton = new JobButton(job.getJobTitle(), job);
             jobButton.setOnAction(this);
-            jobButton.setPrefSize(100, 100);
+            jobButton.setMinSize(100, 100);
             jobButtonList.add(jobButton);
         }
 
@@ -116,16 +111,21 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         hBox.setAlignment(Pos.CENTER);
         hBox.setMinSize(1000, 160);
         hBox.getChildren().addAll(jobButtonList);
+
         return hBox;
     }
 
-    private ImageView characterPortrait() {
-        CharacterPortrait characterPortrait = activeCharacter.getCharacterPortrait();
-        ImageView portrait = characterPortrait.getPortrait();
-        portrait.setFitWidth(400);
-        portrait.setFitHeight(550);
-        //portrait.setPreserveRatio(true);
-        return portrait;
+    private Pane characterPortrait() {
+        Pane window = new Pane();
+        ImageView portrait = activeCharacter.getCharacterPortrait();
+        portrait.fitWidthProperty().bind(window.widthProperty());
+        portrait.fitHeightProperty().bind(window.heightProperty());
+        portrait.setPreserveRatio(false);
+        window.getChildren().add(portrait);
+        window.setPrefSize(400, 550);
+        //portrait.setFitWidth(400);
+        //portrait.setFitHeight(550);
+        return window;
     }
 
     private AbilityIcons abilityIcons() {
@@ -147,7 +147,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         StatSheet statSheet = activeCharacter.getCharacterStatSheet();
         series1 = activeCharacter.getCharacterJob().getJobStatSimpleData(statSheet);
         statChart.getData().add(series1);
-        statChart.setPrefSize(600, 360);
+        statChart.setMinSize(600, 360);
         this.statChart = statChart;
 
         return statChart;
@@ -155,7 +155,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
 
     private Label characterName() {
         Label characterName = new Label(activeCharacter.getCharacterName());
-        characterName.setMaxSize(600, 120);
+
         characterName.setMinSize(600, 120);
         characterName.setAlignment(Pos.CENTER);
         return characterName;
@@ -193,7 +193,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         if (event.getSource() == advanceButton) {
             if (characterCursor == (PARTY_SIZE - 1)) {
                 TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
-                new ScenarioSelectScreen();
+                TacticBaseBattle.getInstance().scenarioSelect();
             }
             else {
                 characterCursor++;
@@ -206,7 +206,8 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         activeCharacter = partyMemberList.get(newCharacter);
         updateData();
         characterName.setText(activeCharacter.getCharacterName());
-        portrait.setImage(activeCharacter.getCharacterPortrait().getImage());
+        portrait.getChildren().clear();
+        portrait.getChildren().add(this.characterPortrait());
     }
 
     private void updateData() {

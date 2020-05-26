@@ -33,7 +33,7 @@ public class StatusEffectAbility extends SupportiveAbility {
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             debuffDefense(receivingUnitStatSheet);
         }
-        receivingUnit.addStatusEffect(this.abilityType, this.duration);
+        receivingUnit.getStatusEffects().addStatusEffect(this.abilityType, this.duration);
     }
 
     protected int getHealAmount(ResourceReplenishBonus bonus) {
