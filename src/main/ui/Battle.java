@@ -10,36 +10,38 @@ public class Battle {
     private TurnOrderCompiler turnOrder;
     private List<CharacterUnit> activeCharacters;
     private CharacterUnit activeCharacter;
+    private int cursor;
 
     public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
+        TacticBaseBattle.getInstance().setBattle(this);
         turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
-        try {
-            updateNextRound();
-        } catch (BattleIsOverException e) {
-            System.out.println("The Battle is over");
-            if (turnOrder.didUserWin()) {
-                System.out.println("You have won");
-            } else System.out.println("You have lost");
-        }
-    }
-
-    private void updateNextRound() throws BattleIsOverException {
-        this.activeCharacters = turnOrder.updateTurnOrder();
-        if (!activeCharacters.isEmpty()) startNewTurn(activeCharacters.iterator().next());
         updateNextRound();
     }
 
-    private void startNewTurn(CharacterUnit activeCharacter) throws BattleIsOverException {
-        TacticBaseBattle.getInstance().getCurrentBoard().setActiveCharacter(activeCharacter);
-        this.activeCharacter = activeCharacter;
-        activeCharacter.startTurn(this);
-        //activeCharacters.iterator().remove();
+    private void updateNextRound() {
+        this.activeCharacters = turnOrder.updateTurnOrder();
+        if (activeCharacters.isEmpty()) updateNextRound();
+        else {
+            cursor = 0;
+            startNewTurn(activeCharacters.get(0));
+        }
     }
 
-    public void endTurn() throws BattleIsOverException {
-        if (activeCharacters.iterator().hasNext()) {
-            startNewTurn(activeCharacters.iterator().next());
-        } else updateNextRound();
+    private void startNewTurn(CharacterUnit activeCharacter) {
+        if (activeCharacter.getIsAlive()) {
+            this.activeCharacter = activeCharacter;
+            activeCharacter.startTurn(this);
+        }
+    }
+
+    public void endTurn() {
+        cursor++;
+        if (cursor == activeCharacters.size()) {
+            activeCharacters.clear();
+            updateNextRound();
+        } else {
+            startNewTurn(activeCharacters.get(cursor));
+        }
     }
 
     public TurnOrderCompiler getTurnOrder() {

@@ -3,6 +3,7 @@ package main.model.jobSystem;
 import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.MovementAbility;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.itemSystem.ConsumableItemInventory;
@@ -11,24 +12,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Job {
+    public static Ability move = new MovementAbility("Move", 0, 0, 0,
+            Ability.AbilityType.MOVEMENT, "Move your character");
+    public static Ability attack = new PhysicalAbility("Attack", 0, 1, 1,
+            Ability.AbilityType.DAMAGE,0, .90,
+            "Attack an enemy");
+    public static Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
+            Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
     protected String jobTitle;
     protected List<Ability> jobAbilityList;
+    protected int maxAbilityReach;
 
     public Job() {
         jobAbilityList = new ArrayList<>();
+        maxAbilityReach = 0;
         initializeAbilities();
+        updateMaxAbilityReach();
     }
 
     protected void initializeAbilities() {
-        Ability attack = new PhysicalAbility("Attack", 0, 1, 1,
-                Ability.AbilityType.DAMAGE,0, .90,
-                "Attack an enemy");
-        Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
-                Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
-        Ability item = ConsumableItemInventory.getInstance().getItemAbility();
+        jobAbilityList.add(move);
         jobAbilityList.add(attack);
         jobAbilityList.add(defend);
-        jobAbilityList.add(item);
+        jobAbilityList.add(ConsumableItemInventory.getInstance().getItemAbility());
+    }
+
+    private void updateMaxAbilityReach() {
+        for (Ability ability : jobAbilityList) {
+            if (ability.getRange() > maxAbilityReach) maxAbilityReach = ability.getRange();
+        }
     }
 
     public String getJobTitle() {
@@ -94,5 +106,17 @@ public abstract class Job {
                 data.setXValue(statSheet.getSimpleDexterity());
             }
         }
+    }
+
+    public int getMaxAbilityRange() {
+        return this.maxAbilityReach;
+    }
+
+    public boolean hasSupportingAbility() {
+        for (Ability ability : jobAbilityList) {
+            if (ability.targetsAlly() && !ability.getAbilityName().equals("Defend")
+                    && !ability.getAbilityName().equals("Item")) return true;
+        }
+        return false;
     }
 }

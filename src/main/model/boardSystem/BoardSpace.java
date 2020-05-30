@@ -12,10 +12,8 @@ public class BoardSpace extends Pane {
     private int xCoordinate;
     private int yCoordinate;
     public final static int BOARD_SPACE_SIZE = 150;
-    private boolean selectable;
 
     public BoardSpace(Tile landType, int xCoordinate, int yCoordinate) {
-        this.selectable = false;
         setLandType(landType);
         setXValue(xCoordinate);
         setYValue(yCoordinate);
@@ -42,6 +40,7 @@ public class BoardSpace extends Pane {
     }
 
     public void removeOccupyingUnit() {
+        this.getChildren().remove(occupyingUnit.getSprite());
         this.occupyingUnit = null;
     }
 
@@ -61,7 +60,10 @@ public class BoardSpace extends Pane {
     public boolean isValidSpace(BoardSpace currentSpace, int movement) {
         if (this.landType.getClass() == WaterTile.class) return false;
         if (this.occupyingUnit != null) return false;
+        return inRange(currentSpace, movement);
+    }
 
+    public boolean inRange(BoardSpace currentSpace, int movement) {
         int simpleX = this.xCoordinate - currentSpace.getXCoordinate();
         int simpleY = this.yCoordinate - currentSpace.getYCoordinate();
 
@@ -69,10 +71,8 @@ public class BoardSpace extends Pane {
     }
 
     public void highlightSpace(boolean highlighted) {
-        this.selectable = highlighted;
-        if (this.selectable) this.setBackground(landType.highlightSpace());
+        if (highlighted) this.setBackground(landType.highlightSpace());
         else this.setBackground(landType.unHighlightedSpace());
-
     }
 
     public int getXCoordinate() {
@@ -85,5 +85,9 @@ public class BoardSpace extends Pane {
 
     public BoardSpace getBoardSpace() {
         return this;
+    }
+
+    public boolean isOccupied() {
+        return this.occupyingUnit != null;
     }
 }

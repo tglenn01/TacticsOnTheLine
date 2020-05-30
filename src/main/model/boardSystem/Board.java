@@ -1,25 +1,23 @@
 package main.model.boardSystem;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.tiles.GrassTile;
 import main.model.characterSystem.CharacterUnit;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Board {
-    public static final DataFormat CHARACTER_UNIT_DATA = new DataFormat("CharacterUnit");
     private double boardWidth;
     private double boardHeight;
     private BoardSpace[][] boardSpaces;
-    private List<BoardSpace> highlightedBoardSpaces = new ArrayList<>();
-    private CharacterUnit activeCharacter;
+    private Map<BoardSpace, List<CharacterUnit>> highlightedBoardSpaces = new HashMap<>();
 
     public Board(int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
+
         boardSpaces = new BoardSpace[boardWidth][boardHeight];
         createBoardGraphics();
     }
@@ -28,9 +26,53 @@ public class Board {
         for (int xValue = 0; xValue < boardWidth; xValue++) {
             for (int yValue = 0; yValue < boardHeight; yValue++) {
                 boardSpaces[xValue][yValue] = new BoardSpace(new GrassTile(), xValue, yValue);
+                highlightedBoardSpaces.put(boardSpaces[xValue][yValue], new LinkedList<>());
             }
         }
     }
+
+    public void setCharacterToBoardSpace(CharacterUnit unit, int xValue, int yValue) {
+        BoardSpace chosenBoardSpace = boardSpaces[xValue][yValue];
+        chosenBoardSpace.setOccupyingUnit(unit);
+    }
+
+//    private void movementAction(CharacterUnit activeCharacter) {
+//
+//        for (BoardSpace highlightedSpace : highlightedBoardSpaces) {
+//            highlightedSpace.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                public void handle(MouseEvent event) {
+//                    //event.getButton() == MouseButton.SECONDARY;
+//                    BoardSpace boardSpace = (BoardSpace) event.getSource();
+//                    activeCharacter.getBoardSpace().removeOccupyingUnit();
+//                    setCharacterToBoardSpace(activeCharacter, boardSpace.getXCoordinate(), boardSpace.getYCoordinate());
+//                    activeCharacter.movementComplete(TacticBaseBattle.getInstance().getBattle());
+//
+//                    for (BoardSpace space : highlightedBoardSpaces) {
+//                        space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+//                    }
+//                    stopShowingDisplayedSpaces();
+//                    event.consume();
+//                }
+//            });
+//        }
+//    }
+
+//    private void viewRange(CharacterUnit nonActiveCharacter) {
+//        for (BoardSpace[] boardSpaceArray : boardSpaces) {
+//            for (BoardSpace boardSpace : boardSpaceArray) {
+//                boardSpace.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                    @Override
+//                    public void handle(MouseEvent event) {
+//                        stopShowingDisplayedSpaces();
+//                        for (BoardSpace space : boardSpaceArray) {
+//                            space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+//                        }
+//                        event.consume();
+//                    }
+//                });
+//            }
+//        }
+//    }
 
     public BoardSpace getBoardSpace(int xValue, int yValue) {
         return this.boardSpaces[xValue][yValue];
@@ -44,51 +86,32 @@ public class Board {
             for (BoardSpace possibleSpace : possibleSpaces) {
                 if (possibleSpace.isValidSpace(currentSpace, range)) {
                     possibleSpace.highlightSpace(true);
-                    highlightedBoardSpaces.add(possibleSpace);
+                    List<CharacterUnit> list = highlightedBoardSpaces.get(possibleSpace);
+                    list.add(unit);
+                    highlightedBoardSpaces.put(possibleSpace, list);
                 }
             }
         }
     }
 
-    public void stopShowingDisplayedSpaces() {
-        for (BoardSpace boardSpace : highlightedBoardSpaces) {
-            boardSpace.highlightSpace(false);
+    public void stopShowingDisplayedSpaces(CharacterUnit unit) {
+        BoardSpace currentSpace = unit.getBoardSpace();
+
+        for (BoardSpace[] possibleSpaces : this.boardSpaces) {
+            for (BoardSpace possibleSpace : possibleSpaces) {
+                List<CharacterUnit> list = highlightedBoardSpaces.get(possibleSpace);
+                list.remove(unit);
+                if (list.isEmpty()) {
+                    possibleSpace.highlightSpace(false);
+                }
+            }
         }
-        highlightedBoardSpaces.clear();
     }
 
     public BoardSpace[][] getBoardSpaces() {
         return this.boardSpaces;
     }
 
-    public void setCharacterToBoardSpace(CharacterUnit unit, int xValue, int yValue) {
-        BoardSpace chosenBoardSpace =  boardSpaces[xValue][yValue];
-
-        unit.getSprite().setOnMouseClicked(new EventHandler <MouseEvent>() {
-            public void handle(MouseEvent event) {
-                displayValidSpaces(unit, unit.getCharacterStatSheet().getMovement());
-
-                if (unit == activeCharacter) {
-                    for (BoardSpace highlightedSpace : highlightedBoardSpaces) {
-                        highlightedSpace.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            public void handle(MouseEvent event) {
-                                BoardSpace chosenBoardSpace = (BoardSpace) event.getSource();
-                                unit.getBoardSpace().removeOccupyingUnit();
-                                stopShowingDisplayedSpaces();
-                                setCharacterToBoardSpace(unit, chosenBoardSpace.getXCoordinate(), chosenBoardSpace.getYCoordinate());
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
-        chosenBoardSpace.setOccupyingUnit(unit);
-    }
-
-    public void setActiveCharacter(CharacterUnit activeCharacter) {
-        this.activeCharacter = activeCharacter;
-    }
 
     public double getBoardWidth() {
         return this.boardWidth;
@@ -96,5 +119,9 @@ public class Board {
 
     public double getBoardHeight() {
         return this.boardHeight;
+    }
+
+    public Map<BoardSpace, List<CharacterUnit>> getHighlightedBoardSpaces() {
+        return highlightedBoardSpaces;
     }
 }

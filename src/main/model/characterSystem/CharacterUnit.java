@@ -2,19 +2,22 @@ package main.model.characterSystem;
 
 import javafx.scene.image.ImageView;
 import main.exception.AttackMissedException;
-import main.exception.BattleIsOverException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
+import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
+import main.ui.TacticBaseBattle;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class CharacterUnit {
     protected enum CharacterType {ALLY, ENEMY};
+    protected final int ACTIONS_PER_TURN = 2;
     protected String characterName;
     protected Job characterJob;
     protected StatSheet characterStatSheet;
@@ -23,18 +26,23 @@ public abstract class CharacterUnit {
     protected BoardSpace boardSpace;
     protected CharacterPortrait characterPortrait;
     protected CharacterSprite sprite;
+    protected int actionTokens;
+    protected boolean movementRangeIsVisable;
 
 
     public CharacterUnit() {
         this.isAlive = true;
+        this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
     }
 
-    public abstract void startTurn(Battle battle) throws BattleIsOverException;
+    public abstract void startTurn(Battle battle);
 
     public abstract void useAbility(Battle battle, Ability chosenAbility);
 
     public abstract void useItem(Battle battle, Consumable item);
+
+    public abstract void takeMovement(Ability movementAbility);
 
     protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit) {
         try {
@@ -44,50 +52,19 @@ public abstract class CharacterUnit {
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();
             battle.removeDeadCharacter(unitIsDeadException.getDeadUnit());
+        } finally {
+            removeActionToken();
+            if (actionTokens == 0) battle.endTurn();
+            else takeNextAction();
         }
     }
 
-    public CharacterUnit getTarget(Battle battle, Ability ability) {
-        return null; // get character
-    }
+    protected abstract void takeNextAction();
 
-    public void takeActionOnce(Battle battle, Ability ability) {
-        CharacterUnit receivingUnit = getSingleTarget(battle, ability);
-        takeAction(battle, ability, receivingUnit);
-    }
-
-    protected CharacterUnit getSingleTarget(Battle battle, Ability ability) {
-        if (ability.isSelfBuff()) return this;
-        List<CharacterUnit> unitOptions;
-        if (ability.targetsAlly()) {
-            unitOptions = getUnitOptions(battle, CharacterType.ALLY);
-        } else {
-            unitOptions = getUnitOptions(battle, CharacterType.ENEMY);
-        }
-        return getReceivingUnit(unitOptions);
-    }
-
-    public void takeActionMultipleTimes(Battle battle, Ability ability) {
-        List<CharacterUnit> possibleTargets;
-        if (ability.targetsAlly()) {
-            possibleTargets = new ArrayList<>(getUnitOptions(battle, CharacterType.ALLY));
-        } else {
-            possibleTargets = new ArrayList<>(getUnitOptions(battle, CharacterType.ENEMY));
-        }
-        List<CharacterUnit> chosenTargets = getMultipleTargets(ability, possibleTargets);
-        for (CharacterUnit chosenTarget : chosenTargets) {
-            takeAction(battle, ability, chosenTarget);
-        }
-    }
-
-    protected abstract List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets);
-
-    protected abstract List<CharacterUnit> getUnitOptions(Battle battle, CharacterType type);
-
-    protected abstract CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions);
-
-    public void movementComplete() {
-        // take away action token
+    public void movementComplete(Battle battle) {
+        removeActionToken();
+        if (actionTokens == 0) battle.endTurn();
+        else AbilityMenu.display(this, battle, this.getCharacterJob().getJobAbilityList());
     }
 
     public void setJob(Job job) {
@@ -138,4 +115,42 @@ public abstract class CharacterUnit {
     public ImageView getSprite() {
         return this.sprite.getSprite();
     }
+
+    public void setMovementRangeIsVisable(boolean visable) {
+        this.movementRangeIsVisable = visable;
+    }
+
+    public boolean isMovementRangeIsVisable() {
+        return this.movementRangeIsVisable;
+    }
+
+    public List<BoardSpace> getMovementRange() {
+        List<BoardSpace> possibleSpaces = new LinkedList<>();
+        for (Map.Entry<BoardSpace, List<CharacterUnit>> entry : TacticBaseBattle.getInstance().getCurrentBoard().getHighlightedBoardSpaces().entrySet()) {
+            if (entry.getValue().contains(this)) possibleSpaces.add(entry.getKey());
+        }
+
+        return possibleSpaces;
+    }
+
+    public List<BoardSpace> getActionRange() {
+        List<BoardSpace> possibleSpaces = new LinkedList<>();
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+                if (boardSpace.inRange(this.boardSpace, this.getCharacterJob().getMaxAbilityRange())) {
+                    possibleSpaces.add(boardSpace);
+                }
+            }
+        }
+        return possibleSpaces;
+    }
+
+    protected boolean hasEnoughMana(int abilityManaCost, int characterMana) {
+        return abilityManaCost < characterMana;
+    }
+
+    protected void removeActionToken() {
+        this.actionTokens--;
+    }
 }
+

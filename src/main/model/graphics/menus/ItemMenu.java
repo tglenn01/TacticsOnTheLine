@@ -1,7 +1,5 @@
 package main.model.graphics.menus;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -11,23 +9,23 @@ import main.model.graphics.icons.ItemButton;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.Battle;
+import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemMenu implements EventHandler<ActionEvent> {
-    private CharacterUnit activeUnit;
-    private Battle battle;
+public class ItemMenu {
 
-    public ItemMenu(Battle battle, CharacterUnit activeUnit) {
-        this.activeUnit = activeUnit;
-        this.battle = battle;
+    public static void display(Battle battle, CharacterUnit activeUnit) {
         Popup window = new Popup();
 
         List<Button> itemList = new ArrayList<>();
         for (Consumable consumable : ConsumableItemInventory.getInstance()) {
             ItemButton itemButton  = new ItemButton(consumable);
-            itemButton.setOnAction(this);
+            itemButton.setOnAction(e -> {
+                Consumable item = itemButton.getConsumable();
+                activeUnit.useItem(battle, item);
+            });
             itemList.add(itemButton);
         }
 
@@ -38,12 +36,6 @@ public class ItemMenu implements EventHandler<ActionEvent> {
         parent.setContent(node);
 
         window.getContent().addAll(parent);
-    }
-
-    @Override
-    public void handle(ActionEvent event) {
-        ItemButton itemButton = (ItemButton) event.getSource();
-        Consumable item = itemButton.getConsumable();
-        activeUnit.useItem(battle, item);
+        window.show(TacticBaseBattle.getInstance().getPrimaryStage());
     }
 }

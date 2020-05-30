@@ -9,7 +9,7 @@ import main.model.itemSystem.Consumable;
 import main.ui.TacticBaseBattle;
 
 public abstract class Ability {
-    public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM, MANA_GAIN}
+    public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM, MANA_GAIN, MOVEMENT}
     protected String abilityName;
     protected int manaCost;
     protected int range;
@@ -72,10 +72,11 @@ public abstract class Ability {
         return this.abilityType == Ability.AbilityType.HEAL ||
                 this.abilityType == Ability.AbilityType.ATTACK_BUFF ||
                 this.abilityType == Ability.AbilityType.DEFENSE_BUFF ||
-                this.abilityType == Ability.AbilityType.ITEM;
+                this.abilityType == Ability.AbilityType.ITEM ||
+                this.abilityType == AbilityType.MANA_GAIN;
     }
 
-    public boolean isSelfBuff() {
+    public boolean targetsSelf() {
         return this.abilityName.equals("Defend") ||
                 this.abilityName.equals("Focus");
     }
@@ -83,6 +84,23 @@ public abstract class Ability {
     public boolean isUnique() {
         return !this.abilityName.equals("Attack") &&
                 !this.abilityName.equals("Defend") &&
-                !this.abilityName.equals("Item");
+                !this.abilityName.equals("Item") &&
+                !this.abilityName.equals("Move");
+    }
+
+    public int getRange() {
+        return this.range;
+    }
+
+    public boolean isUnitInRange(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return false; // stub
+//        boolean validTarget = false;
+//        for (BoardSpace boardSpace : TacticBaseBattle.getInstance().getCurrentBoard().getHighlightedBoardSpaces()) {
+//            if (boardSpace.getOccupyingUnit() == receivingUnit) {
+//                validTarget = true;
+//                break;
+//            }
+//        }
+//        return validTarget;
     }
 }

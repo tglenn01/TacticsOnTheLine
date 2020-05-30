@@ -1,18 +1,18 @@
 package main.model.characterSystem;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
-import main.exception.BattleIsOverException;
 import main.exception.OutOfManaException;
+import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.Battle;
-import main.ui.UserInput;
-
-import java.util.ArrayList;
-import java.util.List;
+import main.ui.TacticBaseBattle;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
 
@@ -20,75 +20,90 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     }
 
     @Override
-    public void startTurn(Battle battle) throws BattleIsOverException {
+    public void startTurn(Battle battle) {
         System.out.println("It is " + this.characterName + "'s turn, they have " +
                 characterStatSheet.getMana() + " mana");
         statusEffects.updateStatusEffect(this);
-        new AbilityMenu(this, battle, characterJob.getJobAbilityList());
+        //startOfTurnNotification();
+        this.actionTokens = ACTIONS_PER_TURN;
+        this.getSprite().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (!AbilityMenu.isDisplaying()) {
+                    AbilityMenu.display(getCharacterUnit(), battle, getCharacterJob().getJobAbilityList());
+                }
+                getCharacterUnit().getSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+            }
+        });
+    }
+
+    private void startOfTurnNotification() {
+        Label turnStartNotification = new Label("It is " + this.characterName + "'s Turn");
     }
 
     public void useAbility(Battle battle, Ability chosenAbility) {
         try {
             chosenAbility.hasEnoughMana(this);
             chosenAbility.displayAbilityRange(this);
-            CharacterUnit receivingUnit = this.getTarget(battle, chosenAbility);
-            this.takeAction(battle, chosenAbility, receivingUnit);
+            this.getTarget(battle, chosenAbility);
         } catch (OutOfManaException e) {
             Popup outOfManaMessage = new Popup();
             outOfManaMessage.getContent().add(new Label("Out of Mana Choose Again"));
+            outOfManaMessage.show(TacticBaseBattle.getInstance().getPrimaryStage());
         }
     }
 
     public void useItem(Battle battle, Consumable item) {
         Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
         itemAbility.displayAbilityRange(this);
-        CharacterUnit receivingUnit = this.getTarget(battle, itemAbility);
-        itemAbility.takeAction(this, receivingUnit, item);
+        this.getItemTarget(battle, itemAbility, item);
     }
 
+    public void takeMovement(Ability movementAbility) {
+        try {
+            movementAbility.takeAction(this, null);
+        } catch (Exception e) {
 
-    protected List<CharacterUnit> getMultipleTargets(Ability ability, List<CharacterUnit> possibleTargets) {
-        List<CharacterUnit> chosenTargets = new ArrayList<>();
-        int amountOfTimesCast = ability.getAreaOfEffect();
-        int amountOfEnemies = possibleTargets.size();
-        if (amountOfTimesCast > amountOfEnemies) amountOfTimesCast = amountOfEnemies;
-        for (int i = amountOfTimesCast; i != 0; i--) {
-            System.out.println("Choose " + i + " more targets");
-            CharacterUnit receivingUnit = getReceivingUnit(possibleTargets);
-            chosenTargets.add(receivingUnit);
-            possibleTargets.remove(receivingUnit);
-        }
-        return chosenTargets;
-    }
-
-    protected List<CharacterUnit> getUnitOptions(Battle battle, CharacterType type) {
-        if (type == CharacterType.ALLY) {
-            System.out.println("Choose from fielded allies:");
-            return battle.getTurnOrder().getAlivePlayableCharacters();
-        } else {
-            System.out.println("Choose from opposing enemies:");
-            return battle.getTurnOrder().getAliveEnemyCharacters();
         }
     }
 
-    protected CharacterUnit getReceivingUnit(List<CharacterUnit> unitOptions) {
-        for (CharacterUnit unit : unitOptions) {
-            System.out.println(unit.getCharacterName());
-        }
-
-        UserInput input = new UserInput();
-        String command = input.getInput();
-        CharacterUnit chosenUnit = null;
-
-        for (CharacterUnit unit : unitOptions) {
-            if (command.equals(unit.characterName)) {
-                chosenUnit = unit;
+    public void getTarget(Battle battle, Ability ability) {
+        if (ability.targetsSelf()) this.takeAction(battle, ability, this);
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+                if (boardSpace.isOccupied()) {
+                    ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
+                    sprite.setOnMouseClicked(e -> {
+                        if (ability.isUnitInRange(this, boardSpace.getOccupyingUnit())) {
+                            this.takeAction(battle, ability, boardSpace.getOccupyingUnit());
+                        }
+                    });
+                }
             }
         }
-        if (chosenUnit == null) {
-            System.out.println("Not a valid option, please choose again");
-            chosenUnit = getReceivingUnit(unitOptions);
+    }
+
+    public void getItemTarget(Battle battle, Ability ability, Consumable item) {
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+                if (boardSpace.isOccupied()) {
+                    ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
+                    sprite.setOnMouseClicked(e -> {
+                        if (ability.isUnitInRange(this, boardSpace.getOccupyingUnit())) {
+                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(this);
+                            ability.takeAction(this, boardSpace.getOccupyingUnit(), item);
+                        }
+                    });
+                }
+            }
         }
-        return chosenUnit;
+    }
+
+    public CharacterUnit getCharacterUnit() {
+        return this;
+    }
+
+    protected void takeNextAction() {
+        AbilityMenu.display(this, TacticBaseBattle.getInstance().getBattle(), this.getCharacterJob().getJobAbilityList());
     }
 }

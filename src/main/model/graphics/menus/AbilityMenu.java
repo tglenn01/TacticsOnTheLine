@@ -1,13 +1,14 @@
 package main.model.graphics.menus;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
+import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.icons.AbilityButton;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.Battle;
@@ -16,44 +17,45 @@ import main.ui.TacticBaseBattle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityMenu extends Popup implements EventHandler<ActionEvent> {
-    private CharacterUnit activeUnit;
-    private Battle battle;
-    private Ability chosenAbility;
+public class AbilityMenu {
+    public static boolean isDisplaying;
 
-    public AbilityMenu(CharacterUnit activeUnit, Battle battle, List<Ability> abilityList) {
-        this.activeUnit = activeUnit;
-        this.battle = battle;
-        chosenAbility = null;
-        Popup window = new Popup();
-
+    public static void display(CharacterUnit activeUnit, Battle battle, List<Ability> abilityList) {
+        isDisplaying = true;
+        Stage window = new Stage();
+        window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
+        window.setTitle("Ability Menu");
         List<AbilityButton> abilityButtonList = new ArrayList<>();
         for (Ability ability : abilityList) {
             AbilityButton abilityButton = new AbilityButton(ability);
             abilityButtonList.add(abilityButton);
-            abilityButton.setOnAction(this);
+            abilityButton.setOnAction(e -> {
+                isDisplaying = false;
+                window.close();
+                if (ability.getClass() == ConsumableAbility.class) openItemMenu(battle, activeUnit, window);
+                if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
+                else activeUnit.useAbility(battle, ability);
+            });
         }
         VBox node = new VBox();
         node.getChildren().addAll(abilityButtonList);
-        window.getContent().addAll(node);
-
-        window.show(TacticBaseBattle.getInstance().getPrimaryStage());
+        Scene scene = new Scene(node);
+        window.setScene(scene);
+        window.show();
     }
 
-    private void openItemMenu() {
+    public static boolean isDisplaying() {
+        return isDisplaying;
+    }
+
+    private static void openItemMenu(Battle battle, CharacterUnit activeUnit, Stage window) {
         if (ConsumableItemInventory.getInstance().isEmpty()) {
             Popup noItemsMessage = new Popup();
             noItemsMessage.getContent().add(new Label("No More Items, Choose Again"));
         } else {
-            new ItemMenu(battle, activeUnit);
+            isDisplaying = false;
+            window.close();
+            ItemMenu.display(battle, activeUnit);
         }
-    }
-
-    @Override
-    public void handle(ActionEvent event) {
-        AbilityButton button = (AbilityButton) event.getSource();
-        Ability chosenAbility = button.getAbility();
-        if (chosenAbility.getClass() == ConsumableAbility.class) openItemMenu();
-        else activeUnit.useAbility(battle, chosenAbility);
     }
 }

@@ -21,6 +21,7 @@ public class TacticBaseBattle {
     private List<Job> availableJobs;
     private Stage primaryStage;
     private Board currentBoard;
+    private Battle battle;
 
     private TacticBaseBattle() {
         partyMemberList = new ArrayList<>();
@@ -84,6 +85,10 @@ public class TacticBaseBattle {
         this.currentBoard = board;
     }
 
+    public void setBattle(Battle battle) {
+        this.battle = battle;
+    }
+
     public Stage getPrimaryStage() {
         return this.primaryStage;
     }
@@ -98,5 +103,9 @@ public class TacticBaseBattle {
 
     public List<CharacterUnit> getPartyMemberList() {
         return this.partyMemberList;
+    }
+
+    public Battle getBattle() {
+        return this.battle;
     }
 }
