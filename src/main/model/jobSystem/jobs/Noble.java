@@ -7,6 +7,14 @@ import main.model.jobSystem.Job;
 
 // default/base class
 public class Noble extends Job {
+    private final int jobHealth = 32;
+    private final int jobMana = 15;
+    private final int jobStrength = 10;
+    private final int jobMagic = 4;
+    private final int jobArmour = 8;
+    private final int jobResistance = 2;
+    private final int jobSpeed = 8;
+    private final int jobDexterity = 8;
 
     public Noble() {
         jobTitle = "Noble";
@@ -32,14 +40,26 @@ public class Noble extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(32);
-        statSheet.setMaxMana(15);
-        statSheet.setBaseStrength(10);
-        statSheet.setBaseMagic(4);
-        statSheet.setBaseArmour(8);
-        statSheet.setBaseResistance(2);
-        statSheet.setBaseSpeed(8);
-        statSheet.setBaseDexterity(8);
+        statSheet.setMaxHealth(jobHealth);
+        statSheet.setMaxMana(jobMana);
+        statSheet.setBaseStrength(jobStrength);
+        statSheet.setBaseMagic(jobMagic);
+        statSheet.setBaseArmour(jobArmour);
+        statSheet.setBaseResistance(jobResistance);
+        statSheet.setBaseSpeed(jobSpeed);
+        statSheet.setBaseDexterity(jobDexterity);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+    }
+
+    @Override
+    public void updateMaxStats() {
+        StatSheet.updateHighestLowestHealth(jobHealth);
+        StatSheet.updateHighestLowestMana(jobMana);
+        StatSheet.updateHighestLowestStrength(jobStrength);
+        StatSheet.updateHighestLowestMagic(jobMagic);
+        StatSheet.updateHighestLowestArmour(jobArmour);
+        StatSheet.updateHighestLowestResistance(jobResistance);
+        StatSheet.updateHighestLowestSpeed(jobSpeed);
+        StatSheet.updateHighestLowestDexterity(jobDexterity);
     }
 }

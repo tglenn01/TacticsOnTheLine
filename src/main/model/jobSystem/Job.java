@@ -53,6 +53,8 @@ public abstract class Job {
 
     public abstract void setBaseStats(StatSheet statSheet);
 
+    public abstract void updateMaxStats();
+
     public XYChart.Series<Number, String> getJobStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));

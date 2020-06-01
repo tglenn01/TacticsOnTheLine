@@ -1,14 +1,13 @@
 package main.model.graphics.menus;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
+import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.icons.ItemButton;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -16,26 +15,34 @@ import java.util.List;
 
 public class ItemMenu {
 
-    public static void display(Battle battle, CharacterUnit activeUnit) {
-        Popup window = new Popup();
+    public static void display(CharacterUnit activeUnit) {
+        Stage window = new Stage();
+        window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
+        window.setTitle("Item Menu");
+
+        Button returnButton = new Button("return");
+        returnButton.setOnAction(e -> {
+            window.hide();
+            AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
+        });
 
         List<Button> itemList = new ArrayList<>();
         for (Consumable consumable : ConsumableItemInventory.getInstance()) {
             ItemButton itemButton  = new ItemButton(consumable);
             itemButton.setOnAction(e -> {
+                window.close();
                 Consumable item = itemButton.getConsumable();
-                activeUnit.useItem(battle, item);
+                activeUnit.useItem(item);
             });
             itemList.add(itemButton);
         }
 
         VBox node = new VBox();
+        node.getChildren().add(returnButton);
         node.getChildren().addAll(itemList);
 
-        ScrollPane parent = new ScrollPane();
-        parent.setContent(node);
-
-        window.getContent().addAll(parent);
-        window.show(TacticBaseBattle.getInstance().getPrimaryStage());
+        Scene scene = new Scene(node);
+        window.setScene(scene);
+        window.show();
     }
 }

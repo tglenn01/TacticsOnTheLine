@@ -3,6 +3,7 @@ package main.ui;
 import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.graphics.scenes.CharacterSelect;
 import main.model.graphics.scenes.ScenarioSelectScreen;
@@ -47,6 +48,7 @@ public class TacticBaseBattle {
         availableJobs.add(new Noble());
         availableJobs.add(new Thief());
         availableJobs.add(new Warrior());
+        StatSheet.updateMaxStats(availableJobs);
     }
 
     private void initializeItems() {

@@ -146,6 +146,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         XYChart.Series<Number, String> series1;
         StatSheet statSheet = activeCharacter.getCharacterStatSheet();
         series1 = activeCharacter.getCharacterJob().getJobStatSimpleData(statSheet);
+        //activeCharacter.getCharacterJob().getJobStatSimpleData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
         statChart.getData().add(series1);
         statChart.setMinSize(600, 360);
         this.statChart = statChart;

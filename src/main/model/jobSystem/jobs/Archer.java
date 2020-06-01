@@ -7,6 +7,14 @@ import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
 
 public class Archer extends Job {
+    private final int jobHealth = 24;
+    private final int jobMana = 24;
+    private final int jobStrength = 10;
+    private final int jobMagic = 7;
+    private final int jobArmour = 4;
+    private final int jobResistance = 4;
+    private final int jobSpeed = 12;
+    private final int jobDexterity = 12;
 
     public Archer() {
         jobTitle = "Archer";
@@ -32,14 +40,26 @@ public class Archer extends Job {
 
     @Override
     public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(24);
-        statSheet.setMaxMana(24);
-        statSheet.setBaseStrength(10);
-        statSheet.setBaseMagic(7);
-        statSheet.setBaseArmour(4);
-        statSheet.setBaseResistance(4);
-        statSheet.setBaseSpeed(12);
-        statSheet.setBaseDexterity(12);
+        statSheet.setMaxHealth(jobHealth);
+        statSheet.setMaxMana(jobMana);
+        statSheet.setBaseStrength(jobStrength);
+        statSheet.setBaseMagic(jobMagic);
+        statSheet.setBaseArmour(jobArmour);
+        statSheet.setBaseResistance(jobResistance);
+        statSheet.setBaseSpeed(jobSpeed);
+        statSheet.setBaseDexterity(jobDexterity);
         statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+    }
+
+    @Override
+    public void updateMaxStats() {
+        StatSheet.updateHighestLowestHealth(jobHealth);
+        StatSheet.updateHighestLowestMana(jobMana);
+        StatSheet.updateHighestLowestStrength(jobStrength);
+        StatSheet.updateHighestLowestMagic(jobMagic);
+        StatSheet.updateHighestLowestArmour(jobArmour);
+        StatSheet.updateHighestLowestResistance(jobResistance);
+        StatSheet.updateHighestLowestSpeed(jobSpeed);
+        StatSheet.updateHighestLowestDexterity(jobDexterity);
     }
 }

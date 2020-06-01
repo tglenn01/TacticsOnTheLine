@@ -11,7 +11,6 @@ import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.icons.AbilityButton;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.List;
 public class AbilityMenu {
     public static boolean isDisplaying;
 
-    public static void display(CharacterUnit activeUnit, Battle battle, List<Ability> abilityList) {
+    public static void display(CharacterUnit activeUnit, List<Ability> abilityList) {
         isDisplaying = true;
         Stage window = new Stage();
         window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
@@ -32,9 +31,9 @@ public class AbilityMenu {
             abilityButton.setOnAction(e -> {
                 isDisplaying = false;
                 window.close();
-                if (ability.getClass() == ConsumableAbility.class) openItemMenu(battle, activeUnit, window);
+                if (ability.getClass() == ConsumableAbility.class) openItemMenu(activeUnit, window);
                 if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
-                else activeUnit.useAbility(battle, ability);
+                else activeUnit.useAbility(ability);
             });
         }
         VBox node = new VBox();
@@ -48,14 +47,14 @@ public class AbilityMenu {
         return isDisplaying;
     }
 
-    private static void openItemMenu(Battle battle, CharacterUnit activeUnit, Stage window) {
+    private static void openItemMenu(CharacterUnit activeUnit, Stage window) {
         if (ConsumableItemInventory.getInstance().isEmpty()) {
             Popup noItemsMessage = new Popup();
             noItemsMessage.getContent().add(new Label("No More Items, Choose Again"));
         } else {
             isDisplaying = false;
             window.close();
-            ItemMenu.display(battle, activeUnit);
+            ItemMenu.display(activeUnit);
         }
     }
 }

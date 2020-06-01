@@ -36,25 +36,25 @@ public abstract class CharacterUnit {
         statusEffects = new CharacterStatusEffects();
     }
 
-    public abstract void startTurn(Battle battle);
+    public abstract void startTurn();
 
-    public abstract void useAbility(Battle battle, Ability chosenAbility);
+    public abstract void useAbility(Ability chosenAbility);
 
-    public abstract void useItem(Battle battle, Consumable item);
+    public abstract void useItem(Consumable item);
 
     public abstract void takeMovement(Ability movementAbility);
 
-    protected void takeAction(Battle battle, Ability ability, CharacterUnit receivingUnit) {
+    protected void takeAction(Ability ability, CharacterUnit receivingUnit) {
         try {
             ability.takeAction(this, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();
-            battle.removeDeadCharacter(unitIsDeadException.getDeadUnit());
+            TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
             removeActionToken();
-            if (actionTokens == 0) battle.endTurn();
+            if (actionTokens == 0) TacticBaseBattle.getInstance().getBattle().endTurn();
             else takeNextAction();
         }
     }
@@ -64,7 +64,7 @@ public abstract class CharacterUnit {
     public void movementComplete(Battle battle) {
         removeActionToken();
         if (actionTokens == 0) battle.endTurn();
-        else AbilityMenu.display(this, battle, this.getCharacterJob().getJobAbilityList());
+        else AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
     }
 
     public void setJob(Job job) {

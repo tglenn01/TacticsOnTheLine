@@ -5,7 +5,6 @@ import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
-import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
-    public void startTurn(Battle battle) {
+    public void startTurn() {
         System.out.println("It is " + this.characterName + "'s turn");
         statusEffects.updateStatusEffect(this);
         if (isTargetableInRange()) targetUnit();
@@ -34,12 +33,12 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
-    public void useAbility(Battle battle, Ability chosenAbility) {
+    public void useAbility(Ability chosenAbility) {
         // stub
     }
 
     @Override
-    public void useItem(Battle battle, Consumable item) {
+    public void useItem(Consumable item) {
         // stub
     }
 
@@ -78,7 +77,7 @@ public class NPC extends CharacterUnit {
     private void targetUnit() {
         if (isEnemyInRange()) targetEnemy();
         else if (isNPCInRange() && this.getCharacterJob().hasSupportingAbility()) supportAlly();
-        else this.takeAction(TacticBaseBattle.getInstance().getBattle(), Job.defend, this);
+        else this.takeAction(Job.defend, this);
     }
 
     private void targetEnemy() {
@@ -87,7 +86,7 @@ public class NPC extends CharacterUnit {
         CharacterUnit receivingUnit = targetLowestHealthTargetInRange(possibleTargets);
         List<Ability> possibleAbilities = getPossibleOffensiveAbilities(receivingUnit);
         Ability chosenAbility = getChosenAbility(possibleAbilities);
-        this.takeAction(TacticBaseBattle.getInstance().getBattle(), chosenAbility, receivingUnit);
+        this.takeAction(chosenAbility, receivingUnit);
     }
 
     private CharacterUnit targetLowestHealthTargetInRange(List<CharacterUnit> possibleTargets) {
@@ -115,7 +114,7 @@ public class NPC extends CharacterUnit {
 
     private void supportAlly() {
         if (hasSupportAbility()) giveSupport();
-        else this.takeAction(TacticBaseBattle.getInstance().getBattle(), Job.defend, this);
+        else this.takeAction(Job.defend, this);
     }
 
     private boolean hasSupportAbility() {
@@ -128,7 +127,7 @@ public class NPC extends CharacterUnit {
         CharacterUnit receivingUnit = targetLowestHealthTargetInRange(possibleTargets);
         List<Ability> possibleAbilities = getPossibleDefensiveAbilities(receivingUnit);
         Ability chosenAbility = getChosenAbility(possibleAbilities);
-        this.takeAction(TacticBaseBattle.getInstance().getBattle(), chosenAbility, receivingUnit);
+        this.takeAction(chosenAbility, receivingUnit);
     }
 
     private void getAlliesInRange(List<CharacterUnit> possibleTargets) {

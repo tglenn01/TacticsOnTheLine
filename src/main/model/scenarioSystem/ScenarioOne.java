@@ -6,7 +6,7 @@ import main.model.boardSystem.tiles.GrassTile;
 import main.model.boardSystem.tiles.WaterTile;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
-import main.model.jobSystem.jobs.BattleMage;
+import main.model.jobSystem.jobs.Noble;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ScenarioOne extends Scenario {
     }
 
     protected void createListOfEnemies() {
-        listOfEnemies.add(new NPC(new BattleMage(), "Dummy"));
+        listOfEnemies.add(new NPC(new Noble(), "Dummy"));
     }
 
     @Override

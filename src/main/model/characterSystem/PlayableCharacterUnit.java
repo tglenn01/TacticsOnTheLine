@@ -11,7 +11,6 @@ import main.model.combatSystem.Ability;
 import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
@@ -20,7 +19,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     }
 
     @Override
-    public void startTurn(Battle battle) {
+    public void startTurn() {
         System.out.println("It is " + this.characterName + "'s turn, they have " +
                 characterStatSheet.getMana() + " mana");
         statusEffects.updateStatusEffect(this);
@@ -30,7 +29,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
             @Override
             public void handle(MouseEvent event) {
                 if (!AbilityMenu.isDisplaying()) {
-                    AbilityMenu.display(getCharacterUnit(), battle, getCharacterJob().getJobAbilityList());
+                    AbilityMenu.display(getCharacterUnit(), getCharacterJob().getJobAbilityList());
                 }
                 getCharacterUnit().getSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
             }
@@ -41,11 +40,11 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         Label turnStartNotification = new Label("It is " + this.characterName + "'s Turn");
     }
 
-    public void useAbility(Battle battle, Ability chosenAbility) {
+    public void useAbility(Ability chosenAbility) {
         try {
             chosenAbility.hasEnoughMana(this);
             chosenAbility.displayAbilityRange(this);
-            this.getTarget(battle, chosenAbility);
+            this.getTarget(chosenAbility);
         } catch (OutOfManaException e) {
             Popup outOfManaMessage = new Popup();
             outOfManaMessage.getContent().add(new Label("Out of Mana Choose Again"));
@@ -53,10 +52,10 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
-    public void useItem(Battle battle, Consumable item) {
+    public void useItem(Consumable item) {
         Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
         itemAbility.displayAbilityRange(this);
-        this.getItemTarget(battle, itemAbility, item);
+        this.getItemTarget(itemAbility, item);
     }
 
     public void takeMovement(Ability movementAbility) {
@@ -67,15 +66,15 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
-    public void getTarget(Battle battle, Ability ability) {
-        if (ability.targetsSelf()) this.takeAction(battle, ability, this);
+    public void getTarget(Ability ability) {
+        if (ability.targetsSelf()) this.takeAction(ability, this);
         for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 if (boardSpace.isOccupied()) {
                     ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
                     sprite.setOnMouseClicked(e -> {
                         if (ability.isUnitInRange(this, boardSpace.getOccupyingUnit())) {
-                            this.takeAction(battle, ability, boardSpace.getOccupyingUnit());
+                            this.takeAction(ability, boardSpace.getOccupyingUnit());
                         }
                     });
                 }
@@ -83,7 +82,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
-    public void getItemTarget(Battle battle, Ability ability, Consumable item) {
+    public void getItemTarget(Ability ability, Consumable item) {
         for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 if (boardSpace.isOccupied()) {
@@ -104,6 +103,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     }
 
     protected void takeNextAction() {
-        AbilityMenu.display(this, TacticBaseBattle.getInstance().getBattle(), this.getCharacterJob().getJobAbilityList());
+        AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
     }
 }

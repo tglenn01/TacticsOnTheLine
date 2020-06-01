@@ -3,6 +3,8 @@ package main.model.characterSystem;
 import main.model.itemSystem.ResourceReplenishBonus;
 import main.model.jobSystem.Job;
 
+import java.util.List;
+
 public class StatSheet implements ResourceReplenishBonus {
     public static int BASE_MOVEMENT = 4;
     private int health;
@@ -95,92 +97,116 @@ public class StatSheet implements ResourceReplenishBonus {
         this.health = health;
     }
 
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-        if (maxHealth > HIGHEST_HEALTH) HIGHEST_HEALTH = maxHealth;
-        if (maxHealth < LOWEST_HEALTH || LOWEST_HEALTH == 0) LOWEST_HEALTH = maxHealth;
-        setHealth(maxHealth);
-    }
-
     public void setMana(int mana) {
         this.mana = mana;
-    }
-
-    public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
-        if (maxMana > HIGHEST_MANA) HIGHEST_MANA = maxMana;
-        if (maxMana < LOWEST_MANA || LOWEST_MANA == 0) LOWEST_MANA = maxMana;
-        setMana(maxMana);
     }
 
     public void setStrength(int strength) {
         this.strength = strength;
     }
 
-    public void setBaseStrength(int baseStrength) {
-        this.baseStrength = baseStrength;
-        if (baseStrength > HIGHEST_STRENGTH) HIGHEST_STRENGTH = baseStrength;
-        if (baseStrength < LOWEST_STRENGTH || LOWEST_STRENGTH == 0) LOWEST_STRENGTH = baseStrength;
-        setStrength(baseStrength);
-    }
-
     public void setMagic(int magic) {
         this.magic = magic;
-    }
-
-    public void setBaseMagic(int baseMagic) {
-        this.baseMagic = baseMagic;
-        if (baseMagic > HIGHEST_MAGIC) HIGHEST_MAGIC = baseMagic;
-        if (baseMagic < LOWEST_MAGIC || LOWEST_MAGIC == 0) LOWEST_MAGIC = baseMagic;
-        setMagic(baseMagic);
     }
 
     public void setArmour(int armour) {
         this.armour = armour;
     }
 
-    public void setBaseArmour(int baseArmour) {
-        this.baseArmour = baseArmour;
-        if (baseArmour > HIGHEST_ARMOUR) HIGHEST_ARMOUR = baseArmour;
-        if (baseArmour < LOWEST_ARMOUR || LOWEST_ARMOUR == 0) LOWEST_ARMOUR = baseArmour;
-        setArmour(baseArmour);
-    }
-
     public void setResistance(int resistance) {
         this.resistance = resistance;
-    }
-
-    public void setBaseResistance(int baseResistance) {
-        this.baseResistance = baseResistance;
-        if (baseResistance > HIGHEST_RESISTANCE) HIGHEST_RESISTANCE = baseResistance;
-        if (baseResistance < LOWEST_RESISTANCE || LOWEST_RESISTANCE == 0) LOWEST_RESISTANCE = baseResistance;
-        setResistance(baseResistance);
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
-    public void setBaseSpeed(int baseSpeed) {
-        this.baseSpeed = baseSpeed;
-        if (baseSpeed > HIGHEST_SPEED) HIGHEST_SPEED = baseSpeed;
-        if (baseSpeed < LOWEST_SPEED || LOWEST_SPEED == 0) LOWEST_SPEED = baseSpeed;
-        setSpeed(baseSpeed);
-    }
-
     public void setDexterity(int dexterity) {
         this.dexterity = dexterity;
     }
 
-    public void setBaseDexterity(int baseDexterity) {
-        this.baseDexterity = baseDexterity;
-        if (baseDexterity > HIGHEST_DEXTERITY) HIGHEST_DEXTERITY = baseDexterity;
-        if (baseDexterity < LOWEST_DEXTERITY || LOWEST_DEXTERITY == 0) LOWEST_DEXTERITY = baseDexterity;
-        setDexterity(baseDexterity);
-    }
-
     public void setMovement(int movement) {
         this.movement = movement;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+        updateHighestLowestHealth(maxHealth);
+    }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+        updateHighestLowestMana(maxMana);
+    }
+
+    public void setBaseStrength(int baseStrength) {
+        this.baseStrength = baseStrength;
+        updateHighestLowestStrength(baseStrength);
+    }
+
+    public void setBaseMagic(int baseMagic) {
+        this.baseMagic = baseMagic;
+        updateHighestLowestMagic(baseMagic);
+    }
+
+    public void setBaseArmour(int baseArmour) {
+        this.baseArmour = baseArmour;
+        updateHighestLowestArmour(baseArmour);
+    }
+
+    public void setBaseResistance(int baseResistance) {
+        this.baseResistance = baseResistance;
+        updateHighestLowestResistance(baseResistance);
+    }
+
+    public void setBaseSpeed(int baseSpeed) {
+        this.baseSpeed = baseSpeed;
+        updateHighestLowestSpeed(baseSpeed);
+    }
+
+    public void setBaseDexterity(int baseDexterity) {
+        this.baseDexterity = baseDexterity;
+        updateHighestLowestDexterity(baseDexterity);
+    }
+
+    public static void updateHighestLowestHealth(int maxHealth) {
+        if (maxHealth > HIGHEST_HEALTH) HIGHEST_HEALTH = maxHealth;
+        if (maxHealth < LOWEST_HEALTH || LOWEST_HEALTH == 0) LOWEST_HEALTH = maxHealth;
+    }
+
+    public static void updateHighestLowestMana(int maxMana) {
+        if (maxMana > HIGHEST_MANA) HIGHEST_MANA = maxMana;
+        if (maxMana < LOWEST_MANA || LOWEST_MANA == 0) LOWEST_MANA = maxMana;
+    }
+
+    public static void updateHighestLowestStrength(int baseStrength) {
+        if (baseStrength > HIGHEST_STRENGTH) HIGHEST_STRENGTH = baseStrength;
+        if (baseStrength < LOWEST_STRENGTH || LOWEST_STRENGTH == 0) LOWEST_STRENGTH = baseStrength;
+    }
+
+    public static void updateHighestLowestMagic(int baseMagic) {
+        if (baseMagic > HIGHEST_MAGIC) HIGHEST_MAGIC = baseMagic;
+        if (baseMagic < LOWEST_MAGIC || LOWEST_MAGIC == 0) LOWEST_MAGIC = baseMagic;
+    }
+
+    public static void updateHighestLowestArmour(int baseArmour) {
+        if (baseArmour > HIGHEST_ARMOUR) HIGHEST_ARMOUR = baseArmour;
+        if (baseArmour < LOWEST_ARMOUR || LOWEST_ARMOUR == 0) LOWEST_ARMOUR = baseArmour;
+    }
+
+    public static void updateHighestLowestResistance(int baseResistance) {
+        if (baseResistance > HIGHEST_RESISTANCE) HIGHEST_RESISTANCE = baseResistance;
+        if (baseResistance < LOWEST_RESISTANCE || LOWEST_RESISTANCE == 0) LOWEST_RESISTANCE = baseResistance;
+    }
+
+    public static void updateHighestLowestSpeed(int baseSpeed) {
+        if (baseSpeed > HIGHEST_SPEED) HIGHEST_SPEED = baseSpeed;
+        if (baseSpeed < LOWEST_SPEED || LOWEST_SPEED == 0) LOWEST_SPEED = baseSpeed;
+    }
+
+    public static void updateHighestLowestDexterity(int baseDexterity) {
+        if (baseDexterity > HIGHEST_DEXTERITY) HIGHEST_DEXTERITY = baseDexterity;
+        if (baseDexterity < LOWEST_DEXTERITY || LOWEST_DEXTERITY == 0) LOWEST_DEXTERITY = baseDexterity;
     }
 
     public void revertStrength() {
@@ -202,6 +228,9 @@ public class StatSheet implements ResourceReplenishBonus {
     public void revertSpeed() {
         this.speed = this.baseSpeed;
     }
+
+    public void getRangeOfHealth(int health) {}
+
 
 
     @Override
@@ -260,5 +289,11 @@ public class StatSheet implements ResourceReplenishBonus {
         double value =  SCALE_REFERENCE * ((baseDexterity - LOWEST_DEXTERITY) / (HIGHEST_DEXTERITY - LOWEST_DEXTERITY));
         if (value < 1) return 1;
         return value;
+    }
+
+    public static void updateMaxStats(List<Job> availableJobs) {
+        for (Job job : availableJobs) {
+            job.updateMaxStats();
+        }
     }
 }

@@ -30,7 +30,7 @@ public class Battle {
     private void startNewTurn(CharacterUnit activeCharacter) {
         if (activeCharacter.getIsAlive()) {
             this.activeCharacter = activeCharacter;
-            activeCharacter.startTurn(this);
+            activeCharacter.startTurn();
         }
     }
 

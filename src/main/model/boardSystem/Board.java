@@ -36,44 +36,6 @@ public class Board {
         chosenBoardSpace.setOccupyingUnit(unit);
     }
 
-//    private void movementAction(CharacterUnit activeCharacter) {
-//
-//        for (BoardSpace highlightedSpace : highlightedBoardSpaces) {
-//            highlightedSpace.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                public void handle(MouseEvent event) {
-//                    //event.getButton() == MouseButton.SECONDARY;
-//                    BoardSpace boardSpace = (BoardSpace) event.getSource();
-//                    activeCharacter.getBoardSpace().removeOccupyingUnit();
-//                    setCharacterToBoardSpace(activeCharacter, boardSpace.getXCoordinate(), boardSpace.getYCoordinate());
-//                    activeCharacter.movementComplete(TacticBaseBattle.getInstance().getBattle());
-//
-//                    for (BoardSpace space : highlightedBoardSpaces) {
-//                        space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-//                    }
-//                    stopShowingDisplayedSpaces();
-//                    event.consume();
-//                }
-//            });
-//        }
-//    }
-
-//    private void viewRange(CharacterUnit nonActiveCharacter) {
-//        for (BoardSpace[] boardSpaceArray : boardSpaces) {
-//            for (BoardSpace boardSpace : boardSpaceArray) {
-//                boardSpace.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                    @Override
-//                    public void handle(MouseEvent event) {
-//                        stopShowingDisplayedSpaces();
-//                        for (BoardSpace space : boardSpaceArray) {
-//                            space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-//                        }
-//                        event.consume();
-//                    }
-//                });
-//            }
-//        }
-//    }
-
     public BoardSpace getBoardSpace(int xValue, int yValue) {
         return this.boardSpaces[xValue][yValue];
     }
