@@ -1,6 +1,7 @@
 package main.model.combatSystem.abilities;
 
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
@@ -22,29 +23,32 @@ public class MovementAbility extends Ability {
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-        TacticBaseBattle.getInstance().getCurrentBoard().displayValidSpaces(activeUnit, activeUnit.getCharacterStatSheet().getMovement());
+        TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(activeUnit, activeUnit.getCharacterStatSheet().getMovement());
         List<BoardSpace> spaces = activeUnit.getMovementRange();
-        for (BoardSpace space : activeUnit.getMovementRange()) {
-            space.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        for (BoardSpace space : spaces) {
+            space.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(activeUnit);
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        List<CharacterUnit> list = TacticBaseBattle.getInstance().getCurrentBoard().getMovementHighlightedSpaces().get(space);
 
-                    for (BoardSpace space : spaces) {
-                        space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                        if (space.getOccupyingUnit() != activeUnit && list.contains(activeUnit)) {
+                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                            activeUnit.getBoardSpace().removeOccupyingUnit();
+                            space.setOccupyingUnit(activeUnit);
+                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                            activeUnit.movementComplete(TacticBaseBattle.getInstance().getBattle());
+                        }
                     }
 
-                    if (space.getOccupyingUnit() != activeUnit) {
-                        activeUnit.getBoardSpace().removeOccupyingUnit();
-                        space.setOccupyingUnit(activeUnit);
-                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(activeUnit);
-                        activeUnit.movementComplete(TacticBaseBattle.getInstance().getBattle());
-                    } else {
-                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(activeUnit);
-                        AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                        if (!AbilityMenu.isDisplaying()) {
+                            AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
+                        }
                     }
 
-
+                    space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
                     event.consume();
                 }
             });

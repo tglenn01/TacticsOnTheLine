@@ -131,42 +131,42 @@ public class StatSheet implements ResourceReplenishBonus {
 
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
-        updateHighestLowestHealth(maxHealth);
+        setHealth(maxHealth);
     }
 
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
-        updateHighestLowestMana(maxMana);
+        setMana(maxMana);
     }
 
     public void setBaseStrength(int baseStrength) {
         this.baseStrength = baseStrength;
-        updateHighestLowestStrength(baseStrength);
+        setStrength(baseStrength);
     }
 
     public void setBaseMagic(int baseMagic) {
         this.baseMagic = baseMagic;
-        updateHighestLowestMagic(baseMagic);
+        setMagic(baseMagic);
     }
 
     public void setBaseArmour(int baseArmour) {
         this.baseArmour = baseArmour;
-        updateHighestLowestArmour(baseArmour);
+        setArmour(baseArmour);
     }
 
     public void setBaseResistance(int baseResistance) {
         this.baseResistance = baseResistance;
-        updateHighestLowestResistance(baseResistance);
+        setResistance(baseResistance);
     }
 
     public void setBaseSpeed(int baseSpeed) {
         this.baseSpeed = baseSpeed;
-        updateHighestLowestSpeed(baseSpeed);
+        setSpeed(baseSpeed);
     }
 
     public void setBaseDexterity(int baseDexterity) {
         this.baseDexterity = baseDexterity;
-        updateHighestLowestDexterity(baseDexterity);
+        setDexterity(baseDexterity);
     }
 
     public static void updateHighestLowestHealth(int maxHealth) {
@@ -228,10 +228,6 @@ public class StatSheet implements ResourceReplenishBonus {
     public void revertSpeed() {
         this.speed = this.baseSpeed;
     }
-
-    public void getRangeOfHealth(int health) {}
-
-
 
     @Override
     public int getHealingBonus() {

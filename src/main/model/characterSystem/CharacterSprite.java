@@ -2,6 +2,7 @@ package main.model.characterSystem;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import main.model.graphics.menus.AbilityMenu;
 import main.ui.TacticBaseBattle;
 
 import java.io.FileInputStream;
@@ -27,11 +28,16 @@ public class CharacterSprite {
             this.image = new Image(input);
             this.sprite = new ImageView(image);
             sprite.setOnMouseClicked(e -> {
-                if (unit.isMovementRangeIsVisable()) {
-                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(unit);
+                if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit) {
+                    if (!AbilityMenu.isDisplaying()) {
+                        AbilityMenu.display(unit, unit.getCharacterJob().getJobAbilityList());
+                    }
+                } else if (unit.isMovementRangeIsVisable()) {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
                     unit.setMovementRangeIsVisable(false);
+                    e.consume();
                 } else {
-                    TacticBaseBattle.getInstance().getCurrentBoard().displayValidSpaces(unit, unit.getCharacterStatSheet().getMovement());
+                    TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
                     unit.setMovementRangeIsVisable(true);
                     e.consume();
                 }

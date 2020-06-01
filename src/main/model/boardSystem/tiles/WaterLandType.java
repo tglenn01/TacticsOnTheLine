@@ -6,9 +6,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class WaterTile extends Tile {
+public class WaterLandType extends LandType {
 
-    public WaterTile() {
+    public WaterLandType() {
         super();
 
     }

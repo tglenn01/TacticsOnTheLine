@@ -1,9 +1,7 @@
 package main.model.characterSystem;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import main.exception.OutOfManaException;
 import main.model.boardSystem.BoardSpace;
@@ -12,6 +10,8 @@ import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.TacticBaseBattle;
+
+import java.util.List;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
 
@@ -25,15 +25,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         //startOfTurnNotification();
         this.actionTokens = ACTIONS_PER_TURN;
-        this.getSprite().setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (!AbilityMenu.isDisplaying()) {
-                    AbilityMenu.display(getCharacterUnit(), getCharacterJob().getJobAbilityList());
-                }
-                getCharacterUnit().getSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-            }
-        });
     }
 
     private void startOfTurnNotification() {
@@ -43,7 +34,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     public void useAbility(Ability chosenAbility) {
         try {
             chosenAbility.hasEnoughMana(this);
-            chosenAbility.displayAbilityRange(this);
+            TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, chosenAbility.getRange());
             this.getTarget(chosenAbility);
         } catch (OutOfManaException e) {
             Popup outOfManaMessage = new Popup();
@@ -54,7 +45,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void useItem(Consumable item) {
         Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
-        itemAbility.displayAbilityRange(this);
+        TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, itemAbility.getRange());
         this.getItemTarget(itemAbility, item);
     }
 
@@ -62,22 +53,21 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         try {
             movementAbility.takeAction(this, null);
         } catch (Exception e) {
-
+            // can't die in movement
         }
     }
 
     public void getTarget(Ability ability) {
         if (ability.targetsSelf()) this.takeAction(ability, this);
-        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isOccupied()) {
-                    ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
-                    sprite.setOnMouseClicked(e -> {
-                        if (ability.isUnitInRange(this, boardSpace.getOccupyingUnit())) {
-                            this.takeAction(ability, boardSpace.getOccupyingUnit());
-                        }
-                    });
-                }
+        List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getUnitsInRangeOfAbility(this);
+        if (possibleTargets == null) AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
+        else {
+            for (CharacterUnit possibleTarget : possibleTargets) {
+                possibleTarget.getSprite().setOnMouseClicked(e -> {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    takeAction(ability, possibleTarget);
+                    e.consume();
+                });
             }
         }
     }
@@ -89,17 +79,13 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
                     ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
                     sprite.setOnMouseClicked(e -> {
                         if (ability.isUnitInRange(this, boardSpace.getOccupyingUnit())) {
-                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingDisplayedSpaces(this);
+                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(this);
                             ability.takeAction(this, boardSpace.getOccupyingUnit(), item);
                         }
                     });
                 }
             }
         }
-    }
-
-    public CharacterUnit getCharacterUnit() {
-        return this;
     }
 
     protected void takeNextAction() {

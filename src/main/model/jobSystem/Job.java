@@ -55,7 +55,7 @@ public abstract class Job {
 
     public abstract void updateMaxStats();
 
-    public XYChart.Series<Number, String> getJobStatData(StatSheet statSheet) {
+    public XYChart.Series<Number, String> getRawJobStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
@@ -68,7 +68,7 @@ public abstract class Job {
         return newSeries;
     }
 
-    public XYChart.Series<Number, String> getJobStatSimpleData(StatSheet statSheet) {
+    public XYChart.Series<Number, String> getSimpleJobStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleDexterity(), "Dexterity"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleSpeed(), "Speed"));
@@ -81,7 +81,7 @@ public abstract class Job {
         return newSeries;
     }
 
-    public void getJobStatSimpleData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
+    public void getSimpleJobStatData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
         for (XYChart.Data<Number, String> data : oldSeries.getData()) {
             if (data.getYValue().equals("Health")) {
                 data.setXValue(statSheet.getSimpleHealth());

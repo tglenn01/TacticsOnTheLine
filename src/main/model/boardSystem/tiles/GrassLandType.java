@@ -6,9 +6,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class GrassTile extends Tile {
+public class GrassLandType extends LandType {
 
-    public GrassTile() {
+    public GrassLandType() {
     }
 
     protected void setTileColor() {

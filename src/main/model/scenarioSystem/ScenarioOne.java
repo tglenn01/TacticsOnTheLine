@@ -2,8 +2,8 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
-import main.model.boardSystem.tiles.GrassTile;
-import main.model.boardSystem.tiles.WaterTile;
+import main.model.boardSystem.tiles.GrassLandType;
+import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.jobSystem.jobs.Noble;
@@ -28,12 +28,12 @@ public class ScenarioOne extends Scenario {
         this.scenarioBoard = new Board(10, 10);
         for (BoardSpace[] boardSpaceArray : scenarioBoard.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
-                boardSpace.setLandType(new GrassTile());
+                boardSpace.setLandType(new GrassLandType());
                 boardSpace.setMaxSize(BOARD_SPACE_SIZE, BOARD_SPACE_SIZE);
                 boardSpace.setMinSize(BOARD_SPACE_SIZE, BOARD_SPACE_SIZE);
             }
         }
-        scenarioBoard.getBoardSpace(5, 5).setLandType(new WaterTile());
+        scenarioBoard.getBoardSpace(5, 5).setLandType(new WaterLandType());
     }
 
     @Override

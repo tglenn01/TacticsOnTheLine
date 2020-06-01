@@ -145,8 +145,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
 
         XYChart.Series<Number, String> series1;
         StatSheet statSheet = activeCharacter.getCharacterStatSheet();
-        series1 = activeCharacter.getCharacterJob().getJobStatSimpleData(statSheet);
-        //activeCharacter.getCharacterJob().getJobStatSimpleData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
+        series1 = activeCharacter.getCharacterJob().getSimpleJobStatData(statSheet);
         statChart.getData().add(series1);
         statChart.setMinSize(600, 360);
         this.statChart = statChart;
@@ -212,7 +211,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private void updateData() {
-        activeCharacter.getCharacterJob().getJobStatSimpleData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
+        activeCharacter.getCharacterJob().getSimpleJobStatData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
         abilities.getChildren().clear();
         abilities.getChildren().add(abilityIcons());
     }

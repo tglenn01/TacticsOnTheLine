@@ -2,22 +2,21 @@ package main.model.boardSystem;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import main.model.boardSystem.tiles.Tile;
-import main.model.boardSystem.tiles.WaterTile;
+import main.model.boardSystem.tiles.LandType;
+import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 
 public class BoardSpace extends Pane {
-    private Tile landType;
+    private LandType landType;
     private CharacterUnit occupyingUnit;
     private int xCoordinate;
     private int yCoordinate;
     public final static int BOARD_SPACE_SIZE = 150;
 
-    public BoardSpace(Tile landType, int xCoordinate, int yCoordinate) {
+    public BoardSpace(LandType landType, int xCoordinate, int yCoordinate) {
         setLandType(landType);
         setXValue(xCoordinate);
         setYValue(yCoordinate);
-        setUpActionEvent();
     }
 
     public void setXValue(int xValue) {
@@ -44,35 +43,34 @@ public class BoardSpace extends Pane {
         this.occupyingUnit = null;
     }
 
-    private void setUpActionEvent() {
-
-    }
-
     public CharacterUnit getOccupyingUnit() {
         return this.occupyingUnit;
     }
 
-    public void setLandType(Tile landType) {
+    public void setLandType(LandType landType) {
         this.landType = landType;
         this.setBackground(landType.getTileColour());
     }
 
-    public boolean isValidSpace(BoardSpace currentSpace, int movement) {
-        if (this.landType.getClass() == WaterTile.class) return false;
+    public boolean isValidMovementSpace(BoardSpace currentSpace, int movement) {
+        if (this.landType.getClass() == WaterLandType.class) return false;
         if (this.occupyingUnit != null) return false;
-        return inRange(currentSpace, movement);
+        return isInRange(currentSpace, movement);
     }
 
-    public boolean inRange(BoardSpace currentSpace, int movement) {
+    public boolean isValidAbilitySpace(BoardSpace currentSpace, int range) {
+        return isInRange(currentSpace, range);
+    }
+
+    private boolean isInRange(BoardSpace currentSpace, int movement) {
         int simpleX = this.xCoordinate - currentSpace.getXCoordinate();
         int simpleY = this.yCoordinate - currentSpace.getYCoordinate();
 
         return (Math.abs(simpleX) + Math.abs(simpleY)) <= movement;
     }
 
-    public void highlightSpace(boolean highlighted) {
-        if (highlighted) this.setBackground(landType.highlightSpace());
-        else this.setBackground(landType.unHighlightedSpace());
+    public void changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR colour) {
+        this.setBackground(landType.highlightSpace(colour));
     }
 
     public int getXCoordinate() {

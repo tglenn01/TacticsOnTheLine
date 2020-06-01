@@ -213,7 +213,7 @@ public class NPC extends CharacterUnit {
 
     private boolean isUnitInRangeOfAbility(Ability chosenAbility, CharacterUnit receivingUnit) {
         BoardSpace receivingUnitBoardSpace = receivingUnit.getBoardSpace();
-        return receivingUnitBoardSpace.inRange(this.boardSpace, chosenAbility.getRange());
+        return receivingUnitBoardSpace.isValidAbilitySpace(this.boardSpace, chosenAbility.getRange());
     }
 
     private List<Ability> getPossibleOffensiveAbilities(CharacterUnit receivingUnit) {

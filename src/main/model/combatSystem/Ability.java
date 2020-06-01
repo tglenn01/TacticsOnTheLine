@@ -6,7 +6,6 @@ import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.itemSystem.Consumable;
-import main.ui.TacticBaseBattle;
 
 public abstract class Ability {
     public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM, MANA_GAIN, MOVEMENT}
@@ -58,10 +57,6 @@ public abstract class Ability {
         } else {
             throw new OutOfManaException();
         }
-    }
-
-    public void displayAbilityRange(CharacterUnit activeUnit) {
-        TacticBaseBattle.getInstance().getCurrentBoard().displayValidSpaces(activeUnit, this.range);
     }
 
     public boolean isAreaOfEffect() {

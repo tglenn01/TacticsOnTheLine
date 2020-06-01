@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CharacterUnit {
-    protected enum CharacterType {ALLY, ENEMY};
     protected final int ACTIONS_PER_TURN = 2;
     protected String characterName;
     protected Job characterJob;
@@ -53,7 +52,7 @@ public abstract class CharacterUnit {
             unitIsDeadException.printDeathMessage();
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
-            removeActionToken();
+            removeActionToken(ability);
             if (actionTokens == 0) TacticBaseBattle.getInstance().getBattle().endTurn();
             else takeNextAction();
         }
@@ -62,7 +61,7 @@ public abstract class CharacterUnit {
     protected abstract void takeNextAction();
 
     public void movementComplete(Battle battle) {
-        removeActionToken();
+        removeActionToken(Job.move);
         if (actionTokens == 0) battle.endTurn();
         else AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
     }
@@ -126,7 +125,7 @@ public abstract class CharacterUnit {
 
     public List<BoardSpace> getMovementRange() {
         List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (Map.Entry<BoardSpace, List<CharacterUnit>> entry : TacticBaseBattle.getInstance().getCurrentBoard().getHighlightedBoardSpaces().entrySet()) {
+        for (Map.Entry<BoardSpace, List<CharacterUnit>> entry : TacticBaseBattle.getInstance().getCurrentBoard().getMovementHighlightedSpaces().entrySet()) {
             if (entry.getValue().contains(this)) possibleSpaces.add(entry.getKey());
         }
 
@@ -137,7 +136,7 @@ public abstract class CharacterUnit {
         List<BoardSpace> possibleSpaces = new LinkedList<>();
         for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.inRange(this.boardSpace, this.getCharacterJob().getMaxAbilityRange())) {
+                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxAbilityRange())) {
                     possibleSpaces.add(boardSpace);
                 }
             }
@@ -149,8 +148,9 @@ public abstract class CharacterUnit {
         return abilityManaCost < characterMana;
     }
 
-    protected void removeActionToken() {
-        this.actionTokens--;
+    protected void removeActionToken(Ability usedAbility) {
+        if (usedAbility.getAbilityName().equals("Defend")) this.actionTokens = 0;
+        else this.actionTokens--;
     }
 }
 
