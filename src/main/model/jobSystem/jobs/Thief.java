@@ -47,7 +47,7 @@ public class Thief extends Job {
         statSheet.setBaseResistance(jobResistance);
         statSheet.setBaseSpeed(jobSpeed);
         statSheet.setBaseDexterity(jobDexterity);
-        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT + 10);
     }
 
     @Override

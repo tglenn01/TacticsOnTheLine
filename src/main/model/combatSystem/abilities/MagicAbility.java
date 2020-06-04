@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities;
 
+import main.model.characterSystem.CharacterUnit;
+
 public class MagicAbility extends DamageAbility {
 
     public MagicAbility(String abilityName, int manaCost, int range, int areaOfEffect,
@@ -8,8 +10,9 @@ public class MagicAbility extends DamageAbility {
     }
 
     @Override
-    protected int calculateDamage() {
-        int damage = (activeUnitStatSheet.getMagic() + this.damage) - receivingUnitStatSheet.getResistance();
+    protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        int damage = (activeUnit.getCharacterStatSheet().getMagic() + this.damage)
+                - receivingUnit.getCharacterStatSheet().getResistance();
         if (damage < 0) damage = 0;
         return damage;
     }

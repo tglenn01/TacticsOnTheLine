@@ -23,6 +23,7 @@ public class ItemMenu {
         Button returnButton = new Button("return");
         returnButton.setOnAction(e -> {
             window.hide();
+            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
             AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
         });
 

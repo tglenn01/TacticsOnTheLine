@@ -3,7 +3,6 @@ package main.ui;
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
-import main.model.characterSystem.PlayableCharacterUnit;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -66,7 +65,7 @@ public class TurnOrderCompiler {
         List<CharacterUnit> alivePlayableCharacters = new ArrayList<>();
         for (Map.Entry<CharacterUnit, Integer> entry : fieldedCharacters.entrySet()) {
             CharacterUnit unit = entry.getKey();
-            if (unit.getClass() == PlayableCharacterUnit.class) {
+            if (TacticBaseBattle.getInstance().getPartyMemberList().contains(unit)) {
                 alivePlayableCharacters.add(unit);
             }
         }
@@ -77,8 +76,17 @@ public class TurnOrderCompiler {
         return charactersReadyToTakeAction;
     }
 
+    public List<CharacterUnit> getFieldedCharacters() {
+        List<CharacterUnit> fieldedCharactersList = new ArrayList<>();
+        for (Map.Entry<CharacterUnit, Integer> entry : this.fieldedCharacters.entrySet()) {
+            fieldedCharactersList.add(entry.getKey());
+        }
+        return fieldedCharactersList;
+    }
+
     public void removeDeadCharacterFromFieldedCharacters(CharacterUnit deadCharacter) throws BattleIsOverException {
         fieldedCharacters.remove(deadCharacter);
+        deadCharacter.getBoardSpace().removeOccupyingUnit();
         if (isBattleOver()) throw new BattleIsOverException();
     }
 

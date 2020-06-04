@@ -9,11 +9,13 @@ import java.util.List;
 public class Battle {
     private TurnOrderCompiler turnOrder;
     private List<CharacterUnit> activeCharacters;
+    private List<CharacterUnit> enemyCharacters;
     private CharacterUnit activeCharacter;
     private int cursor;
 
     public Battle(List<CharacterUnit> playableCharacters, Scenario scenario) {
         TacticBaseBattle.getInstance().setBattle(this);
+        enemyCharacters = scenario.getListOfEnemies();
         turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
         updateNextRound();
     }
@@ -23,7 +25,7 @@ public class Battle {
         if (activeCharacters.isEmpty()) updateNextRound();
         else {
             cursor = 0;
-            startNewTurn(activeCharacters.get(0));
+            startNewTurn(activeCharacters.get(cursor));
         }
     }
 
@@ -49,6 +51,10 @@ public class Battle {
     }
 
     public CharacterUnit getActiveCharacter() { return activeCharacter; }
+
+    public List<CharacterUnit> getEnemyCharacters() {
+        return this.enemyCharacters;
+    }
 
     public void removeDeadCharacter(CharacterUnit deadCharacter) {
         try{

@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities;
 
+import main.model.characterSystem.CharacterUnit;
+
 public class PhysicalAbility extends DamageAbility {
 
     public PhysicalAbility(String abilityName, int manaCost, int range, int areaOfEffect,
@@ -8,8 +10,8 @@ public class PhysicalAbility extends DamageAbility {
     }
 
     @Override
-    protected int calculateDamage() {
-        int damage = (activeUnitStatSheet.getStrength() + this.damage) - receivingUnitStatSheet.getArmour();
+    protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        int damage = (activeUnit.getCharacterStatSheet().getStrength() + this.damage) - receivingUnit.getCharacterStatSheet().getArmour();
         if (damage < 0) damage = 0;
         return damage;
     }

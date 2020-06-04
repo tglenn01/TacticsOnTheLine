@@ -52,6 +52,7 @@ public class BoardSpace extends Pane {
         this.setBackground(landType.getTileColour());
     }
 
+
     public boolean isValidMovementSpace(BoardSpace currentSpace, int movement) {
         if (this.landType.getClass() == WaterLandType.class) return false;
         if (this.occupyingUnit != null) return false;
@@ -87,5 +88,9 @@ public class BoardSpace extends Pane {
 
     public boolean isOccupied() {
         return this.occupyingUnit != null;
+    }
+
+    public LandType getLandType() {
+        return this.landType;
     }
 }

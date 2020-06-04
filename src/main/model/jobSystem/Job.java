@@ -7,6 +7,8 @@ import main.model.combatSystem.abilities.MovementAbility;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.itemSystem.ConsumableItemInventory;
+import main.model.jobSystem.jobs.Bard;
+import main.model.jobSystem.jobs.Cleric;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +23,13 @@ public abstract class Job {
             Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
     protected String jobTitle;
     protected List<Ability> jobAbilityList;
-    protected int maxAbilityReach;
+    protected int maxDamageAbilityReach;
+    protected int maxSupportingAbilityReach;
 
     public Job() {
         jobAbilityList = new ArrayList<>();
-        maxAbilityReach = 0;
+        maxDamageAbilityReach = 0;
+        maxSupportingAbilityReach = 0;
         initializeAbilities();
         updateMaxAbilityReach();
     }
@@ -39,7 +43,9 @@ public abstract class Job {
 
     private void updateMaxAbilityReach() {
         for (Ability ability : jobAbilityList) {
-            if (ability.getRange() > maxAbilityReach) maxAbilityReach = ability.getRange();
+            if (ability.targetsAlly()) {
+                if (ability.getRange() > maxSupportingAbilityReach) maxSupportingAbilityReach = ability.getRange();
+            } else if (ability.getRange() > maxDamageAbilityReach) maxDamageAbilityReach = ability.getRange();
         }
     }
 
@@ -110,9 +116,18 @@ public abstract class Job {
         }
     }
 
-    public int getMaxAbilityRange() {
-        return this.maxAbilityReach;
+    public int getMaxDamageAbilityReach() {
+        return this.maxDamageAbilityReach;
     }
+
+    public int getMaxSupportingAbilityReach() {
+        return this.maxSupportingAbilityReach;
+    }
+
+    public int getMaxTotalAbilityReach() {
+        return Math.max(this.maxDamageAbilityReach, this.maxSupportingAbilityReach);
+    }
+
 
     public boolean hasSupportingAbility() {
         for (Ability ability : jobAbilityList) {
@@ -120,5 +135,9 @@ public abstract class Job {
                     && !ability.getAbilityName().equals("Item")) return true;
         }
         return false;
+    }
+
+    public boolean isSupportJob() {
+        return this.getClass() == Bard.class || this.getClass() == Cleric.class;
     }
 }

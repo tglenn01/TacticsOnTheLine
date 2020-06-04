@@ -5,7 +5,6 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
-import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.Battle;
@@ -53,17 +52,24 @@ public abstract class CharacterUnit {
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
             removeActionToken(ability);
-            if (actionTokens == 0) TacticBaseBattle.getInstance().getBattle().endTurn();
+            if (actionTokens <= 0) TacticBaseBattle.getInstance().getBattle().endTurn();
             else takeNextAction();
         }
+    }
+
+    protected void takeItemAction(Ability ability, CharacterUnit receivingUnit, Consumable consumable) {
+        ability.takeAction(this, receivingUnit, consumable);
+        removeActionToken(ability);
+        if (actionTokens <= 0) TacticBaseBattle.getInstance().getBattle().endTurn();
+        else takeNextAction();
     }
 
     protected abstract void takeNextAction();
 
     public void movementComplete(Battle battle) {
         removeActionToken(Job.move);
-        if (actionTokens == 0) battle.endTurn();
-        else AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
+        if (actionTokens <= 0) battle.endTurn();
+        else takeNextAction();
     }
 
     public void setJob(Job job) {
@@ -87,11 +93,17 @@ public abstract class CharacterUnit {
         this.sprite = new CharacterSprite(this, fileLocation);
     }
 
-    public void setAlive(boolean deathStatus) { this.isAlive = deathStatus; }
+    public void setAlive(boolean deathStatus) {
+        this.isAlive = deathStatus;
+    }
 
-    public String getCharacterName() { return characterName; }
+    public String getCharacterName() {
+        return characterName;
+    }
 
-    public Job getCharacterJob() { return characterJob; }
+    public Job getCharacterJob() {
+        return characterJob;
+    }
 
     public StatSheet getCharacterStatSheet() {
         return characterStatSheet;
@@ -101,7 +113,9 @@ public abstract class CharacterUnit {
         return isAlive;
     }
 
-    public CharacterStatusEffects getStatusEffects() { return this.statusEffects; }
+    public CharacterStatusEffects getStatusEffects() {
+        return this.statusEffects;
+    }
 
     public BoardSpace getBoardSpace() {
         return this.boardSpace;
@@ -133,10 +147,59 @@ public abstract class CharacterUnit {
     }
 
     public List<BoardSpace> getActionRange() {
+        List<BoardSpace> damageActionRange = getDamageActionRange();
+        List<BoardSpace> supportActionRance = getSupportActionRange();
+        if (damageActionRange.size() > supportActionRance.size()) return damageActionRange;
+        else return supportActionRance;
+    }
+
+    public List<BoardSpace> getActionRangeOfGivenAbility(Ability ability) {
         List<BoardSpace> possibleSpaces = new LinkedList<>();
         for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxAbilityRange())) {
+                if (boardSpace.isValidAbilitySpace(this.boardSpace, ability.getRange())) {
+                    possibleSpaces.add(boardSpace);
+                }
+            }
+        }
+        return possibleSpaces;
+    }
+
+    // ability.getRange will ways be greater than 1
+    public List<BoardSpace> getTargetedBoardSpacesForAreaOfEffect(Ability ability) {
+        List<BoardSpace> possibleSpaces = new LinkedList<>();
+
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+
+                int simpleX = boardSpace.getXCoordinate() - this.boardSpace.getXCoordinate();
+                int simpleY = boardSpace.getYCoordinate() - this.boardSpace.getYCoordinate();
+
+                if ((Math.abs(simpleX) + Math.abs(simpleY)) < ability.getAreaOfEffect()) {
+                    possibleSpaces.add(boardSpace);
+                }
+            }
+        }
+        return possibleSpaces;
+    }
+
+    protected List<BoardSpace> getDamageActionRange() {
+        List<BoardSpace> possibleSpaces = new LinkedList<>();
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxDamageAbilityReach())) {
+                    possibleSpaces.add(boardSpace);
+                }
+            }
+        }
+        return possibleSpaces;
+    }
+
+    protected List<BoardSpace> getSupportActionRange() {
+        List<BoardSpace> possibleSpaces = new LinkedList<>();
+        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+            for (BoardSpace boardSpace : boardSpaceArray) {
+                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxSupportingAbilityReach())) {
                     possibleSpaces.add(boardSpace);
                 }
             }

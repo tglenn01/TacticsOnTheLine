@@ -52,4 +52,8 @@ public abstract class LandType {
         return new Background(highlightFill);
     }
 
+    public boolean isTerrainable() {
+        return this.getClass() == GrassLandType.class;
+    }
+
 }

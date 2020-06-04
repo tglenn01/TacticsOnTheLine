@@ -69,7 +69,6 @@ public class Board {
     }
 
     public void stopShowingMovementSpaces(CharacterUnit unit) {
-
         for (BoardSpace[] possibleSpaces : this.boardSpaces) {
             for (BoardSpace possibleSpace : possibleSpaces) {
                 List<CharacterUnit> list = movementHighlightedSpaces.get(possibleSpace);
@@ -81,6 +80,7 @@ public class Board {
         }
     }
 
+    // remove the colour to either movement highlighted or normal
     public void stopShowingAbilitySpaces() {
         for (BoardSpace boardSpace : abilityHighlightedSpace) {
             if (movementHighlightedSpaces.get(boardSpace).isEmpty()) boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
@@ -114,5 +114,9 @@ public class Board {
 
     public Map<BoardSpace, List<CharacterUnit>> getMovementHighlightedSpaces() {
         return movementHighlightedSpaces;
+    }
+
+    public boolean isAbilitySpacesShowing() {
+        return !abilityHighlightedSpace.isEmpty();
     }
 }

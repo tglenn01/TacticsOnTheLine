@@ -86,16 +86,4 @@ public abstract class Ability {
     public int getRange() {
         return this.range;
     }
-
-    public boolean isUnitInRange(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return false; // stub
-//        boolean validTarget = false;
-//        for (BoardSpace boardSpace : TacticBaseBattle.getInstance().getCurrentBoard().getHighlightedBoardSpaces()) {
-//            if (boardSpace.getOccupyingUnit() == receivingUnit) {
-//                validTarget = true;
-//                break;
-//            }
-//        }
-//        return validTarget;
-    }
 }

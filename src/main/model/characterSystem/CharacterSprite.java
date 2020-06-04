@@ -1,7 +1,10 @@
 package main.model.characterSystem;
 
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import main.model.graphics.menus.AbilityMenu;
 import main.ui.TacticBaseBattle;
 
@@ -27,19 +30,24 @@ public class CharacterSprite {
             FileInputStream input = new FileInputStream(fileLocation);
             this.image = new Image(input);
             this.sprite = new ImageView(image);
-            sprite.setOnMouseClicked(e -> {
-                if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit) {
-                    if (!AbilityMenu.isDisplaying()) {
-                        AbilityMenu.display(unit, unit.getCharacterJob().getJobAbilityList());
+            sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton() != MouseButton.PRIMARY ||
+                            TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) return;
+                    if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit) {
+                        if (!AbilityMenu.isDisplaying()) {
+                            AbilityMenu.display(unit, unit.getCharacterJob().getJobAbilityList());
+                        }
+                    } else if (unit.isMovementRangeIsVisable()) {
+                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
+                        unit.setMovementRangeIsVisable(false);
+                        event.consume();
+                    } else {
+                        TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
+                        unit.setMovementRangeIsVisable(true);
+                        event.consume();
                     }
-                } else if (unit.isMovementRangeIsVisable()) {
-                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
-                    unit.setMovementRangeIsVisable(false);
-                    e.consume();
-                } else {
-                    TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
-                    unit.setMovementRangeIsVisable(true);
-                    e.consume();
                 }
             });
         } catch (Exception e) {

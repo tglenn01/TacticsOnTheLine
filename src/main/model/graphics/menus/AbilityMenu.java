@@ -20,7 +20,6 @@ public class AbilityMenu {
     public static boolean isDisplaying;
 
     public static void display(CharacterUnit activeUnit, List<Ability> abilityList) {
-        isDisplaying = true;
         Stage window = new Stage();
         window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         window.setTitle("Ability Menu");
@@ -29,16 +28,18 @@ public class AbilityMenu {
             AbilityButton abilityButton = new AbilityButton(ability);
             abilityButtonList.add(abilityButton);
             abilityButton.setOnAction(e -> {
-                isDisplaying = false;
                 window.close();
                 if (ability.getClass() == ConsumableAbility.class) openItemMenu(activeUnit, window);
-                if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
+                else if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
                 else activeUnit.useAbility(ability);
             });
         }
         VBox node = new VBox();
         node.getChildren().addAll(abilityButtonList);
         Scene scene = new Scene(node);
+        window.setOnCloseRequest(e -> isDisplaying = false);
+        window.setOnHidden(e -> isDisplaying = false);
+        window.setOnShown(e -> isDisplaying = true);
         window.setScene(scene);
         window.show();
     }
@@ -52,8 +53,6 @@ public class AbilityMenu {
             Popup noItemsMessage = new Popup();
             noItemsMessage.getContent().add(new Label("No More Items, Choose Again"));
         } else {
-            isDisplaying = false;
-            window.close();
             ItemMenu.display(activeUnit);
         }
     }
