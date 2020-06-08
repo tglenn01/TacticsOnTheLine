@@ -2,39 +2,60 @@ package main.model.combatSystem.abilities;
 
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
+import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
+import main.model.combatSystem.StatusEffect;
 import main.model.itemSystem.ResourceReplenishBonus;
 
 public class StatusEffectAbility extends SupportiveAbility {
     protected static int HEAL_CONSTANT = 10;
+    private int duration;
+    private int potency;
 
     public StatusEffectAbility(String abilityName, int manaCost, int range, int areaOfEffect, int duration,
-                               AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, duration, abilityType, abilityDescription);
+                               AbilityType abilityType, int potency, String abilityDescription) {
+        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+        this.duration = duration;
+        this.potency = potency;
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
+        if (isAreaOfEffect()) calculateAreaOfEffect(activeUnit, receivingUnit);
+        else calculateSingleTarget(activeUnit, receivingUnit);
+    }
+
+    private void calculateSingleTarget(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         if (this.abilityType == AbilityType.HEAL) {
             healUnit(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
-            return; // can remove this if I add the regen ability
         } if (this.abilityType == AbilityType.MANA_GAIN) {
             gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
-            return;
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
-            buffAttack(receivingUnitStatSheet);
+            int amountChanged = buffAttack(receivingUnitStatSheet, this.potency);
+            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(this.abilityType, this.potency, amountChanged));
         } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
-            buffDefense(receivingUnitStatSheet);
+            int amountChanged = buffDefense(receivingUnitStatSheet, this.potency);
+            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(this.abilityType, this.potency, amountChanged));
         } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
-            debuffAttack(receivingUnitStatSheet);
+            int amountChanged = debuffAttack(receivingUnitStatSheet, this.potency);
+            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(this.abilityType, this.potency, amountChanged));
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
-            debuffDefense(receivingUnitStatSheet);
+            int amountChanged = debuffDefense(receivingUnitStatSheet, this.potency);
+            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(this.abilityType, this.potency, amountChanged));
         }
-        receivingUnit.getStatusEffects().addStatusEffect(this.abilityType, this.duration);
     }
+
+    private void calculateAreaOfEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        for (BoardSpace targetedBoardSpace : receivingUnit.getTargetedBoardSpacesForAreaOfEffect(this)) {
+            if (targetedBoardSpace.isOccupied()) {
+                calculateSingleTarget(activeUnit, targetedBoardSpace.getOccupyingUnit());
+            }
+        }
+    }
+
 
     protected int getHealAmount(ResourceReplenishBonus bonus) {
         return bonus.getHealingBonus() + HEAL_CONSTANT;

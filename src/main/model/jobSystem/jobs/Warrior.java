@@ -27,7 +27,7 @@ public class Warrior extends Job {
                 Ability.AbilityType.DAMAGE,18, .70,
                 "Club a neighbouring enemy on the head with low accuracy");
         Ability focus = new StatusEffectAbility("Focus", 4, 1, 1, 3,
-                Ability.AbilityType.ATTACK_BUFF, "Buff the attack of a neighbouring ally");
+                Ability.AbilityType.ATTACK_BUFF, 4, "Buff the attack of a neighbouring ally");
         Ability stone = new PhysicalAbility("Stone", 1, 4, 1,
                 Ability.AbilityType.DAMAGE,8, .60,
                 "A low chance to damage an enemy from afar");

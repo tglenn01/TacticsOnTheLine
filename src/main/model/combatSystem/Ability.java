@@ -50,6 +50,7 @@ public abstract class Ability {
 
     public int getAreaOfEffect() { return this.areaOfEffect;}
 
+
     public void hasEnoughMana(CharacterUnit activeUnit) throws OutOfManaException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         if (activeUnitStatSheet.getMana() >= manaCost) {

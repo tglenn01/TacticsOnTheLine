@@ -8,19 +8,10 @@ import main.model.combatSystem.Ability;
 import main.model.itemSystem.ResourceReplenishBonus;
 
 public abstract class SupportiveAbility extends Ability {
-    protected static int STRENGTH_CONSTANT = 3;
-    protected static int DEFENSE_CONSTANT = 2;
-    protected int duration;
-
-    public SupportiveAbility(String abilityName, int manaCost, int range, int areaOfEffect, int duration,
-                               AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
-        this.duration = duration;
-    }
 
     public SupportiveAbility(String abilityName, int manaCost, int range, int areaOfEffect,
                              AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+        super(abilityName, manaCost, range, areaOfEffect,  abilityType, abilityDescription);
     }
 
     @Override
@@ -59,39 +50,41 @@ public abstract class SupportiveAbility extends Ability {
 
     protected abstract int getManaGainAmount(ResourceReplenishBonus bonus);
 
-    protected void buffAttack(StatSheet receivingUnitStatSheet) {
-        int initialStrength = receivingUnitStatSheet.getStrength();
-        receivingUnitStatSheet.setStrength(initialStrength + STRENGTH_CONSTANT);
+    protected int buffAttack(StatSheet receivingUnitStatSheet, int potency) {
+        receivingUnitStatSheet.addStrength(potency);
         System.out.println("Attack is now buffed to " + receivingUnitStatSheet.getStrength());
+        return potency;
     }
 
-    protected void buffDefense(StatSheet receivingUnitStatSheet) {
-        int initialDefense = receivingUnitStatSheet.getArmour();
-        receivingUnitStatSheet.setArmour(initialDefense + DEFENSE_CONSTANT);
+    protected int buffDefense(StatSheet receivingUnitStatSheet, int potency) {
+        receivingUnitStatSheet.addArmour(potency);
         System.out.println("Defense is now buffed to " + receivingUnitStatSheet.getArmour());
+        return potency;
     }
 
-    protected void debuffAttack(StatSheet receivingUnitStatSheet) {
-        int initialStrength = receivingUnitStatSheet.getStrength();
-        if (initialStrength - STRENGTH_CONSTANT > 0) {
-            receivingUnitStatSheet.setStrength(initialStrength - STRENGTH_CONSTANT);
+    protected int debuffAttack(StatSheet receivingUnitStatSheet, int potency) {
+        if (receivingUnitStatSheet.getStrength() >= potency) {
+            receivingUnitStatSheet.removeStrength(potency);
+            System.out.println("Attack is now debuffed to " + receivingUnitStatSheet.getStrength());
+            return potency;
         } else {
-            receivingUnitStatSheet.setStrength(0);
+            int initialStrength = receivingUnitStatSheet.getStrength();
+            receivingUnitStatSheet.removeStrength(initialStrength); // sets strength at 0
+            System.out.println("Attack is now debuffed to " + receivingUnitStatSheet.getStrength());
+            return initialStrength;
         }
-        System.out.println("Attack is now debuffed to " + receivingUnitStatSheet.getStrength());
     }
 
-    protected void debuffDefense(StatSheet receivingUnitStatSheet) {
-        int initialDefense = receivingUnitStatSheet.getArmour();
-        if (initialDefense - DEFENSE_CONSTANT > 0) {
-            receivingUnitStatSheet.setArmour(initialDefense - DEFENSE_CONSTANT);
+    protected int debuffDefense(StatSheet receivingUnitStatSheet, int potency) {
+        if (receivingUnitStatSheet.getArmour() >= potency) {
+            receivingUnitStatSheet.removeArmour(potency);
+            System.out.println("Armour is now debuffed to " + receivingUnitStatSheet.getArmour());
+            return potency;
         } else {
-            receivingUnitStatSheet.setArmour(0);
+            int initialArmour = receivingUnitStatSheet.getArmour();
+            receivingUnitStatSheet.removeStrength(initialArmour); // sets armour at 0
+            System.out.println("Armour is now debuffed to " + receivingUnitStatSheet.getArmour());
+            return initialArmour;
         }
-        System.out.println("Defense is now debuffed to " + receivingUnitStatSheet.getArmour());
-    }
-
-    public int getDuration() {
-        return duration;
     }
 }

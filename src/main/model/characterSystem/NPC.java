@@ -240,20 +240,26 @@ public class NPC extends CharacterUnit {
 
     // assume that there is at least one valid ability that will be in range and have enough mana for
     protected Ability getChosenAbility(List<Ability> possibleAbilities) {
+        if (possibleAbilities.isEmpty()) return Job.defend;
+
         Random randomAbilitySelector = new Random();
         Ability chosenAbility = possibleAbilities.get(randomAbilitySelector.nextInt(possibleAbilities.size()));
 
 
+
         if (chosenAbility.getAbilityType() == Ability.AbilityType.ITEM) {
+            possibleAbilities.remove(chosenAbility);
             chosenAbility = getChosenAbility(possibleAbilities); // NPCs can't use items
         }
         try {
             chosenAbility.hasEnoughMana(this);
+            System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
         } catch (OutOfManaException e) {
-            getChosenAbility(possibleAbilities); // keep repeating till it gets valid ability
+            possibleAbilities.remove(chosenAbility);
+            chosenAbility = getChosenAbility(possibleAbilities); // keep repeating till it gets valid ability
         }
 
-        System.out.println(this.characterName + " has used " + chosenAbility.getAbilityName());
+
         return chosenAbility;
     }
 

@@ -28,7 +28,7 @@ public class Archer extends Job {
                 Ability.AbilityType.DAMAGE,8, .95,
                 "Accurate attack from afar to damage a single foe");
         Ability hinder = new StatusEffectAbility("Hinder", 7, 6, 1, 3,
-                Ability.AbilityType.DEFENSE_DEBUFF, "Fire a trap to lower an enemies " +
+                Ability.AbilityType.DEFENSE_DEBUFF, 4, "Fire a trap to lower an enemies " +
                 "defense from afar");
         Ability flurry = new PhysicalAbility("Flurry", 7, 6, 2,
                 Ability.AbilityType.DAMAGE,8, .95,

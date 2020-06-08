@@ -20,7 +20,7 @@ public abstract class Job {
             Ability.AbilityType.DAMAGE,0, .90,
             "Attack an enemy");
     public static Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
-            Ability.AbilityType.DEFENSE_BUFF, "Strengthen one's own defenses");
+            Ability.AbilityType.DEFENSE_BUFF, 3, "Strengthen one's own defenses");
     protected String jobTitle;
     protected List<Ability> jobAbilityList;
     protected int maxDamageAbilityReach;

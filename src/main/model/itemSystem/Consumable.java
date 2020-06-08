@@ -27,6 +27,10 @@ public class Consumable implements ResourceReplenishBonus {
         return consumableName;
     }
 
+    public int getPotency() {
+        return this.potency;
+    }
+
     public int getDuration() {
         return duration;
     }

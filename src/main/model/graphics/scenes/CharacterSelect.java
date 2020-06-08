@@ -1,7 +1,5 @@
 package main.model.graphics.scenes;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,13 +32,11 @@ import java.util.List;
 
 import static main.model.characterSystem.StatSheet.SCALE_REFERENCE;
 
-public class CharacterSelect extends DefaultScene implements EventHandler<ActionEvent> {
+public class CharacterSelect extends DefaultScene {
     private final int PARTY_SIZE = 4;
     private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
     private List<JobButton> jobButtonList;
-    private Button advanceButton;
-    private Button previousButton;
     private BarChart<Number, String> statChart;
     private AbilityIcons abilities;
     private Pane portrait;
@@ -54,6 +50,13 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         initializeGraphics();
     }
 
+    public CharacterSelect(List<CharacterUnit> partyMemberList) {
+        this.partyMemberList = partyMemberList;
+        activeCharacter = partyMemberList.get(PARTY_SIZE - 1);
+        characterCursor = PARTY_SIZE - 1;
+        initializeGraphics();
+    }
+
     private void initializeCharacterList() {
         CharacterUnit joshua = new Joshua();
         CharacterUnit estelle = new Estelle();
@@ -63,6 +66,7 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         partyMemberList.add(estelle);
         partyMemberList.add(kloe);
         partyMemberList.add(cassius);
+        TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
         activeCharacter = partyMemberList.get(characterCursor);
     }
 
@@ -75,8 +79,8 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         this.abilities = abilityIcons();
         this.statChart = statChart();
         this.characterName = characterName();
-        this.advanceButton = advanceButton();
-        this.previousButton = previousButton();
+        Button advanceButton = advanceButton();
+        Button previousButton = previousButton();
         grid.add(jobs, 0, 8, 10, 2);
         grid.add(portrait, 0, 0, 4, 8);
         grid.add(abilities, 4, 6, 6, 2);
@@ -101,7 +105,10 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
         jobButtonList = new ArrayList<>();
         for (Job job : jobList) {
             JobButton jobButton = new JobButton(job.getJobTitle(), job);
-            jobButton.setOnAction(this);
+            jobButton.setOnAction(e -> {
+                activeCharacter.setJob(job);
+                updateData();
+            });
             jobButton.setMinSize(100, 100);
             jobButtonList.add(jobButton);
         }
@@ -162,48 +169,33 @@ public class CharacterSelect extends DefaultScene implements EventHandler<Action
     }
 
     private Button advanceButton() {
-        this.advanceButton = new Button("Advance");
+        Button advanceButton = new Button("Advance");
         advanceButton.setAlignment(Pos.BOTTOM_RIGHT);
-        advanceButton.setOnAction(this);
+        advanceButton.setOnAction(e -> {
+            if (characterCursor == PARTY_SIZE - 1) new ScenarioSelectScreen();
+            else {
+                characterCursor++;
+                nextCharacter();
+            }
+        });
         return advanceButton;
     }
 
     private Button previousButton() {
-        this.previousButton = new Button("Previous");
+        Button previousButton = new Button("Previous");
         previousButton.setAlignment(Pos.BOTTOM_RIGHT);
-        previousButton.setOnAction(this);
-        return previousButton;
-    }
-
-    @Override
-    public void handle(ActionEvent event) {
-        for (JobButton jobButton : jobButtonList) {
-            if (event.getSource() == jobButton) {
-                activeCharacter.setJob(jobButton.getJob());
-                updateData();
-            }
-        }
-        if (event.getSource() == previousButton) {
+        previousButton.setOnAction(e -> {
             if (characterCursor == 0) new MainMenu();
             else {
                 characterCursor--;
-                nextCharacter(characterCursor);
+                nextCharacter();
             }
-        }
-        if (event.getSource() == advanceButton) {
-            if (characterCursor == (PARTY_SIZE - 1)) {
-                TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
-                TacticBaseBattle.getInstance().scenarioSelect();
-            }
-            else {
-                characterCursor++;
-                nextCharacter(characterCursor);
-            }
-        }
+        });
+        return previousButton;
     }
 
-    private void nextCharacter(int newCharacter) {
-        activeCharacter = partyMemberList.get(newCharacter);
+    private void nextCharacter() {
+        activeCharacter = partyMemberList.get(characterCursor);
         updateData();
         characterName.setText(activeCharacter.getCharacterName());
         portrait.getChildren().clear();

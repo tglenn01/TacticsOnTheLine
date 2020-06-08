@@ -24,8 +24,8 @@ public class Lancer extends Job {
         Ability lunge = new PhysicalAbility("Lunge", 4, 2, 1,
                 Ability.AbilityType.DAMAGE,12, .95,
                 "Strike a nearby enemy with a powerful lunge");
-        Ability overwhelm = new StatusEffectAbility("Overwhelm", 20, 2, 4,
-                3, Ability.AbilityType.DEFENSE_DEBUFF,
+        Ability overwhelm = new StatusEffectAbility("Overwhelm", 20, 2, 2,
+                3, Ability.AbilityType.DEFENSE_DEBUFF, 2,
                 "Scare all neighbouring enemies, weakening their defense");
         Ability weakPoint = new PhysicalAbility("Weakpoint", 6, 1, 1,
                 Ability.AbilityType.DAMAGE,16, .80,

@@ -134,6 +134,22 @@ public class StatSheet implements ResourceReplenishBonus {
         setHealth(maxHealth);
     }
 
+    public void removeStrength(int removedStrength) {
+        this.strength -= removedStrength;
+    }
+
+    public void removeArmour(int removedArmour) {
+        this.armour -= removedArmour;
+    }
+
+    public void addStrength(int addedStrength) {
+        this.strength += addedStrength;
+    }
+
+    public void addArmour(int addedArmour) {
+        this.armour += addedArmour;
+    }
+
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
         setMana(maxMana);

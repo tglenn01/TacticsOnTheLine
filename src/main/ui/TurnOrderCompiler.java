@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class TurnOrderCompiler {
     private static int HIGHEST_VALUE = 100;
-    private static int SPEED_CONSTANT = 10;
+    private static int SPEED_CONSTANT = 20;
     private Map<CharacterUnit, Integer> fieldedCharacters;
     private List<CharacterUnit> charactersReadyToTakeAction;
 

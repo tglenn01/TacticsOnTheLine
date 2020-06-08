@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbilityMenu {
-    public static boolean isDisplaying;
+    private static boolean isDisplaying;
+    private static Stage window;
 
     public static void display(CharacterUnit activeUnit, List<Ability> abilityList) {
-        Stage window = new Stage();
+        window = new Stage();
         window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         window.setTitle("Ability Menu");
         List<AbilityButton> abilityButtonList = new ArrayList<>();
@@ -46,6 +47,10 @@ public class AbilityMenu {
 
     public static boolean isDisplaying() {
         return isDisplaying;
+    }
+
+    public static void closeWindow() {
+        window.close();
     }
 
     private static void openItemMenu(CharacterUnit activeUnit, Stage window) {

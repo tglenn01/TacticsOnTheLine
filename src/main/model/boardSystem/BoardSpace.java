@@ -3,7 +3,6 @@ package main.model.boardSystem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import main.model.boardSystem.tiles.LandType;
-import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 
 public class BoardSpace extends Pane {
@@ -54,7 +53,7 @@ public class BoardSpace extends Pane {
 
 
     public boolean isValidMovementSpace(BoardSpace currentSpace, int movement) {
-        if (this.landType.getClass() == WaterLandType.class) return false;
+        if (!this.landType.isTerrainable()) return false;
         if (this.occupyingUnit != null) return false;
         return isInRange(currentSpace, movement);
     }

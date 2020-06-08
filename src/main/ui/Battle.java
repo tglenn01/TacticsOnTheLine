@@ -2,6 +2,9 @@ package main.ui;
 
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
+import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.scenes.DefeatScreen;
+import main.model.graphics.scenes.VictoryScreen;
 import main.model.scenarioSystem.Scenario;
 
 import java.util.List;
@@ -60,8 +63,9 @@ public class Battle {
         try{
             turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
         } catch (BattleIsOverException e) {
-            //if (turnOrder.didUserWin()) new VictoryScreen();
-            //else new DefeatScreen();
+            AbilityMenu.closeWindow();
+            if (turnOrder.didUserWin()) new VictoryScreen();
+            else new DefeatScreen();
         }
     }
 }

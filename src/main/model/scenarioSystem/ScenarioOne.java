@@ -6,6 +6,7 @@ import main.model.boardSystem.tiles.GrassLandType;
 import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
+import main.model.jobSystem.jobs.Cleric;
 import main.model.jobSystem.jobs.Noble;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ScenarioOne extends Scenario {
 
     protected void createListOfEnemies() {
         listOfEnemies.add(new NPC(new Noble(), "Dummy"));
+        listOfEnemies.add(new NPC(new Cleric(), "Cleric"));
     }
 
     @Override

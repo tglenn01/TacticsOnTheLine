@@ -33,6 +33,9 @@ public class ScenarioSelectScreen extends DefaultScene implements EventHandler<A
         HBox scenarios = getPossibleScenarios();
 
         Button returnButton = new Button("return");
+        returnButton.setOnAction(e -> {
+            new CharacterSelect(TacticBaseBattle.getInstance().getPartyMemberList());
+        });
         returnButton.setAlignment(Pos.BOTTOM_LEFT);
 
 

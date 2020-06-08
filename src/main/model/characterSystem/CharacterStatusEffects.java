@@ -1,56 +1,48 @@
 package main.model.characterSystem;
 
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.StatusEffect;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class CharacterStatusEffects {
-    protected Map<Ability.AbilityType, Integer> statusEffectDuration;
-
+    private List<StatusEffect> statusEffectList;
 
     public CharacterStatusEffects() {
-        statusEffectDuration = new HashMap<>();
+        statusEffectList = new LinkedList<>();
     }
 
-    public void addStatusEffect(Ability.AbilityType statusEffect, int duration) {
-        if (statusEffectDuration.containsKey(statusEffect)) {
-            int value = statusEffectDuration.get(statusEffect);
-            int newValue = value + duration;
-            statusEffectDuration.put(statusEffect, newValue);
-        } else statusEffectDuration.put(statusEffect, duration);
+    public void addStatusEffect(StatusEffect statusEffect) {
+        statusEffectList.add(statusEffect);
     }
 
     public void updateStatusEffect(CharacterUnit activeUnit) {
-        List<Map.Entry<Ability.AbilityType, Integer>> toRemove = new ArrayList<>();
-        for (Map.Entry<Ability.AbilityType, Integer> entry : statusEffectDuration.entrySet()) {
-            int newDuration = entry.getValue();
+        List<StatusEffect> toRemove = new LinkedList<>();
+        for (StatusEffect statusEffect : statusEffectList) {
+            int newDuration = statusEffect.getDuration();
             newDuration--;
-            if (newDuration == 0) {
-                toRemove.add(entry);
-            } else {
-                entry.setValue(newDuration);
-                System.out.println(entry.getKey() + " for " + newDuration + " more turns");
+            if (newDuration == 0) toRemove.add(statusEffect);
+            else {
+                statusEffect.setDuration(newDuration);
+                System.out.println(statusEffect.getAbilityType() + " for " + newDuration + " more turns");
             }
         }
-        for (Map.Entry<Ability.AbilityType, Integer> entry : toRemove) {
-            statusEffectDuration.remove(entry);
-            System.out.println(entry.getKey() + " Has ended");
-            removeStatusEffect(activeUnit, entry);
+        for (StatusEffect endedStatusEffect : toRemove) {
+            removeStatusEffect(activeUnit, endedStatusEffect);
+            System.out.println(endedStatusEffect.getAbilityType() + " Has ended");
         }
     }
 
-    private void removeStatusEffect(CharacterUnit activeUnit, Map.Entry<Ability.AbilityType, Integer> entry) {
-        Ability.AbilityType statusEffect = entry.getKey();
-        if (statusEffect == Ability.AbilityType.ATTACK_BUFF ||
-                statusEffect == Ability.AbilityType.ATTACK_DEBUFF) {
-            activeUnit.getCharacterStatSheet().revertStrength();
-        } if (statusEffect == Ability.AbilityType.DEFENSE_BUFF ||
-                statusEffect == Ability.AbilityType.DEFENSE_DEBUFF) {
-            activeUnit.getCharacterStatSheet().revertArmour();
-        }
-        statusEffectDuration.remove(entry);
+    // revert the stats that were gained/lost (if attack was gained remove the same amount of attack)
+    private void removeStatusEffect(CharacterUnit activeUnit, StatusEffect endedStatusEffect) {
+        Ability.AbilityType abilityType = endedStatusEffect.getAbilityType();
+        StatSheet statSheet = activeUnit.getCharacterStatSheet();
+        int amountChanged = endedStatusEffect.getAmountChanged();
+        if (abilityType == Ability.AbilityType.ATTACK_BUFF) statSheet.removeStrength(amountChanged);
+        else if (abilityType == Ability.AbilityType.ATTACK_DEBUFF) statSheet.addStrength(amountChanged);
+        else if (abilityType == Ability.AbilityType.DEFENSE_BUFF) statSheet.removeArmour(amountChanged);
+        else if (abilityType == Ability.AbilityType.DEFENSE_DEBUFF) statSheet.addArmour(amountChanged);
+        statusEffectList.remove(endedStatusEffect);
     }
 }

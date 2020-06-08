@@ -6,13 +6,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class GrassLandType extends LandType {
+public class WoodsType extends LandType {
 
-    public GrassLandType() {
+    public WoodsType() {
     }
 
     protected void setTileColor() {
-        this.tileColor = new Color(0, 0.5, 0, 1.0);
+        this.tileColor = new Color(0, .30, 0, 1);
     }
 
     @Override
@@ -21,7 +21,5 @@ public class GrassLandType extends LandType {
                 new CornerRadii(5), new Insets(0));
         this.background = new Background(background_fill);
     }
-
-
 
 }

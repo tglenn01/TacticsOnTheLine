@@ -22,13 +22,13 @@ public class Bard extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability sing = new StatusEffectAbility("Sing", 10, 3, 4, 1,
-                Ability.AbilityType.HEAL, "Calm your allies nerves with a song, healing them");
-        Ability serenade = new StatusEffectAbility("Serenade", 10, 4, 4,
-                3, Ability.AbilityType.DEFENSE_BUFF,
+        Ability sing = new StatusEffectAbility("Sing", 10, 4, 2, 1,
+                Ability.AbilityType.HEAL, 2, "Calm your allies nerves with a song, healing them");
+        Ability serenade = new StatusEffectAbility("Serenade", 10, 4, 2,
+                3, Ability.AbilityType.DEFENSE_BUFF, 2,
                 "Serenade your allies, buffing their defense");
-        Ability inspire = new StatusEffectAbility("Inspire", 10, 4, 4,
-                3, Ability.AbilityType.ATTACK_BUFF,
+        Ability inspire = new StatusEffectAbility("Inspire", 10, 4, 2,
+                3, Ability.AbilityType.ATTACK_BUFF, 2,
                 "Inspire your allies, boosting their attack");
         jobAbilityList.add(sing);
         jobAbilityList.add(serenade);

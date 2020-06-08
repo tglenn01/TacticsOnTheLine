@@ -30,7 +30,7 @@ public class BattleMage extends Job {
                 Ability.AbilityType.DAMAGE,10, .70,
                 "deal light fire damage to multiple enemies from afar");
         Ability cripple = new StatusEffectAbility("Cripple", 6, 2, 1,
-                3, Ability.AbilityType.ATTACK_DEBUFF, "Lower a nearby enemies attack");
+                3, Ability.AbilityType.ATTACK_DEBUFF, 6, "Lower a nearby enemies attack");
         jobAbilityList.add(zap);
         jobAbilityList.add(scorch);
         jobAbilityList.add(cripple);
