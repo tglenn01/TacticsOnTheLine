@@ -3,6 +3,7 @@ package main.model.boardSystem;
 import main.model.boardSystem.tiles.GrassLandType;
 import main.model.boardSystem.tiles.LandType;
 import main.model.characterSystem.CharacterUnit;
+import main.model.combatSystem.Ability;
 
 import java.util.*;
 
@@ -89,11 +90,12 @@ public class Board {
         abilityHighlightedSpace.clear();
     }
 
-    public List<CharacterUnit> getUnitsInRangeOfAbility(CharacterUnit activeUnit) {
+    public List<CharacterUnit> getUnitsInRangeOfAbility(CharacterUnit activeUnit, Ability chosenAbility) {
         List<CharacterUnit> unitsInRangeOfAbilities = new ArrayList<>();
         for (BoardSpace boardSpace : abilityHighlightedSpace) {
             if (boardSpace.isOccupied()) {
-                unitsInRangeOfAbilities.add(boardSpace.getOccupyingUnit());
+                if (chosenAbility.targetsAlly()) unitsInRangeOfAbilities.add(boardSpace.getOccupyingUnit()); // can include oneself
+                else if (boardSpace.getOccupyingUnit() != activeUnit) unitsInRangeOfAbilities.add(boardSpace.getOccupyingUnit());; //don't include oneself
             }
         }
         return unitsInRangeOfAbilities;

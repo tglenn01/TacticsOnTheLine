@@ -36,7 +36,7 @@ public class Battle {
         if (activeCharacter.getIsAlive()) {
             this.activeCharacter = activeCharacter;
             activeCharacter.startTurn();
-        }
+        } else endTurn();
     }
 
     public void endTurn() {

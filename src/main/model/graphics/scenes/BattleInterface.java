@@ -36,6 +36,7 @@ public class BattleInterface extends DefaultScene {
         scrollPane.setFitToHeight(true);
         scrollPane.setContent(boardLayout);
         Scene newScene = new Scene(scrollPane);
+        addCSS(newScene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(newScene);
     }
 }

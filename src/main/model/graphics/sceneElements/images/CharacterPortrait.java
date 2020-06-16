@@ -1,4 +1,4 @@
-package main.model.characterSystem;
+package main.model.graphics.sceneElements.images;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

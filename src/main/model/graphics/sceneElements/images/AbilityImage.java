@@ -1,12 +1,12 @@
-package main.model.graphics.icons;
+package main.model.graphics.sceneElements.images;
 
 import javafx.scene.control.Label;
 import main.model.combatSystem.Ability;
 
-public class AbilityIcon extends Label {
+public class AbilityImage extends Label {
     private Ability ability;
 
-    public AbilityIcon(Ability ability) {
+    public AbilityImage(Ability ability) {
         this.ability = ability;
         this.setText(ability.getAbilityName());
     }

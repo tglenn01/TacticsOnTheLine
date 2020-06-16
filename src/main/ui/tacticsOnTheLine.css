@@ -1,0 +1,19 @@
+
+#tacticsOnTheLineLabel {
+    -fx-text-fill: #f5f5b9;
+    -fx-font: 80px "URW Chancery L", cursive;
+}
+
+#mainMenuElement {
+    -fx-text-fill: #f5f5b9;
+    -fx-font-size: 30px;
+    -fx-font-family: "URW Chancery L", cursive;
+}
+
+#mainMenuElement:hover {
+    -fx-text-fill: #dbff4d;
+}
+
+#background {
+    -fx-background-color: #a3f3ff;
+}

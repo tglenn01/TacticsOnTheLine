@@ -7,14 +7,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import main.exception.OutOfManaException;
-import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.TacticBaseBattle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
@@ -48,7 +46,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void useItem(Consumable item) {
         Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
-        TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, itemAbility.getRange());
         this.getItemTarget(itemAbility, item);
     }
 
@@ -62,15 +59,16 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void getTarget(Ability chosenAbility) {
         TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, chosenAbility.getRange());
-        List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getUnitsInRangeOfAbility(this);
+        List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getUnitsInRangeOfAbility(this, chosenAbility);
         if (chosenAbility.targetsSelf()) {
             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
             this.takeAction(chosenAbility, this);
-        }
-        else if (possibleTargets == null) AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
-        else {
+        } else if (possibleTargets.isEmpty()) {
+            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+            AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
+        } else {
             for (CharacterUnit possibleTarget : possibleTargets) {
-                possibleTarget.getSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         if (possibleTargets.contains(possibleTarget) && (event.getButton() == MouseButton.PRIMARY)) {
@@ -78,31 +76,31 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
                             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                             takeAction(chosenAbility, possibleTarget);
                         }
-                        possibleTarget.getSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                        possibleTarget.getSprite().removeEventHandler(MouseEvent.MOUSE_RELEASED, this);
                     }
-                });
+                };
+                possibleTarget.getSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, handler);
             }
         }
     }
 
-    public void getItemTarget(Ability ability, Consumable item) {
-        List<CharacterUnit> possibleTargets = new ArrayList<>();
-        for (BoardSpace boardSpace : getActionRangeOfGivenAbility(ability)) {
-            if (boardSpace.getOccupyingUnit() != null) {
-                possibleTargets.add(boardSpace.getOccupyingUnit());
-                ImageView sprite = boardSpace.getOccupyingUnit().getSprite();
-                sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (possibleTargets.contains(boardSpace.getOccupyingUnit())) {
-                            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                            possibleTargets.clear();
-                            sprite.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-                            takeItemAction(ability, boardSpace.getOccupyingUnit(), item);
-                        }
+    public void getItemTarget(Ability itemAbility, Consumable item) {
+        TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, itemAbility.getRange());
+        List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getUnitsInRangeOfAbility(this, itemAbility);
+
+        for (CharacterUnit possibleTarget : possibleTargets) {
+            ImageView sprite = possibleTarget.getSprite();
+            sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (possibleTargets.contains(possibleTarget) && (event.getButton() == MouseButton.PRIMARY)) {
+                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                        possibleTargets.clear();
+                        sprite.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                        takeItemAction(itemAbility, boardSpace.getOccupyingUnit(), item);
                     }
-                });
-            }
+                }
+            });
         }
     }
 

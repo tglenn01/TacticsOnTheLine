@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static main.model.characterSystem.CharacterPortrait.ENEMY_PORTRAIT;
-import static main.model.characterSystem.CharacterSprite.ENEMY_SPRITE;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.ENEMY_PORTRAIT;
+import static main.model.graphics.sceneElements.images.CharacterSprite.ENEMY_SPRITE;
 
 public class NPC extends CharacterUnit {
 

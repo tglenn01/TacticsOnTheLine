@@ -4,8 +4,8 @@ import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.jobs.Noble;
 
-import static main.model.characterSystem.CharacterPortrait.CASSIUS_PORTRAIT;
-import static main.model.characterSystem.CharacterSprite.CASSIUS_SPRITE;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.CASSIUS_PORTRAIT;
+import static main.model.graphics.sceneElements.images.CharacterSprite.CASSIUS_SPRITE;
 
 public class Cassius extends PlayableCharacterUnit {
 

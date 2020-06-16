@@ -17,6 +17,10 @@ public class CharacterStatusEffects {
         statusEffectList.add(statusEffect);
     }
 
+    public List<StatusEffect> getStatusEffects() {
+        return this.statusEffectList;
+    }
+
     public void updateStatusEffect(CharacterUnit activeUnit) {
         List<StatusEffect> toRemove = new LinkedList<>();
         for (StatusEffect statusEffect : statusEffectList) {

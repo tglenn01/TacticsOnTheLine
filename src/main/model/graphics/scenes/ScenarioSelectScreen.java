@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.model.graphics.DefaultScene;
-import main.model.graphics.icons.ScenarioButton;
+import main.model.graphics.sceneElements.buttons.ScenarioButton;
 import main.model.scenarioSystem.ScenarioOne;
 import main.model.scenarioSystem.ScenarioTwo;
 import main.ui.TacticBaseBattle;
@@ -44,6 +44,7 @@ public class ScenarioSelectScreen extends DefaultScene implements EventHandler<A
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(10.00);
         Scene scene = new Scene(layout, FINAL_WIDTH, FINAL_HEIGHT);
+        addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 

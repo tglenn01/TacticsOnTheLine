@@ -4,8 +4,8 @@ import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.jobs.Lancer;
 
-import static main.model.characterSystem.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.characterSystem.CharacterSprite.*;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
+import static main.model.graphics.sceneElements.images.CharacterSprite.*;
 
 public class Estelle extends PlayableCharacterUnit {
 

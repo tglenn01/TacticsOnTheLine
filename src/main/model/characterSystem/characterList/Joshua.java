@@ -4,8 +4,8 @@ import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.jobs.Thief;
 
-import static main.model.characterSystem.CharacterPortrait.JOSHUA_PORTRAIT;
-import static main.model.characterSystem.CharacterSprite.JOSHUA_SPRITE;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.JOSHUA_PORTRAIT;
+import static main.model.graphics.sceneElements.images.CharacterSprite.JOSHUA_SPRITE;
 
 public class Joshua extends PlayableCharacterUnit {
 

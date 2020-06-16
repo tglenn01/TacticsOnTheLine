@@ -1,11 +1,12 @@
-package main.model.characterSystem;
+package main.model.graphics.sceneElements.images;
 
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.CharacterStatsMenu;
 import main.ui.TacticBaseBattle;
 
 import java.io.FileInputStream;
@@ -30,24 +31,25 @@ public class CharacterSprite {
             FileInputStream input = new FileInputStream(fileLocation);
             this.image = new Image(input);
             this.sprite = new ImageView(image);
-            sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if (event.getButton() != MouseButton.PRIMARY ||
-                            TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) return;
-                    if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit) {
-                        if (!AbilityMenu.isDisplaying()) {
+            sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
+                        !TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) {
+                    if (!AbilityMenu.isDisplaying()) {
                             AbilityMenu.display(unit, unit.getCharacterJob().getJobAbilityList());
-                        }
-                    } else if (unit.isMovementRangeIsVisable()) {
+                    }
+                } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
+                        event.getButton() == MouseButton.PRIMARY) {
+                    if (unit.isMovementRangeIsVisable()) {
                         TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
                         unit.setMovementRangeIsVisable(false);
-                        event.consume();
                     } else {
                         TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
                         unit.setMovementRangeIsVisable(true);
-                        event.consume();
                     }
+                    event.consume();
+                } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
+                        event.getButton() == MouseButton.SECONDARY) {
+                    if (!CharacterStatsMenu.isDisplaying()) CharacterStatsMenu.display(unit);
                 }
             });
         } catch (Exception e) {

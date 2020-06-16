@@ -9,7 +9,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
-import main.model.graphics.icons.AbilityButton;
+import main.model.graphics.sceneElements.buttons.AbilityButton;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.TacticBaseBattle;
 

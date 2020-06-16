@@ -5,6 +5,8 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
+import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.Battle;

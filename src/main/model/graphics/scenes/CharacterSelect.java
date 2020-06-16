@@ -5,10 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -16,33 +14,33 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.StatSheet;
 import main.model.characterSystem.characterList.Cassius;
 import main.model.characterSystem.characterList.Estelle;
 import main.model.characterSystem.characterList.Joshua;
 import main.model.characterSystem.characterList.Kloe;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
-import main.model.graphics.icons.AbilityIcons;
+import main.model.graphics.sceneElements.images.CharacterNameLabel;
+import main.model.graphics.sceneElements.list.AbilitiesList;
+import main.model.graphics.sceneElements.list.CharacterStatChart;
 import main.model.jobSystem.Job;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.model.characterSystem.StatSheet.SCALE_REFERENCE;
-
 public class CharacterSelect extends DefaultScene {
     private final int PARTY_SIZE = 4;
     private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
     private List<JobButton> jobButtonList;
-    private BarChart<Number, String> statChart;
-    private AbilityIcons abilities;
+    private CharacterStatChart statChart;
+    private AbilitiesList abilities;
     private Pane portrait;
     private Label characterName;
     private int characterCursor = 0;
 
+    // called when you open this screen for the first time
     public CharacterSelect() {
         partyMemberList = new ArrayList<>();
         jobButtonList = new ArrayList<>();
@@ -50,6 +48,7 @@ public class CharacterSelect extends DefaultScene {
         initializeGraphics();
     }
 
+    // called when you have already picked your party
     public CharacterSelect(List<CharacterUnit> partyMemberList) {
         this.partyMemberList = partyMemberList;
         activeCharacter = partyMemberList.get(PARTY_SIZE - 1);
@@ -76,9 +75,10 @@ public class CharacterSelect extends DefaultScene {
         grid.setPadding(new Insets(10, 10, 10, 10));
         Pane jobs = initializeJobButtons();
         this.portrait = characterPortrait();
-        this.abilities = abilityIcons();
-        this.statChart = statChart();
-        this.characterName = characterName();
+        this.abilities = new AbilitiesList(activeCharacter.getCharacterJob().getJobAbilityList(), 600, 120);
+        this.statChart = new CharacterStatChart(activeCharacter, 600, 360,
+                new NumberAxis(), new CategoryAxis());
+        this.characterName = new CharacterNameLabel(activeCharacter, 600, 120);
         Button advanceButton = advanceButton();
         Button previousButton = previousButton();
         grid.add(jobs, 0, 8, 10, 2);
@@ -97,6 +97,7 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setHalignment(abilities, HPos.CENTER);
         GridPane.setValignment(characterName, VPos.CENTER);
         Scene scene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
+        addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 
@@ -129,43 +130,10 @@ public class CharacterSelect extends DefaultScene {
         portrait.fitHeightProperty().bind(window.heightProperty());
         portrait.setPreserveRatio(false);
         window.getChildren().add(portrait);
-        window.setPrefSize(400, 550);
+        window.setPrefSize(400, 640);
         //portrait.setFitWidth(400);
         //portrait.setFitHeight(550);
         return window;
-    }
-
-    private AbilityIcons abilityIcons() {
-        AbilityIcons icons = new AbilityIcons(activeCharacter.getCharacterJob().getJobAbilityList());
-        return icons;
-    }
-
-    private BarChart<Number, String> statChart() {
-        final NumberAxis xAxis = new NumberAxis();
-        final CategoryAxis yAxis = new CategoryAxis();
-        BarChart<Number,String> statChart = new BarChart<>(xAxis, yAxis);
-
-        statChart.setLegendVisible(false);
-        xAxis.setAutoRanging(false);
-        xAxis.setLowerBound(0);
-        xAxis.setUpperBound(SCALE_REFERENCE);
-
-        XYChart.Series<Number, String> series1;
-        StatSheet statSheet = activeCharacter.getCharacterStatSheet();
-        series1 = activeCharacter.getCharacterJob().getSimpleJobStatData(statSheet);
-        statChart.getData().add(series1);
-        statChart.setMinSize(600, 360);
-        this.statChart = statChart;
-
-        return statChart;
-    }
-
-    private Label characterName() {
-        Label characterName = new Label(activeCharacter.getCharacterName());
-
-        characterName.setMinSize(600, 120);
-        characterName.setAlignment(Pos.CENTER);
-        return characterName;
     }
 
     private Button advanceButton() {
@@ -185,7 +153,7 @@ public class CharacterSelect extends DefaultScene {
         Button previousButton = new Button("Previous");
         previousButton.setAlignment(Pos.BOTTOM_RIGHT);
         previousButton.setOnAction(e -> {
-            if (characterCursor == 0) new MainMenu();
+            if (characterCursor == 0) new TitleScreen();
             else {
                 characterCursor--;
                 nextCharacter();
@@ -202,9 +170,9 @@ public class CharacterSelect extends DefaultScene {
         portrait.getChildren().add(this.characterPortrait());
     }
 
+
     private void updateData() {
-        activeCharacter.getCharacterJob().getSimpleJobStatData(statChart.getData().get(0), activeCharacter.getCharacterStatSheet());
-        abilities.getChildren().clear();
-        abilities.getChildren().add(abilityIcons());
+        abilities.updateData(activeCharacter.getCharacterJob().getJobAbilityList());
+        statChart.updateData(activeCharacter);
     }
 }

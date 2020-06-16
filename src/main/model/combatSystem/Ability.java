@@ -64,13 +64,7 @@ public abstract class Ability {
         return this.areaOfEffect > 1;
     }
 
-    public boolean targetsAlly() {
-        return this.abilityType == Ability.AbilityType.HEAL ||
-                this.abilityType == Ability.AbilityType.ATTACK_BUFF ||
-                this.abilityType == Ability.AbilityType.DEFENSE_BUFF ||
-                this.abilityType == Ability.AbilityType.ITEM ||
-                this.abilityType == AbilityType.MANA_GAIN;
-    }
+    public abstract boolean targetsAlly();
 
     public boolean targetsSelf() {
         return this.abilityName.equals("Defend") ||

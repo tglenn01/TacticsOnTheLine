@@ -84,4 +84,8 @@ public abstract class DamageAbility extends Ability {
     }
 
     protected abstract int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit);
+
+    public boolean targetsAlly() {
+        return false;
+    }
 }

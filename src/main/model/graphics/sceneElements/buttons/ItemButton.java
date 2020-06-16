@@ -1,4 +1,4 @@
-package main.model.graphics.icons;
+package main.model.graphics.sceneElements.buttons;
 
 import javafx.scene.control.Button;
 import main.model.itemSystem.Consumable;

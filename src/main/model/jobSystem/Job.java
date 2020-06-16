@@ -61,6 +61,7 @@ public abstract class Job {
 
     public abstract void updateMaxStats();
 
+    // Used for Character Menu's and won't include health and mana
     public XYChart.Series<Number, String> getRawJobStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
@@ -69,8 +70,6 @@ public abstract class Job {
         newSeries.getData().add(new XYChart.Data<>(statSheet.getArmour(), "Armour"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getMagic(), "Magic"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getStrength(), "Strength"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getMana(), "Mana"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getHealth(), "Health"));
         return newSeries;
     }
 

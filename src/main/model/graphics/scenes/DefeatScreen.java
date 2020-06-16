@@ -20,13 +20,14 @@ public class DefeatScreen extends DefaultScene {
         tacticOnTheLine.setAlignment(Pos.CENTER_LEFT);
         Button returnToMainMenuButton = new Button("Accept Fate, and conquer another day");
         returnToMainMenuButton.setAlignment(Pos.CENTER_LEFT);
-        returnToMainMenuButton.setOnAction(e -> new MainMenu());
+        returnToMainMenuButton.setOnAction(e -> new TitleScreen());
 
         VBox layout = new VBox();
         layout.getChildren().addAll(tacticOnTheLine, returnToMainMenuButton);
         layout.setAlignment(Pos.CENTER_LEFT);
         layout.setSpacing(10.00);
         Scene scene = new Scene(layout, FINAL_WIDTH, FINAL_HEIGHT);
+        addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 }

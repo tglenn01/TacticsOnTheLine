@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
-import main.model.graphics.icons.ItemButton;
+import main.model.graphics.sceneElements.buttons.ItemButton;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.TacticBaseBattle;

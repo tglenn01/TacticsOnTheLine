@@ -2,7 +2,7 @@ package main.ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import main.model.graphics.scenes.MainMenu;
+import main.model.graphics.scenes.TitleScreen;
 
 import static main.model.graphics.DefaultScene.FINAL_HEIGHT;
 import static main.model.graphics.DefaultScene.FINAL_WIDTH;
@@ -19,7 +19,7 @@ public class Main extends Application {
         primaryStage.setTitle("Tactics On The Line");
         primaryStage.setMinWidth(FINAL_WIDTH);
         primaryStage.setMinHeight(FINAL_HEIGHT);
-        new MainMenu();
+        new TitleScreen();
         primaryStage.show();
     }
 }

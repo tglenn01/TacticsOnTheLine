@@ -1,4 +1,4 @@
-package main.model.graphics.icons;
+package main.model.graphics.sceneElements.list;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,19 +10,20 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import main.model.combatSystem.Ability;
+import main.model.graphics.sceneElements.images.AbilityImage;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityIcons extends HBox implements EventHandler<MouseEvent> {
-    private List<AbilityIcon> icons;
+public class AbilitiesList extends HBox implements EventHandler<MouseEvent> {
+    private List<AbilityImage> icons;
 
-    public AbilityIcons(List<Ability> abilityList) {
+    public AbilitiesList(List<Ability> abilityList, int minXSize, int minYSize) {
         this.icons = new ArrayList<>();
         for (Ability ability : abilityList) {
             if (ability.isUnique()) {
-                AbilityIcon icon = new AbilityIcon(ability);
+                AbilityImage icon = new AbilityImage(ability);
                 icons.add(icon);
                 this.getChildren().add(icon);
                 icon.setPrefSize(100, 100);
@@ -31,12 +32,25 @@ public class AbilityIcons extends HBox implements EventHandler<MouseEvent> {
         }
         this.setSpacing(10);
         this.setAlignment(Pos.CENTER);
-        this.setPrefSize(600, 120);
+        this.setPrefSize(minXSize, minYSize);
+    }
+
+    public void updateData(List<Ability> abilityList) {
+        this.getChildren().clear();
+        for (Ability ability : abilityList) {
+            if (ability.isUnique()) {
+                AbilityImage icon = new AbilityImage(ability);
+                icons.add(icon);
+                this.getChildren().add(icon);
+                icon.setPrefSize(100, 100);
+                icon.setOnMouseEntered(this);
+            }
+        }
     }
 
     @Override
     public void handle(MouseEvent event) {
-        for (AbilityIcon icon : icons) {
+        for (AbilityImage icon : icons) {
             if (event.getSource() == icon) {
                 AbilityDescription abilityDescription = new AbilityDescription(icon.getAbility());
                 abilityDescription.display(event.getScreenX(), event.getScreenY());
@@ -45,7 +59,7 @@ public class AbilityIcons extends HBox implements EventHandler<MouseEvent> {
     }
 
 
-    private static class AbilityDescription implements EventHandler<MouseEvent> {
+    private static class AbilityDescription {
         private Ability ability;
         private Stage window;
 
@@ -61,7 +75,7 @@ public class AbilityIcons extends HBox implements EventHandler<MouseEvent> {
             Label abilityName = new Label("Name: " + this.ability.getAbilityName());
             Label manaCost = new Label("Mana Cost " + this.ability.getManaCost());
             Label description = new Label(this.ability.getAbilityDescription());
-            abilityDescription.setOnMouseExited(this);
+            abilityDescription.setOnMouseExited(e -> window.close());
             abilityDescription.getChildren().addAll(abilityName, manaCost, description);
             Scene scene = new Scene(abilityDescription);
             window.setScene(scene);
@@ -71,11 +85,5 @@ public class AbilityIcons extends HBox implements EventHandler<MouseEvent> {
             window.setY(yCord - 50);
             window.show();
         }
-
-        @Override
-        public void handle(MouseEvent event) {
-            window.close();
-        }
     }
-
 }

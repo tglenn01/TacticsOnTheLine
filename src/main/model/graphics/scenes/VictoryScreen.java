@@ -26,6 +26,7 @@ public class VictoryScreen extends DefaultScene {
         layout.setAlignment(Pos.CENTER_LEFT);
         layout.setSpacing(10.00);
         Scene scene = new Scene(layout, FINAL_WIDTH, FINAL_HEIGHT);
+        addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 }

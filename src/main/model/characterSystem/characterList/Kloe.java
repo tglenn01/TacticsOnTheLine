@@ -4,8 +4,8 @@ import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.jobSystem.jobs.Cleric;
 
-import static main.model.characterSystem.CharacterPortrait.KLOE_PORTRAIT;
-import static main.model.characterSystem.CharacterSprite.KLOE_SPRITE;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.KLOE_PORTRAIT;
+import static main.model.graphics.sceneElements.images.CharacterSprite.KLOE_SPRITE;
 
 public class Kloe extends PlayableCharacterUnit {
 

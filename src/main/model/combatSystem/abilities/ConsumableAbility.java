@@ -4,7 +4,10 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.StatusEffect;
+import main.model.combatSystem.statusEffects.AttackBuff;
+import main.model.combatSystem.statusEffects.AttackDebuff;
+import main.model.combatSystem.statusEffects.DefenseBuff;
+import main.model.combatSystem.statusEffects.DefenseDebuff;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.itemSystem.ResourceReplenishBonus;
@@ -31,16 +34,16 @@ public class ConsumableAbility extends SupportiveAbility {
             gainMana(receivingUnit, receivingUnitStatSheet, item);
         } if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
             int amountChanged = buffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addStatusEffect(new AttackBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
             int amountChanged = buffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addStatusEffect(new DefenseBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
             int amountChanged = debuffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addStatusEffect(new AttackDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
             int amountChanged = debuffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new StatusEffect(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addStatusEffect(new DefenseDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         }
         ConsumableItemInventory.getInstance().removeConsumableItem(item);
     }
@@ -53,5 +56,9 @@ public class ConsumableAbility extends SupportiveAbility {
     @Override
     protected int getManaGainAmount(ResourceReplenishBonus bonus) {
         return bonus.getManaGainBonus();
+    }
+
+    public boolean targetsAlly() {
+        return true;
     }
 }

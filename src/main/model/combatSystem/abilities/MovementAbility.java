@@ -54,4 +54,9 @@ public class MovementAbility extends Ability {
             });
         }
     }
+
+    @Override
+    public boolean targetsAlly() {
+        return false;
+    }
 }
