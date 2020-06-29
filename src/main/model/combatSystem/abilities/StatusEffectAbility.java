@@ -39,16 +39,16 @@ public class StatusEffectAbility extends SupportiveAbility {
             gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
             int amountChanged = buffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackBuff(this.abilityType, this.potency, amountChanged));
+            receivingUnit.getStatusEffects().addStatusEffect(new AttackBuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
             int amountChanged = buffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseBuff(this.abilityType, this.potency, amountChanged));
+            receivingUnit.getStatusEffects().addStatusEffect(new DefenseBuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
             int amountChanged = debuffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackDebuff(this.abilityType, this.potency, amountChanged));
+            receivingUnit.getStatusEffects().addStatusEffect(new AttackDebuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             int amountChanged = debuffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseDebuff(this.abilityType, this.potency, amountChanged));
+            receivingUnit.getStatusEffects().addStatusEffect(new DefenseDebuff(this.abilityType, amountChanged, this.potency));
         }
     }
 

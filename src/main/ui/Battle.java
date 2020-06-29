@@ -1,5 +1,8 @@
 package main.ui;
 
+import javafx.scene.control.Label;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.menus.AbilityMenu;
@@ -34,6 +37,16 @@ public class Battle {
 
     private void startNewTurn(CharacterUnit activeCharacter) {
         if (activeCharacter.getIsAlive()) {
+            Popup startOfTurnPopup = new Popup();
+            startOfTurnPopup.getContent().add(new Label("It is " + activeCharacter.getCharacterName() + "'s Turn"));
+            startOfTurnPopup.setWidth(140);
+            startOfTurnPopup.setHeight(100);
+            Stage primaryStage = TacticBaseBattle.getInstance().getPrimaryStage();
+           // startOfTurnPopup.show(primaryStage);
+            startOfTurnPopup.centerOnScreen();
+            startOfTurnPopup.setAutoHide(true);
+
+            startOfTurnPopup.show(primaryStage, primaryStage.getWidth() / 2.00, primaryStage.getHeight() / 2.00);
             this.activeCharacter = activeCharacter;
             activeCharacter.startTurn();
         } else endTurn();

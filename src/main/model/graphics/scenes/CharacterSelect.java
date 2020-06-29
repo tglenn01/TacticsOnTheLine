@@ -96,6 +96,7 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setValignment(previousButton, VPos.BOTTOM);
         GridPane.setHalignment(abilities, HPos.CENTER);
         GridPane.setValignment(characterName, VPos.CENTER);
+        GridPane.setHalignment(characterName, HPos.CENTER);
         Scene scene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
         addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
@@ -131,8 +132,6 @@ public class CharacterSelect extends DefaultScene {
         portrait.setPreserveRatio(false);
         window.getChildren().add(portrait);
         window.setPrefSize(400, 640);
-        //portrait.setFitWidth(400);
-        //portrait.setFitHeight(550);
         return window;
     }
 
