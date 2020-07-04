@@ -1,25 +1,15 @@
 package main.model.jobSystem.jobs;
 
-import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
 
 public class Archer extends Job {
-    private final int jobHealth = 24;
-    private final int jobMana = 24;
-    private final int jobStrength = 10;
-    private final int jobMagic = 7;
-    private final int jobArmour = 4;
-    private final int jobResistance = 4;
-    private final int jobSpeed = 12;
-    private final int jobDexterity = 12;
 
     public Archer() {
         jobTitle = "Archer";
     }
-
 
     @Override
     protected void initializeAbilities() {
@@ -39,27 +29,14 @@ public class Archer extends Job {
     }
 
     @Override
-    public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(jobHealth);
-        statSheet.setMaxMana(jobMana);
-        statSheet.setBaseStrength(jobStrength);
-        statSheet.setBaseMagic(jobMagic);
-        statSheet.setBaseArmour(jobArmour);
-        statSheet.setBaseResistance(jobResistance);
-        statSheet.setBaseSpeed(jobSpeed);
-        statSheet.setBaseDexterity(jobDexterity);
-        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
-    }
-
-    @Override
-    public void updateMaxStats() {
-        StatSheet.updateHighestLowestHealth(jobHealth);
-        StatSheet.updateHighestLowestMana(jobMana);
-        StatSheet.updateHighestLowestStrength(jobStrength);
-        StatSheet.updateHighestLowestMagic(jobMagic);
-        StatSheet.updateHighestLowestArmour(jobArmour);
-        StatSheet.updateHighestLowestResistance(jobResistance);
-        StatSheet.updateHighestLowestSpeed(jobSpeed);
-        StatSheet.updateHighestLowestDexterity(jobDexterity);
+    protected void initializeJobStats() {
+        this.jobHealth = 24;
+        this.jobMana = 24;
+        this.jobStrength = 10;
+        this.jobMagic = 7;
+        this.jobArmour = 4;
+        this.jobResistance = 4;
+        this.jobSpeed = 12;
+        this.jobDexterity = 12;
     }
 }

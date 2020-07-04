@@ -1,20 +1,11 @@
 package main.model.jobSystem.jobs;
 
-import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
 
 public class Lancer extends Job {
-    private final int jobHealth = 26;
-    private final int jobMana = 30;
-    private final int jobStrength = 14;
-    private final int jobMagic = 2;
-    private final int jobArmour = 8;
-    private final int jobResistance = 3;
-    private final int jobSpeed = 10;
-    private final int jobDexterity = 10;
 
     public Lancer() { this.jobTitle = "Lancer"; }
 
@@ -36,27 +27,14 @@ public class Lancer extends Job {
     }
 
     @Override
-    public void setBaseStats(StatSheet statSheet) {
-        statSheet.setMaxHealth(jobHealth);
-        statSheet.setMaxMana(jobMana);
-        statSheet.setBaseStrength(jobStrength);
-        statSheet.setBaseMagic(jobMagic);
-        statSheet.setBaseArmour(jobArmour);
-        statSheet.setBaseResistance(jobResistance);
-        statSheet.setBaseSpeed(jobSpeed);
-        statSheet.setBaseDexterity(jobDexterity);
-        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
-    }
-
-    @Override
-    public void updateMaxStats() {
-        StatSheet.updateHighestLowestHealth(jobHealth);
-        StatSheet.updateHighestLowestMana(jobMana);
-        StatSheet.updateHighestLowestStrength(jobStrength);
-        StatSheet.updateHighestLowestMagic(jobMagic);
-        StatSheet.updateHighestLowestArmour(jobArmour);
-        StatSheet.updateHighestLowestResistance(jobResistance);
-        StatSheet.updateHighestLowestSpeed(jobSpeed);
-        StatSheet.updateHighestLowestDexterity(jobDexterity);
+    protected void initializeJobStats() {
+        this.jobHealth = 26;
+        this.jobMana = 30;
+        this.jobStrength = 14;
+        this.jobMagic = 2;
+        this.jobArmour = 8;
+        this.jobResistance = 3;
+        this.jobSpeed = 10;
+        this.jobDexterity = 10;
     }
 }

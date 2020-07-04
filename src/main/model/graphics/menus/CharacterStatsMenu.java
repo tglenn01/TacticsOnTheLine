@@ -114,7 +114,7 @@ public class CharacterStatsMenu {
 
         XYChart.Series<Number, String> series1;
         StatSheet statSheet = unit.getCharacterStatSheet();
-        series1 = unit.getCharacterJob().getRawJobStatData(statSheet);
+        series1 = unit.getCharacterJob().getRawStatData(statSheet);
         statChart.getData().add(series1);
         statChart.setPrefSize(460, 480);
 

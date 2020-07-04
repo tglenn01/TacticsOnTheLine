@@ -22,7 +22,7 @@ public class DefenseBuff extends StatusEffect {
     @Override
     protected void setIcon() {
         try {
-            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\DefenseBuff.png");
+            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\statusEffects\\DefenseBuff.png");
             Image image = new Image(input);
             this.icon = new ImageView(image);
         } catch (Exception e) {

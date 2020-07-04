@@ -14,10 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.characterList.Cassius;
-import main.model.characterSystem.characterList.Estelle;
-import main.model.characterSystem.characterList.Joshua;
-import main.model.characterSystem.characterList.Kloe;
+import main.model.characterSystem.characterList.*;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
@@ -30,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterSelect extends DefaultScene {
-    private final int PARTY_SIZE = 4;
+    private int partySize;
     private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
     private List<JobButton> jobButtonList;
@@ -51,21 +48,25 @@ public class CharacterSelect extends DefaultScene {
     // called when you have already picked your party
     public CharacterSelect(List<CharacterUnit> partyMemberList) {
         this.partyMemberList = partyMemberList;
-        activeCharacter = partyMemberList.get(PARTY_SIZE - 1);
-        characterCursor = PARTY_SIZE - 1;
+        partySize = partyMemberList.size();
+        activeCharacter = partyMemberList.get(partySize - 1);
+        characterCursor = partySize - 1;
         initializeGraphics();
     }
 
     private void initializeCharacterList() {
-        CharacterUnit joshua = new Joshua();
-        CharacterUnit estelle = new Estelle();
-        CharacterUnit kloe = new Kloe();
-        CharacterUnit cassius = new Cassius();
-        partyMemberList.add(joshua);
-        partyMemberList.add(estelle);
-        partyMemberList.add(kloe);
-        partyMemberList.add(cassius);
+        CharacterUnit graham = new Graham();
+        CharacterUnit harry = new Harry();
+        CharacterUnit willow = new Willow();
+        CharacterUnit no1 = new No1();
+        CharacterUnit liam = new Liam();
+        partyMemberList.add(graham);
+        partyMemberList.add(harry);
+        partyMemberList.add(willow);
+        partyMemberList.add(no1);
+        partyMemberList.add(liam);
         TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
+        partySize = partyMemberList.size();
         activeCharacter = partyMemberList.get(characterCursor);
     }
 
@@ -75,7 +76,7 @@ public class CharacterSelect extends DefaultScene {
         grid.setPadding(new Insets(10, 10, 10, 10));
         Pane jobs = initializeJobButtons();
         this.portrait = characterPortrait();
-        this.abilities = new AbilitiesList(activeCharacter.getCharacterJob().getJobAbilityList(), 600, 120);
+        this.abilities = new AbilitiesList(activeCharacter.getAbilityList(), 600, 120);
         this.statChart = new CharacterStatChart(activeCharacter, 600, 360,
                 new NumberAxis(), new CategoryAxis());
         this.characterName = new CharacterNameLabel(activeCharacter, 600, 120);
@@ -139,7 +140,7 @@ public class CharacterSelect extends DefaultScene {
         Button advanceButton = new Button("Advance");
         advanceButton.setAlignment(Pos.BOTTOM_RIGHT);
         advanceButton.setOnAction(e -> {
-            if (characterCursor == PARTY_SIZE - 1) new ScenarioSelectScreen();
+            if (characterCursor == partySize - 1) new ScenarioSelectScreen();
             else {
                 characterCursor++;
                 nextCharacter();
@@ -171,7 +172,7 @@ public class CharacterSelect extends DefaultScene {
 
 
     private void updateData() {
-        abilities.updateData(activeCharacter.getCharacterJob().getJobAbilityList());
+        abilities.updateData(activeCharacter.getAbilityList());
         statChart.updateData(activeCharacter);
     }
 }

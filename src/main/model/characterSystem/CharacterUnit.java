@@ -12,14 +12,19 @@ import main.model.jobSystem.Job;
 import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class CharacterUnit {
-    protected final int ACTIONS_PER_TURN = 2;
+    protected final int ACTIONS_PER_TURN = 1;
+    protected int actionToken;
+    protected boolean movementToken;
+
     protected String characterName;
     protected Job characterJob;
+    protected List<Ability> abilityList = new ArrayList<>();
     protected StatSheet characterStatSheet;
     protected boolean isAlive;
     protected CharacterStatusEffects statusEffects;
@@ -31,10 +36,16 @@ public abstract class CharacterUnit {
 
 
     public CharacterUnit() {
+        this.setPersonalStatBonuses();
+        //this.setPersonalGrowthRate();
         this.isAlive = true;
         this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
     }
+
+    protected abstract void setPersonalStatBonuses();
+
+    //protected abstract void setPersonalGrowthRate();
 
     public abstract void startTurn();
 
@@ -54,7 +65,7 @@ public abstract class CharacterUnit {
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
             removeActionToken(ability);
-            if (actionTokens <= 0) TacticBaseBattle.getInstance().getBattle().endTurn();
+            if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
             else takeNextAction();
         }
     }
@@ -62,22 +73,26 @@ public abstract class CharacterUnit {
     protected void takeItemAction(Ability ability, CharacterUnit receivingUnit, Consumable consumable) {
         ability.takeAction(this, receivingUnit, consumable);
         removeActionToken(ability);
-        if (actionTokens <= 0) TacticBaseBattle.getInstance().getBattle().endTurn();
+        if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
         else takeNextAction();
     }
 
     protected abstract void takeNextAction();
 
     public void movementComplete(Battle battle) {
-        removeActionToken(Job.move);
+        this.movementToken = false;
         if (actionTokens <= 0) battle.endTurn();
         else takeNextAction();
     }
 
     public void setJob(Job job) {
         this.characterJob = job;
-        characterStatSheet.updateStatSheetAccordingToJob(job);
+        this.abilityList = new ArrayList<>(job.getJobAbilityList());
+        addPersonalAbilityToAbilityList();
+        if (characterStatSheet != null) characterStatSheet.updateStatSheetAccordingToJob(job);
     }
+
+    protected abstract void addPersonalAbilityToAbilityList();
 
     public void setBoardSpace(BoardSpace boardSpace) {
         this.boardSpace = boardSpace;
@@ -214,8 +229,16 @@ public abstract class CharacterUnit {
     }
 
     protected void removeActionToken(Ability usedAbility) {
-        if (usedAbility.getAbilityName().equals("Defend")) this.actionTokens = 0;
+        if (usedAbility.endsTurn()) {
+            this.actionTokens = 0;
+            this.movementToken = false;
+        }
+
         else this.actionTokens--;
+    }
+
+    public List<Ability> getAbilityList() {
+        return this.abilityList;
     }
 }
 

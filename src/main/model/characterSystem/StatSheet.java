@@ -42,13 +42,18 @@ public class StatSheet implements ResourceReplenishBonus {
     private static double LOWEST_DEXTERITY;
     public static double SCALE_REFERENCE = 10.00;
 
-
+    // For generic enemies
     public StatSheet(Job job) {
-        job.setBaseStats(this);
+        job.loadBaseStats(this);
+    }
+
+    // For playable Characters and special Enemies
+    public StatSheet(Job job, StatBonus statBonus) {
+        job.loadBaseStats(this, statBonus);
     }
 
     public void updateStatSheetAccordingToJob(Job job) {
-        job.setBaseStats(this);
+        job.loadBaseStats(this);
     }
 
     public int getHealth() {

@@ -21,7 +21,7 @@ public class AttackBuff extends StatusEffect {
     @Override
     protected void setIcon() {
         try {
-            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\AttackBuff.png");
+            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\statusEffects\\AttackBuff.png");
             Image image = new Image(input);
             this.icon = new ImageView(image);
         } catch (Exception e) {

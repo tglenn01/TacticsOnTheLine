@@ -22,7 +22,7 @@ public class AttackDebuff extends StatusEffect {
     @Override
     protected void setIcon() {
         try {
-            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\AttackDebuff.png");
+            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\statusEffects\\AttackDebuff.png");
             Image image = new Image(input);
             this.icon = new ImageView(image);
         } catch (Exception e) {

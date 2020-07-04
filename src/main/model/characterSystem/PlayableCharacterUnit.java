@@ -16,8 +16,21 @@ import main.ui.TacticBaseBattle;
 import java.util.List;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
+    protected Ability personalAbility;
+    protected StatBonus personalStatBonus;
 
     public PlayableCharacterUnit() {
+        this.setPersonalAbility();
+        this.setBaseJob();
+        this.characterStatSheet = new StatSheet(this.characterJob, this.personalStatBonus);
+    }
+
+    protected abstract void setPersonalAbility();
+
+    protected abstract void setBaseJob();
+
+    protected void addPersonalAbilityToAbilityList() {
+        this.abilityList.add(personalAbility);
     }
 
     @Override
@@ -27,6 +40,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         //startOfTurnNotification();
         this.actionTokens = ACTIONS_PER_TURN;
+        this.movementToken = true;
     }
 
     private void startOfTurnNotification() {
@@ -51,7 +65,12 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void takeMovement(Ability movementAbility) {
         try {
-            movementAbility.takeAction(this, null);
+            if (movementToken) movementAbility.takeAction(this, null);
+            else {
+                Popup noMovement = new Popup();
+                noMovement.getContent().add(new Label("Unit can no longer Move"));
+                noMovement.show(TacticBaseBattle.getInstance().getPrimaryStage());
+            }
         } catch (Exception e) {
             // can't die in movement
         }

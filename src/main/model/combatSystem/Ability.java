@@ -81,4 +81,8 @@ public abstract class Ability {
     public int getRange() {
         return this.range;
     }
+
+    public boolean endsTurn() {
+        return this.abilityName.equals("Defend") || this.abilityName.equals("Deactivate");
+    }
 }

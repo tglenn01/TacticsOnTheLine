@@ -26,6 +26,16 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
+    protected void setPersonalStatBonuses() {
+        //
+    }
+
+    protected void addPersonalAbilityToAbilityList() {
+        //
+    }
+
+
+    @Override
     public void startTurn() {
         System.out.println("It is " + this.characterName + "'s turn");
         statusEffects.updateStatusEffect(this);
@@ -43,7 +53,8 @@ public class NPC extends CharacterUnit {
         List<BoardSpace> supportActionRange = getSupportActionRange();
         if (isEnemyInRange(damageActionRange)) targetEnemy(damageActionRange);
         else if (isAllyInRange(supportActionRange)) supportAlly(supportActionRange);
-        else takeMovement(Job.move);
+        else if (movementToken) takeMovement(Job.move);
+        else TacticBaseBattle.getInstance().getBattle().endTurn();
     }
 
     @Override

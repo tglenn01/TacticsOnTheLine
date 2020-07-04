@@ -25,12 +25,12 @@ public class CharacterStatChart extends BarChart<Number, String> {
 
         XYChart.Series<Number, String> series1;
         StatSheet statSheet = unit.getCharacterStatSheet();
-        series1 = unit.getCharacterJob().getSimpleJobStatData(statSheet);
+        series1 = unit.getCharacterJob().getSimpleStatData(statSheet);
         this.getData().add(series1);
         this.setMinSize(minXSize, minYSize);
     }
 
     public void updateData(CharacterUnit activeCharacter) {
-        activeCharacter.getCharacterJob().getSimpleJobStatData(this.getData().get(0), activeCharacter.getCharacterStatSheet());
+        activeCharacter.getCharacterJob().getSimpleStatData(this.getData().get(0), activeCharacter.getCharacterStatSheet());
     }
 }

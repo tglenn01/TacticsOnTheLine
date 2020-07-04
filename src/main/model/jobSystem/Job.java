@@ -1,6 +1,7 @@
 package main.model.jobSystem;
 
 import javafx.scene.chart.XYChart;
+import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.MovementAbility;
@@ -17,23 +18,34 @@ public abstract class Job {
     public static Ability move = new MovementAbility("Move", 0, 0, 0,
             Ability.AbilityType.MOVEMENT, "Move your character");
     public static Ability attack = new PhysicalAbility("Attack", 0, 1, 1,
-            Ability.AbilityType.DAMAGE,0, .90,
-            "Attack an enemy");
-    public static Ability defend = new StatusEffectAbility("Defend", 0, 0, 1, 1,
-            Ability.AbilityType.DEFENSE_BUFF, 3, "Strengthen one's own defenses");
+            Ability.AbilityType.DAMAGE,0, .90, "Attack an enemy");
+    public static Ability defend = new StatusEffectAbility("Defend", 0, 0, 1,
+            1, Ability.AbilityType.DEFENSE_BUFF, 3, "Strengthen one's own defenses");
     protected String jobTitle;
     protected List<Ability> jobAbilityList;
     protected int maxDamageAbilityReach;
     protected int maxSupportingAbilityReach;
+    protected int jobHealth;
+    protected int jobMana;
+    protected int jobStrength;
+    protected int jobMagic;
+    protected int jobArmour;
+    protected int jobResistance;
+    protected int jobSpeed;
+    protected int jobDexterity;
 
     public Job() {
         jobAbilityList = new ArrayList<>();
         maxDamageAbilityReach = 0;
         maxSupportingAbilityReach = 0;
+        initializeJobStats();
         initializeAbilities();
         updateMaxAbilityReach();
     }
 
+    protected abstract void initializeJobStats();
+
+    // All classes have these at their disposal
     protected void initializeAbilities() {
         jobAbilityList.add(move);
         jobAbilityList.add(attack);
@@ -41,6 +53,7 @@ public abstract class Job {
         jobAbilityList.add(ConsumableItemInventory.getInstance().getItemAbility());
     }
 
+    // Used for the AI to figure out it's range of movement
     private void updateMaxAbilityReach() {
         for (Ability ability : jobAbilityList) {
             if (ability.targetsAlly()) {
@@ -53,16 +66,48 @@ public abstract class Job {
         return jobTitle;
     }
 
-    public List<Ability> getJobAbilityList() {
-        return jobAbilityList;
+    public List<Ability> getJobAbilityList() { return jobAbilityList; }
+
+
+    // for generic units with no stat bonuses
+    public void loadBaseStats(StatSheet statSheet) {
+        statSheet.setMaxHealth(jobHealth);
+        statSheet.setMaxMana(jobMana);
+        statSheet.setBaseStrength(jobStrength);
+        statSheet.setBaseMagic(jobMagic);
+        statSheet.setBaseArmour(jobArmour);
+        statSheet.setBaseResistance(jobResistance);
+        statSheet.setBaseSpeed(jobSpeed);
+        statSheet.setBaseDexterity(jobDexterity);
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
     }
 
-    public abstract void setBaseStats(StatSheet statSheet);
+    // For named characters that have stat bonuses
+    public void loadBaseStats(StatSheet statSheet, StatBonus statBonus) {
+        statSheet.setMaxHealth(jobHealth + statBonus.getHealthBonus());
+        statSheet.setMaxMana(jobMana + statBonus.getManaBonus());
+        statSheet.setBaseStrength(jobStrength + statBonus.getStrengthBonus());
+        statSheet.setBaseMagic(jobMagic + statBonus.getMagicBonus());
+        statSheet.setBaseArmour(jobArmour + statBonus.getArmourBonus());
+        statSheet.setBaseResistance(jobResistance + statBonus.getResistanceBonus());
+        statSheet.setBaseSpeed(jobSpeed + statBonus.getSpeedBonus());
+        statSheet.setBaseDexterity(jobDexterity + statBonus.getDexterityBonus());
+        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+    }
 
-    public abstract void updateMaxStats();
+    public void updateMaxStats() {
+        StatSheet.updateHighestLowestHealth(jobHealth);
+        StatSheet.updateHighestLowestMana(jobMana);
+        StatSheet.updateHighestLowestStrength(jobStrength);
+        StatSheet.updateHighestLowestMagic(jobMagic);
+        StatSheet.updateHighestLowestArmour(jobArmour);
+        StatSheet.updateHighestLowestResistance(jobResistance);
+        StatSheet.updateHighestLowestSpeed(jobSpeed);
+        StatSheet.updateHighestLowestDexterity(jobDexterity);
+    }
 
     // Used for Character Menu's and won't include health and mana
-    public XYChart.Series<Number, String> getRawJobStatData(StatSheet statSheet) {
+    public XYChart.Series<Number, String> getRawStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
@@ -73,7 +118,7 @@ public abstract class Job {
         return newSeries;
     }
 
-    public XYChart.Series<Number, String> getSimpleJobStatData(StatSheet statSheet) {
+    public XYChart.Series<Number, String> getSimpleStatData(StatSheet statSheet) {
         XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleDexterity(), "Dexterity"));
         newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleSpeed(), "Speed"));
@@ -86,7 +131,7 @@ public abstract class Job {
         return newSeries;
     }
 
-    public void getSimpleJobStatData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
+    public void getSimpleStatData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
         for (XYChart.Data<Number, String> data : oldSeries.getData()) {
             if (data.getYValue().equals("Health")) {
                 data.setXValue(statSheet.getSimpleHealth());
