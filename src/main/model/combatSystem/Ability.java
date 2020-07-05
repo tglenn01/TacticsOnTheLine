@@ -9,7 +9,7 @@ import main.model.itemSystem.Consumable;
 
 public abstract class Ability {
     public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM,
-        MANA_GAIN, MOVEMENT, INVULNERABLE}
+        MANA_GAIN, MOVEMENT, INVULNERABLE, ROOT}
     protected String abilityName;
     protected int manaCost;
     protected int range;

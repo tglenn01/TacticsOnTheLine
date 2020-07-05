@@ -35,19 +35,17 @@ public class StatusEffectAbility extends SupportiveAbility {
         } if (this.abilityType == AbilityType.MANA_GAIN) {
             gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
-            int amountChanged = buffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, potency, duration));
         } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
-            int amountChanged = buffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, potency, duration));
         } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
-            int amountChanged = debuffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, potency, duration));
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
-            int amountChanged = debuffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, potency, duration));
         } if (this.abilityType == AbilityType.INVULNERABLE) {
-            receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(this.abilityType, this.potency));
+            receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(receivingUnit, potency));
+        } if (this.abilityType == AbilityType.ROOT) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new Root(receivingUnit, potency, duration));
         }
     }
 

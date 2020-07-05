@@ -49,42 +49,4 @@ public abstract class SupportiveAbility extends Ability {
     }
 
     protected abstract int getManaGainAmount(ResourceReplenishBonus bonus);
-
-    protected int buffAttack(StatSheet receivingUnitStatSheet, int potency) {
-        receivingUnitStatSheet.addStrength(potency);
-        System.out.println("Attack is now buffed to " + receivingUnitStatSheet.getStrength());
-        return potency;
-    }
-
-    protected int buffDefense(StatSheet receivingUnitStatSheet, int potency) {
-        receivingUnitStatSheet.addArmour(potency);
-        System.out.println("Defense is now buffed to " + receivingUnitStatSheet.getArmour());
-        return potency;
-    }
-
-    protected int debuffAttack(StatSheet receivingUnitStatSheet, int potency) {
-        if (receivingUnitStatSheet.getStrength() >= potency) {
-            receivingUnitStatSheet.removeStrength(potency);
-            System.out.println("Attack is now debuffed to " + receivingUnitStatSheet.getStrength());
-            return potency;
-        } else {
-            int initialStrength = receivingUnitStatSheet.getStrength();
-            receivingUnitStatSheet.removeStrength(initialStrength); // sets strength at 0
-            System.out.println("Attack is now debuffed to " + receivingUnitStatSheet.getStrength());
-            return initialStrength;
-        }
-    }
-
-    protected int debuffDefense(StatSheet receivingUnitStatSheet, int potency) {
-        if (receivingUnitStatSheet.getArmour() >= potency) {
-            receivingUnitStatSheet.removeArmour(potency);
-            System.out.println("Armour is now debuffed to " + receivingUnitStatSheet.getArmour());
-            return potency;
-        } else {
-            int initialArmour = receivingUnitStatSheet.getArmour();
-            receivingUnitStatSheet.removeStrength(initialArmour); // sets armour at 0
-            System.out.println("Armour is now debuffed to " + receivingUnitStatSheet.getArmour());
-            return initialArmour;
-        }
-    }
 }

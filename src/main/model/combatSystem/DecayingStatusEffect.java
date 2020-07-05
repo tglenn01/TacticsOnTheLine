@@ -1,12 +1,13 @@
 package main.model.combatSystem;
 
+import main.model.characterSystem.CharacterUnit;
+
 public abstract class DecayingStatusEffect extends StatusEffect {
     protected int amountChanged;
     protected int duration;
 
-    public DecayingStatusEffect(Ability.AbilityType abilityType, int amountChanged, int duration) {
-        super(abilityType);
-        this.amountChanged = amountChanged;
+    public DecayingStatusEffect(CharacterUnit receivingUnit, int potency, int duration) {
+        super(receivingUnit, potency);
         this.duration = duration;
     }
 

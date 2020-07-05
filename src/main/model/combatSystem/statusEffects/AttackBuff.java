@@ -2,6 +2,8 @@ package main.model.combatSystem.statusEffects;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.DecayingStatusEffect;
 
@@ -9,8 +11,13 @@ import java.io.FileInputStream;
 
 public class AttackBuff extends DecayingStatusEffect {
 
-    public AttackBuff(Ability.AbilityType abilityType, int amountChanged, int duration) {
-        super(abilityType, amountChanged, duration);
+    public AttackBuff(CharacterUnit receivingUnit, int potency, int duration) {
+        super(receivingUnit, potency, duration);
+    }
+
+    @Override
+    protected void setAbilityType() {
+        this.abilityType = Ability.AbilityType.ATTACK_BUFF;
     }
 
     @Override
@@ -27,5 +34,13 @@ public class AttackBuff extends DecayingStatusEffect {
         } catch (Exception e) {
             //
         }
+    }
+
+    @Override
+    protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
+        StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
+        receivingUnitStatSheet.addStrength(potency);
+        System.out.println("Attack is now buffed to " + receivingUnitStatSheet.getStrength());
+        this.amountChanged = potency;
     }
 }

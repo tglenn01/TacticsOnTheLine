@@ -240,5 +240,13 @@ public abstract class CharacterUnit {
     public List<Ability> getAbilityList() {
         return this.abilityList;
     }
+
+    public void setActionToken(int actionsLeft) {
+        this.actionTokens = actionsLeft;
+    }
+
+    public void setMovementToken(boolean hasMovement) {
+        this.movementToken = hasMovement;
+    }
 }
 

@@ -1,6 +1,7 @@
 package main.model.combatSystem;
 
 import javafx.scene.image.ImageView;
+import main.model.characterSystem.CharacterUnit;
 
 public abstract class StatusEffect {
     protected Ability.AbilityType abilityType;
@@ -8,10 +9,11 @@ public abstract class StatusEffect {
     protected ImageView icon;
 
 
-    public StatusEffect(Ability.AbilityType abilityType) {
-        this.abilityType = abilityType;
+    public StatusEffect(CharacterUnit receivingUnit, int potency) {
+        setAbilityType();
         setCondensedName();
         setIcon();
+        applyStatusEffect(receivingUnit, potency);
     }
 
     public Ability.AbilityType getAbilityType() {
@@ -26,6 +28,8 @@ public abstract class StatusEffect {
         return this.condensedName;
     }
 
+    protected abstract void setAbilityType();
     protected abstract void setCondensedName();
     protected abstract void setIcon();
+    protected abstract void applyStatusEffect(CharacterUnit receivingUnit, int potency);
 }

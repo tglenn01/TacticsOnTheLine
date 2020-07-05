@@ -4,10 +4,7 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.statusEffects.AttackBuff;
-import main.model.combatSystem.statusEffects.AttackDebuff;
-import main.model.combatSystem.statusEffects.DefenseBuff;
-import main.model.combatSystem.statusEffects.DefenseDebuff;
+import main.model.combatSystem.statusEffects.*;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.itemSystem.ResourceReplenishBonus;
@@ -28,22 +25,22 @@ public class ConsumableAbility extends SupportiveAbility {
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit, Consumable item) {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
-        if (item.getAbilityType() == AbilityType.HEAL) {
+        if (this.abilityType == AbilityType.HEAL) {
             healUnit(receivingUnit, receivingUnitStatSheet, item);
-        } if (item.getAbilityType() == AbilityType.MANA_GAIN) {
+        } if (this.abilityType == AbilityType.MANA_GAIN) {
             gainMana(receivingUnit, receivingUnitStatSheet, item);
-        } if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
-            int amountChanged = buffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
-        } if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
-            int amountChanged = buffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
-        } if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
-            int amountChanged = debuffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
-        } if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
-            int amountChanged = debuffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
+        } if (this.abilityType == AbilityType.ATTACK_BUFF) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, item.getPotency(), item.getDuration()));
+        } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, item.getPotency(), item.getDuration()));
+        } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, item.getPotency(), item.getDuration()));
+        } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, item.getPotency(), item.getDuration()));
+        } if (this.abilityType == AbilityType.INVULNERABLE) {
+            receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(receivingUnit, item.getPotency()));
+        } if (this.abilityType == AbilityType.ROOT) {
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new Root(receivingUnit, item.getPotency(), item.getDuration()));
         }
         ConsumableItemInventory.getInstance().removeConsumableItem(item);
     }

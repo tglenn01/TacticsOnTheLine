@@ -4,6 +4,9 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.DecayingStatusEffect;
+import main.model.combatSystem.statusEffects.IncreasedRange;
+import main.model.combatSystem.statusEffects.Root;
 
 public class Tower extends Ability {
 
@@ -13,7 +16,8 @@ public class Tower extends Ability {
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-
+        DecayingStatusEffect root = new Root(AbilityType.ROOT, activeUnit.getCharacterStatSheet().getMovement(), 3);
+        DecayingStatusEffect doubleRange = new IncreasedRange(null, 2, 3);
     }
 
     @Override

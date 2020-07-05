@@ -1,13 +1,19 @@
 package main.model.combatSystem.statusEffects;
 
+import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.PermanentStatusEffect;
 
 public class Invulnerable extends PermanentStatusEffect {
 
-    // remove a hit
-    public Invulnerable(Ability.AbilityType abilityType, int uses) {
-        super(abilityType, uses);
+    // the potency and the uses are the same in this status effect
+    public Invulnerable(CharacterUnit receivingUnit, int potency) {
+        super(receivingUnit, potency, potency);
+    }
+
+    @Override
+    protected void setAbilityType() {
+        this.abilityType = Ability.AbilityType.INVULNERABLE;
     }
 
     @Override
@@ -18,5 +24,10 @@ public class Invulnerable extends PermanentStatusEffect {
     @Override
     protected void setIcon() {
         //
+    }
+
+    @Override
+    protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
+
     }
 }
