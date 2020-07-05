@@ -3,11 +3,11 @@ package main.model.combatSystem.statusEffects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.StatusEffect;
+import main.model.combatSystem.DecayingStatusEffect;
 
 import java.io.FileInputStream;
 
-public class DefenseBuff extends StatusEffect {
+public class DefenseBuff extends DecayingStatusEffect {
 
     public DefenseBuff(Ability.AbilityType abilityType, int amountChanged, int duration) {
         super(abilityType, amountChanged, duration);

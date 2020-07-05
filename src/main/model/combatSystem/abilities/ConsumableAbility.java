@@ -34,16 +34,16 @@ public class ConsumableAbility extends SupportiveAbility {
             gainMana(receivingUnit, receivingUnitStatSheet, item);
         } if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
             int amountChanged = buffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
             int amountChanged = buffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
             int amountChanged = debuffAttack(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         } if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
             int amountChanged = debuffDefense(receivingUnitStatSheet, item.getPotency());
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(AbilityType.ITEM, amountChanged, item.getDuration()));
         }
         ConsumableItemInventory.getInstance().removeConsumableItem(item);
     }

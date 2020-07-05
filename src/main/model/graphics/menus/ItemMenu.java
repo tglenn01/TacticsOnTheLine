@@ -24,7 +24,7 @@ public class ItemMenu {
         returnButton.setOnAction(e -> {
             window.hide();
             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-            AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
+            AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
         });
 
         List<Button> itemList = new ArrayList<>();

@@ -6,10 +6,7 @@ import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.statusEffects.AttackBuff;
-import main.model.combatSystem.statusEffects.AttackDebuff;
-import main.model.combatSystem.statusEffects.DefenseBuff;
-import main.model.combatSystem.statusEffects.DefenseDebuff;
+import main.model.combatSystem.statusEffects.*;
 import main.model.itemSystem.ResourceReplenishBonus;
 
 public class StatusEffectAbility extends SupportiveAbility {
@@ -39,16 +36,18 @@ public class StatusEffectAbility extends SupportiveAbility {
             gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
         } if (this.abilityType == AbilityType.ATTACK_BUFF) {
             int amountChanged = buffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackBuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
             int amountChanged = buffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseBuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
             int amountChanged = debuffAttack(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new AttackDebuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(this.abilityType, amountChanged, this.potency));
         } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             int amountChanged = debuffDefense(receivingUnitStatSheet, this.potency);
-            receivingUnit.getStatusEffects().addStatusEffect(new DefenseDebuff(this.abilityType, amountChanged, this.potency));
+            receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(this.abilityType, amountChanged, this.potency));
+        } if (this.abilityType == AbilityType.INVULNERABLE) {
+            receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(this.abilityType, this.potency));
         }
     }
 
@@ -75,6 +74,7 @@ public class StatusEffectAbility extends SupportiveAbility {
                 this.abilityType == Ability.AbilityType.ATTACK_BUFF ||
                 this.abilityType == Ability.AbilityType.DEFENSE_BUFF ||
                 this.abilityType == Ability.AbilityType.ITEM ||
-                this.abilityType == AbilityType.MANA_GAIN;
+                this.abilityType == AbilityType.MANA_GAIN ||
+                this.abilityType == AbilityType.INVULNERABLE;
     }
 }

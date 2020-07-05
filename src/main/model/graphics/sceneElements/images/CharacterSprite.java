@@ -35,7 +35,7 @@ public class CharacterSprite {
                 if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
                         !TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) {
                     if (!AbilityMenu.isDisplaying()) {
-                            AbilityMenu.display(unit, unit.getCharacterJob().getJobAbilityList());
+                            AbilityMenu.display(unit, unit.getAbilityList());
                     }
                 } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
                         event.getButton() == MouseButton.PRIMARY) {

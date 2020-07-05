@@ -84,7 +84,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
             this.takeAction(chosenAbility, this);
         } else if (possibleTargets.isEmpty()) {
             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-            AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
+            AbilityMenu.display(this, this.abilityList);
         } else {
             for (CharacterUnit possibleTarget : possibleTargets) {
                 EventHandler<MouseEvent> handler = new EventHandler<MouseEvent>() {
@@ -124,6 +124,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     }
 
     protected void takeNextAction() {
-        AbilityMenu.display(this, this.getCharacterJob().getJobAbilityList());
+        AbilityMenu.display(this, this.abilityList);
     }
 }

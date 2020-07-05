@@ -44,7 +44,7 @@ public class MovementAbility extends Ability {
                     if (event.getButton() == MouseButton.SECONDARY) {
                         TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
                         if (!AbilityMenu.isDisplaying()) {
-                            AbilityMenu.display(activeUnit, activeUnit.getCharacterJob().getJobAbilityList());
+                            AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
                         }
                     }
 

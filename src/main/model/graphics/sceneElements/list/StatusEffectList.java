@@ -4,16 +4,19 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.StatusEffect;
+import main.model.combatSystem.DecayingStatusEffect;
 
 
 public class StatusEffectList extends HBox {
 
     public StatusEffectList(CharacterUnit unit) {
-        for (StatusEffect statusEffect : unit.getStatusEffects().getStatusEffects()) {
+        for (DecayingStatusEffect statusEffect : unit.getStatusEffects().getDecayingStatusEffects()) {
             HBox statusEffectToolTip = new HBox();
             ImageView icon = statusEffect.getIcon();
             icon.setFitWidth(50.00);

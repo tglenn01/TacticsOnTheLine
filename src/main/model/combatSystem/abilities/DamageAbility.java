@@ -2,7 +2,9 @@ package main.model.combatSystem.abilities;
 
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
+import main.exception.UnitIsInvulnerableException;
 import main.model.boardSystem.BoardSpace;
+import main.model.characterSystem.CharacterStatusEffects;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
@@ -29,9 +31,13 @@ public abstract class DamageAbility extends Ability {
     private void calculateSingleTarget(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         try {
             checkIfAbilityHit(activeUnit, receivingUnit);
+            checkIfUnitIsInvulnerable(receivingUnit);
             calculateDamageDone(activeUnit, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
+        } catch (UnitIsInvulnerableException unitIsInvulnerableException) {
+            receivingUnit.getStatusEffects().removeInvulnerable();
+            unitIsInvulnerableException.printInvulnerableMessage();
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
@@ -44,9 +50,13 @@ public abstract class DamageAbility extends Ability {
                 CharacterUnit targetedUnit = targetedBoardSpace.getOccupyingUnit();
                 try {
                     checkIfAbilityHit(activeUnit, targetedUnit);
+                    checkIfUnitIsInvulnerable(receivingUnit);
                     calculateDamageDone(activeUnit, targetedUnit);
                 } catch (AttackMissedException attackMissedException) {
                     attackMissedException.printMissedAttackMessage();
+                } catch (UnitIsInvulnerableException unitIsInvulnerableException) {
+                    receivingUnit.getStatusEffects().removeInvulnerable();
+                    unitIsInvulnerableException.printInvulnerableMessage();
                 } catch (UnitIsDeadException unitIsDeadException) {
                     unitIsDeadException.printDeathMessage();
                     TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
@@ -77,10 +87,15 @@ public abstract class DamageAbility extends Ability {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         double activeUnitChanceToHit = this.accuracy + (activeUnitStatSheet.getDexterity() / 100.00);
-        double reciveingUnitChanceToDodge = Math.random() + receivingUnitStatSheet.getDexterity() / 100.00;
-        if (reciveingUnitChanceToDodge > activeUnitChanceToHit) {
+        double receivingUnitChanceToDodge = Math.random() + receivingUnitStatSheet.getDexterity() / 100.00;
+        if (receivingUnitChanceToDodge > activeUnitChanceToHit) {
             throw new AttackMissedException(receivingUnit);
         }
+    }
+
+    private void checkIfUnitIsInvulnerable(CharacterUnit receivingUnit) throws UnitIsInvulnerableException {
+        CharacterStatusEffects csf = receivingUnit.getStatusEffects();
+        if (csf.hasInvulnerable()) throw new UnitIsInvulnerableException();
     }
 
     protected abstract int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit);

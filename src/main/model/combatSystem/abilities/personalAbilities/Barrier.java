@@ -4,6 +4,8 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.PermanentStatusEffect;
+import main.model.combatSystem.statusEffects.Invulnerable;
 
 public class Barrier extends Ability {
 
@@ -13,11 +15,12 @@ public class Barrier extends Ability {
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-
+        PermanentStatusEffect invulnerable = new Invulnerable(AbilityType.INVULNERABLE, 1);
+        receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
     }
 
     @Override
     public boolean targetsAlly() {
-        return false;
+        return true;
     }
 }
