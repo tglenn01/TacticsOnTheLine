@@ -22,24 +22,23 @@ public class ConsumableAbility extends SupportiveAbility {
         System.out.println("Must have an item");
     }
 
-    @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit, Consumable item) {
+    public void takeAction(Consumable item, CharacterUnit receivingUnit) {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
-        if (this.abilityType == AbilityType.HEAL) {
+        if (item.getAbilityType() == AbilityType.HEAL) {
             healUnit(receivingUnit, receivingUnitStatSheet, item);
-        } if (this.abilityType == AbilityType.MANA_GAIN) {
+        } else if (item.getAbilityType() == AbilityType.MANA_GAIN) {
             gainMana(receivingUnit, receivingUnitStatSheet, item);
-        } if (this.abilityType == AbilityType.ATTACK_BUFF) {
+        } else if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, item.getPotency(), item.getDuration()));
-        } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
+        } else if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, item.getPotency(), item.getDuration()));
-        } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
+        } else if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, item.getPotency(), item.getDuration()));
-        } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
+        } else if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, item.getPotency(), item.getDuration()));
-        } if (this.abilityType == AbilityType.INVULNERABLE) {
+        } else if (item.getAbilityType() == AbilityType.INVULNERABLE) {
             receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(receivingUnit, item.getPotency()));
-        } if (this.abilityType == AbilityType.ROOT) {
+        } else if (item.getAbilityType() == AbilityType.ROOT) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new Root(receivingUnit, item.getPotency(), item.getDuration()));
         }
         ConsumableItemInventory.getInstance().removeConsumableItem(item);

@@ -43,4 +43,11 @@ public class DefenseBuff extends DecayingStatusEffect {
         System.out.println("Defense is now buffed to " + receivingUnitStatSheet.getArmour());
         this.amountChanged = potency;
     }
+
+    @Override
+    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+        receivingUnit.getCharacterStatSheet().removeArmour(amountChanged);
+    }
+
+
 }

@@ -6,8 +6,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
+import main.exception.OutOfActionsException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
@@ -40,7 +42,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         //startOfTurnNotification();
         this.actionTokens = ACTIONS_PER_TURN;
-        this.movementToken = true;
+        this.movementToken = !this.getStatusEffects().isRooted(); // if not rooted true, else false
     }
 
     private void startOfTurnNotification() {
@@ -49,8 +51,11 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void useAbility(Ability chosenAbility) {
         try {
+            hasActionToken();
             chosenAbility.hasEnoughMana(this);
             this.getTarget(chosenAbility);
+        } catch (OutOfActionsException outOfActionsException) {
+            outOfActionsException.printOutOfActionsError();
         } catch (OutOfManaException e) {
             Popup outOfManaMessage = new Popup();
             outOfManaMessage.getContent().add(new Label("Out of Mana Choose Again"));
@@ -58,8 +63,12 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
+    private void hasActionToken() throws OutOfActionsException {
+        if (actionTokens <= 0) throw new OutOfActionsException();
+    }
+
     public void useItem(Consumable item) {
-        Ability itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
+        ConsumableAbility itemAbility = ConsumableItemInventory.getInstance().getItemAbility();
         this.getItemTarget(itemAbility, item);
     }
 
@@ -103,7 +112,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
-    public void getItemTarget(Ability itemAbility, Consumable item) {
+    public void getItemTarget(ConsumableAbility itemAbility, Consumable item) {
         TacticBaseBattle.getInstance().getCurrentBoard().displayValidAbilitySpaces(this, itemAbility.getRange());
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getUnitsInRangeOfAbility(this, itemAbility);
 
@@ -116,7 +125,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
                         TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                         possibleTargets.clear();
                         sprite.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
-                        takeItemAction(itemAbility, boardSpace.getOccupyingUnit(), item);
+                        takeItemAction(itemAbility, item, boardSpace.getOccupyingUnit());
                     }
                 }
             });

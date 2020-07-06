@@ -3,7 +3,7 @@ package main.model.characterSystem.characterList;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.personalAbilities.Barrier;
+import main.model.combatSystem.abilities.personalAbilities.BarrierAbility;
 import main.model.jobSystem.jobs.Cleric;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
@@ -32,7 +32,7 @@ public class Liam extends PlayableCharacterUnit {
 
     @Override
     protected void setPersonalAbility() {
-        this.personalAbility = new Barrier("Barrier", 14, 1, 1, Ability.AbilityType.DEFENSE_BUFF,
+        this.personalAbility = new BarrierAbility("Barrier", 14, 1, 1, Ability.AbilityType.DEFENSE_BUFF,
                 "Protect an ally from damage one time");
         addPersonalAbilityToAbilityList();
     }

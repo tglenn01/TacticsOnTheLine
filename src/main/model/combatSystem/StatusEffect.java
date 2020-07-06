@@ -32,4 +32,5 @@ public abstract class StatusEffect {
     protected abstract void setCondensedName();
     protected abstract void setIcon();
     protected abstract void applyStatusEffect(CharacterUnit receivingUnit, int potency);
+    protected abstract void removeStatusEffect(CharacterUnit receivingUnit);
 }

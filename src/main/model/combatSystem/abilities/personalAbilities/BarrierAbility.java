@@ -3,25 +3,24 @@ package main.model.combatSystem.abilities.personalAbilities;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.PermanentStatusEffect;
+import main.model.combatSystem.statusEffects.Invulnerable;
 
-public class Deactivate extends Ability {
+public class BarrierAbility extends Ability {
 
-    public Deactivate(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription) {
+    public BarrierAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription) {
         super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-        StatSheet characterStatSheet = activeUnit.getCharacterStatSheet();
-        characterStatSheet.setHealth(characterStatSheet.getMaxHealth());
-        activeUnit.setMovementToken(false);
-        activeUnit.setActionToken(0);
+        PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
+        receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
     }
 
     @Override
     public boolean targetsAlly() {
-        return false;
+        return true;
     }
 }

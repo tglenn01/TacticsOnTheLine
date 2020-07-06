@@ -50,4 +50,9 @@ public class DefenseDebuff extends DecayingStatusEffect {
             this.amountChanged = initialArmour;
         }
     }
+
+    @Override
+    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+        receivingUnit.getCharacterStatSheet().addArmour(amountChanged);
+    }
 }

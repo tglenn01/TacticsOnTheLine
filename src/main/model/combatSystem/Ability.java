@@ -5,7 +5,6 @@ import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.itemSystem.Consumable;
 
 public abstract class Ability {
     public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM,
@@ -34,8 +33,6 @@ public abstract class Ability {
 
     public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
             throws AttackMissedException, UnitIsDeadException;
-
-    public void takeAction(CharacterUnit characterUnit, CharacterUnit receivingUnit, Consumable item) {}
 
     public int getManaCost() {
         return manaCost;
@@ -69,7 +66,10 @@ public abstract class Ability {
 
     public boolean targetsSelf() {
         return this.abilityName.equals("Defend") ||
-                this.abilityName.equals("Focus");
+                this.abilityName.equals("Focus") ||
+                this.abilityName.equals("Tower") ||
+                this.abilityName.equals("Deactivate") ||
+                this.abilityName.equals("Tremor");
     }
 
     public boolean isUnique() {
@@ -85,5 +85,9 @@ public abstract class Ability {
 
     public boolean endsTurn() {
         return this.abilityName.equals("Defend") || this.abilityName.equals("Deactivate");
+    }
+
+    public void setRange(int newRange) {
+        this.range = newRange;
     }
 }

@@ -79,4 +79,11 @@ public class CharacterStatusEffects {
             permanentStatusEffects.remove(statusEffect);
         }
     }
+
+    public boolean isRooted() {
+        for (DecayingStatusEffect decayingStatusEffect : decayingStatusEffects) {
+            if (decayingStatusEffect.getAbilityType() == Ability.AbilityType.ROOT) return true;
+        }
+        return false;
+    }
 }

@@ -8,16 +8,18 @@ import main.model.combatSystem.DecayingStatusEffect;
 import main.model.combatSystem.statusEffects.IncreasedRange;
 import main.model.combatSystem.statusEffects.Root;
 
-public class Tower extends Ability {
+public class TowerAbility extends Ability {
 
-    public Tower(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription) {
+    public TowerAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription) {
         super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-        DecayingStatusEffect root = new Root(AbilityType.ROOT, activeUnit.getCharacterStatSheet().getMovement(), 3);
-        DecayingStatusEffect doubleRange = new IncreasedRange(null, 2, 3);
+        DecayingStatusEffect root = new Root(receivingUnit, activeUnit.getCharacterStatSheet().getMovement(), 3);
+        DecayingStatusEffect doubleRange = new IncreasedRange(activeUnit, 4, 3);
+        activeUnit.getStatusEffects().addDecayingStatusEffect(root);
+        activeUnit.getStatusEffects().addDecayingStatusEffect(doubleRange);
     }
 
     @Override

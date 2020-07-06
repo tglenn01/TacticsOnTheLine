@@ -5,6 +5,7 @@ import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
@@ -19,19 +20,18 @@ import java.util.Map;
 
 public abstract class CharacterUnit {
     protected final int ACTIONS_PER_TURN = 1;
-    protected int actionToken;
+    protected int actionTokens;
     protected boolean movementToken;
 
     protected String characterName;
     protected Job characterJob;
     protected List<Ability> abilityList = new ArrayList<>();
     protected StatSheet characterStatSheet;
-    protected boolean isAlive;
     protected CharacterStatusEffects statusEffects;
-    protected BoardSpace boardSpace;
     protected CharacterPortrait characterPortrait;
     protected CharacterSprite sprite;
-    protected int actionTokens;
+    protected BoardSpace boardSpace;
+    protected boolean isAlive;
     protected boolean movementRangeIsVisable;
 
 
@@ -70,9 +70,9 @@ public abstract class CharacterUnit {
         }
     }
 
-    protected void takeItemAction(Ability ability, CharacterUnit receivingUnit, Consumable consumable) {
-        ability.takeAction(this, receivingUnit, consumable);
-        removeActionToken(ability);
+    protected void takeItemAction(ConsumableAbility itemAbility, Consumable consumable, CharacterUnit receivingUnit) {
+        itemAbility.takeAction(consumable, receivingUnit);
+        removeActionToken(itemAbility);
         if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
         else takeNextAction();
     }

@@ -16,7 +16,7 @@ public class TremorAbility extends DamageAbility {
     protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         int damage = (activeUnit.getCharacterStatSheet().getStrength() + this.damage) - receivingUnit.getCharacterStatSheet().getArmour();
         if (damage < 0) damage = 0;
-        else rootUnit(receivingUnit);
+        rootUnit(receivingUnit);
         return damage;
     }
 

@@ -50,4 +50,9 @@ public class AttackDebuff extends DecayingStatusEffect {
             this.amountChanged = initialStrength;
         }
     }
+
+    @Override
+    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+        receivingUnit.getCharacterStatSheet().addStrength(amountChanged);
+    }
 }

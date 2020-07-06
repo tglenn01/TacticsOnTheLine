@@ -30,4 +30,9 @@ public class Invulnerable extends PermanentStatusEffect {
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
 
     }
+
+    @Override
+    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+
+    }
 }

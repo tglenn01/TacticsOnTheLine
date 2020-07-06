@@ -10,7 +10,7 @@ import java.util.List;
 public class ConsumableItemInventory implements Iterable<Consumable> {
     private static ConsumableItemInventory consumableItemInventory;
     private List<Consumable> consumableList;
-    private Ability itemAbility;
+    private ConsumableAbility itemAbility;
 
     private ConsumableItemInventory() {
         consumableList = new ArrayList<>();
@@ -31,7 +31,7 @@ public class ConsumableItemInventory implements Iterable<Consumable> {
 
     public void removeConsumableItem(Consumable consumable) { consumableList.remove(consumable); }
 
-    public Ability getItemAbility() {
+    public ConsumableAbility getItemAbility() {
         return itemAbility;
     }
 

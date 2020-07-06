@@ -2,7 +2,7 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
-import main.model.combatSystem.abilities.personalAbilities.Tower;
+import main.model.combatSystem.abilities.personalAbilities.TowerAbility;
 import main.model.jobSystem.jobs.BattleMage;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
@@ -31,8 +31,8 @@ public class Willow extends PlayableCharacterUnit {
 
     @Override
     protected void setPersonalAbility() {
-        this.personalAbility = new Tower("Tower", 20, 0, 1, null,
-                "Root yourself doubling the range of your abilities");
+        this.personalAbility = new TowerAbility("Tower", 20, 0, 1, null,
+                "Root yourself increasing the range of magical abilities");
         addPersonalAbilityToAbilityList();
     }
 

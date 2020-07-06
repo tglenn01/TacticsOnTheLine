@@ -32,19 +32,19 @@ public class StatusEffectAbility extends SupportiveAbility {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         if (this.abilityType == AbilityType.HEAL) {
             healUnit(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
-        } if (this.abilityType == AbilityType.MANA_GAIN) {
+        } else if (this.abilityType == AbilityType.MANA_GAIN) {
             gainMana(receivingUnit, receivingUnitStatSheet, activeUnitStatSheet);
-        } if (this.abilityType == AbilityType.ATTACK_BUFF) {
+        } else if (this.abilityType == AbilityType.ATTACK_BUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, potency, duration));
-        } if (this.abilityType == AbilityType.DEFENSE_BUFF) {
+        } else if (this.abilityType == AbilityType.DEFENSE_BUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, potency, duration));
-        } if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
+        } else if (this.abilityType == AbilityType.ATTACK_DEBUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, potency, duration));
-        } if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
+        } else if (this.abilityType == AbilityType.DEFENSE_DEBUFF) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, potency, duration));
-        } if (this.abilityType == AbilityType.INVULNERABLE) {
+        } else if (this.abilityType == AbilityType.INVULNERABLE) {
             receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(receivingUnit, potency));
-        } if (this.abilityType == AbilityType.ROOT) {
+        } else if (this.abilityType == AbilityType.ROOT) {
             receivingUnit.getStatusEffects().addDecayingStatusEffect(new Root(receivingUnit, potency, duration));
         }
     }
