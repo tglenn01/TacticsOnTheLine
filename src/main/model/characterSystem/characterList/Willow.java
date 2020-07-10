@@ -2,11 +2,12 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
+import main.model.characterSystem.characterList.characterSprites.WillowSprite;
 import main.model.combatSystem.abilities.personalAbilities.TowerAbility;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.BattleMage;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ESTELLE_SPRITE;
 
 public class Willow extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
@@ -20,8 +21,6 @@ public class Willow extends PlayableCharacterUnit {
 
     public Willow() {
         this.characterName = "Willow Summers";
-        this.setCharacterPortrait(ESTELLE_PORTRAIT);
-        this.setCharacterSprite(ESTELLE_SPRITE);
     }
 
     @Override
@@ -33,12 +32,21 @@ public class Willow extends PlayableCharacterUnit {
     protected void setPersonalAbility() {
         this.personalAbility = new TowerAbility("Tower", 20, 0, 1, null,
                 "Root yourself increasing the range of magical abilities");
-        addPersonalAbilityToAbilityList();
     }
 
     @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new WillowSprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 }

@@ -2,12 +2,13 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
+import main.model.characterSystem.characterList.characterSprites.No1Sprite;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.DeactivateAbility;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.Thief;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ESTELLE_SPRITE;
 
 public class No1 extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
@@ -21,8 +22,6 @@ public class No1 extends PlayableCharacterUnit {
 
     public No1() {
         this.characterName = "No.1";
-        this.setCharacterPortrait(ESTELLE_PORTRAIT);
-        this.setCharacterSprite(ESTELLE_SPRITE);
     }
 
     @Override
@@ -34,12 +33,21 @@ public class No1 extends PlayableCharacterUnit {
     protected void setPersonalAbility() {
         this.personalAbility = new DeactivateAbility("Deactivate", 0, 0, 1, Ability.AbilityType.HEAL,
                 "Pass your turn to heal to full");
-        addPersonalAbilityToAbilityList();
     }
 
     @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new No1Sprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 }

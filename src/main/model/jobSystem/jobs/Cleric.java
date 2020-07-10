@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.MagicAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -36,5 +37,6 @@ public class Cleric extends Job {
         this.jobResistance = 12;
         this.jobSpeed = 4;
         this.jobDexterity = 6;
+        this.jobMovement = StatSheet.BASE_MOVEMENT;
     }
 }

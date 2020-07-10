@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -37,5 +38,6 @@ public class Warrior extends Job {
         this.jobResistance = 0;
         this.jobSpeed = 6;
         this.jobDexterity = 6;
+        this.jobMovement = StatSheet.BASE_MOVEMENT;
     }
 }

@@ -101,6 +101,30 @@ public class Board {
         return unitsInRangeOfAbilities;
     }
 
+    // find the closest boardSpace to the given board space. Start by checking above, right, down, left.
+    // the x and y cursor must stay within the bounds of the board
+    public BoardSpace getClosetBoardSpace(BoardSpace boardSpace) {
+        int xCursor = 1;
+        int yCursor = 1;
+        int xValue = boardSpace.getXCoordinate();
+        int yValue = boardSpace.getYCoordinate();
+        BoardSpace closetBoardSpace = null;
+        while (closetBoardSpace == null) {
+            if (yValue - yCursor >= 0 && !boardSpaces[xValue][yValue - yCursor].isOccupied()) // up
+                closetBoardSpace = boardSpaces[xValue][yValue - yCursor];
+            else if (xValue + xCursor < this.boardWidth && !boardSpaces[xValue + xCursor][yValue].isOccupied()) // right
+                closetBoardSpace = boardSpaces[xValue + xCursor][yValue];
+            else if (yValue + yCursor < this.boardHeight && !boardSpaces[xValue][yValue + yCursor].isOccupied()) // left
+                closetBoardSpace = boardSpaces[xValue][yValue + yCursor];
+            else if (xValue - xCursor >= this.boardWidth && !boardSpaces[xValue - xCursor][yValue].isOccupied()) // down
+                closetBoardSpace = boardSpaces[xValue - xCursor][yValue];
+
+            xCursor++;
+            yCursor++;
+        }
+        return closetBoardSpace;
+    }
+
     public BoardSpace[][] getBoardSpaces() {
         return this.boardSpaces;
     }
@@ -120,5 +144,9 @@ public class Board {
 
     public boolean isAbilitySpacesShowing() {
         return !abilityHighlightedSpace.isEmpty();
+    }
+
+    public List<BoardSpace> getAbilityHighlightedSpace() {
+        return this.abilityHighlightedSpace;
     }
 }

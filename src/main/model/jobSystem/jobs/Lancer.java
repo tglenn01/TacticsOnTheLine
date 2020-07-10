@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -36,5 +37,6 @@ public class Lancer extends Job {
         this.jobResistance = 3;
         this.jobSpeed = 10;
         this.jobDexterity = 10;
+        this.jobMovement = StatSheet.BASE_MOVEMENT;
     }
 }

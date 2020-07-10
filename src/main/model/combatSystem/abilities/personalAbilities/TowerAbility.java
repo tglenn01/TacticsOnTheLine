@@ -20,6 +20,8 @@ public class TowerAbility extends Ability {
         DecayingStatusEffect doubleRange = new IncreasedRange(activeUnit, 4, 3);
         activeUnit.getStatusEffects().addDecayingStatusEffect(root);
         activeUnit.getStatusEffects().addDecayingStatusEffect(doubleRange);
+        activeUnit.setActionToken(0);
+        activeUnit.setMovementToken(false);
     }
 
     @Override

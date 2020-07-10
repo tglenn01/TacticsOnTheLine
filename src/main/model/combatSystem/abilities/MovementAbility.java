@@ -34,7 +34,6 @@ public class MovementAbility extends Ability {
 
                         if (space.getOccupyingUnit() != activeUnit && list.contains(activeUnit)) {
                             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                            activeUnit.getBoardSpace().removeOccupyingUnit();
                             space.setOccupyingUnit(activeUnit);
                             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
                             activeUnit.movementComplete(TacticBaseBattle.getInstance().getBattle());

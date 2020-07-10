@@ -9,59 +9,58 @@ import main.model.graphics.menus.AbilityMenu;
 import main.model.graphics.menus.CharacterStatsMenu;
 import main.ui.TacticBaseBattle;
 
-import java.io.FileInputStream;
-
-public class CharacterSprite {
-    public static final String ESTELLE_SPRITE = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\estelleSprite.png";
-    public static final String JOSHUA_SPRITE = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\joshuaSprite.png";
-    public static final String KLOE_SPRITE = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\kloeSprite.png";
-    public static final String CASSIUS_SPRITE = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\cassiusSprite.png";
-    public static final String ENEMY_SPRITE = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\enemySprite.png";
+public abstract class CharacterSprite {
     private CharacterUnit unit;
+    protected Image[][] spriteArray = new Image[4][3]; // 4 directions and 3 different animations per direction
     private ImageView sprite;
     private Image image;
+    public double duration = 1.00;
 
-    public CharacterSprite(CharacterUnit unit, String fileLocation) {
+    protected int direction = 0;
+
+    public CharacterSprite(CharacterUnit unit) {
         this.unit = unit;
-        initializeSprite(fileLocation);
+        initializeSpriteArray();
+        initializeSprite();
     }
 
-    private void initializeSprite(String fileLocation) {
-        try {
-            FileInputStream input = new FileInputStream(fileLocation);
-            this.image = new Image(input);
-            this.sprite = new ImageView(image);
-            sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
-                        !TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) {
-                    if (!AbilityMenu.isDisplaying()) {
-                            AbilityMenu.display(unit, unit.getAbilityList());
-                    }
-                } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
-                        event.getButton() == MouseButton.PRIMARY) {
-                    if (unit.isMovementRangeIsVisable()) {
-                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
-                        unit.setMovementRangeIsVisable(false);
-                    } else {
-                        TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
-                        unit.setMovementRangeIsVisable(true);
-                    }
-                    event.consume();
-                } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
-                        event.getButton() == MouseButton.SECONDARY) {
-                    if (!CharacterStatsMenu.isDisplaying()) CharacterStatsMenu.display(unit);
+    protected abstract void initializeSpriteArray();
+
+    private void initializeSprite() {
+        this.sprite = new ImageView(spriteArray[2][0]); // default down looking
+        sprite.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
+                    !TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing()) {
+                if (!AbilityMenu.isDisplaying()) {
+                    AbilityMenu.display(unit, unit.getAbilityList());
                 }
-            });
-        } catch (Exception e) {
-            System.out.println("Portrait not found");
-        }
+            } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
+                    event.getButton() == MouseButton.PRIMARY) {
+                if (unit.isMovementRangeIsVisable()) {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(unit);
+                    unit.setMovementRangeIsVisable(false);
+                } else {
+                    TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
+                    unit.setMovementRangeIsVisable(true);
+                }
+                event.consume();
+            } else if (!TacticBaseBattle.getInstance().getCurrentBoard().isAbilitySpacesShowing() &&
+                    event.getButton() == MouseButton.SECONDARY) {
+                if (!CharacterStatsMenu.isDisplaying()) CharacterStatsMenu.display(unit);
+            }
+        });
     }
 
     public ImageView getSprite() {
         return this.sprite;
     }
 
-    public Image getImage() {
-        return this.image;
+    public Image getImage(int direction) {
+        return this.spriteArray[direction][0];
+    }
+
+    public void updateImage(double time, int direction) {
+        int index = (int) ((time % (3 * duration)) / duration);
+        this.sprite.setImage(spriteArray[direction][index]);
     }
 }

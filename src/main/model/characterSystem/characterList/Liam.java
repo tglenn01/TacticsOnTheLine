@@ -2,12 +2,13 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
+import main.model.characterSystem.characterList.characterSprites.LiamSprite;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.BarrierAbility;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.Cleric;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ESTELLE_SPRITE;
 
 public class Liam extends PlayableCharacterUnit {
     private final int personalHealthBoost = 4;
@@ -21,8 +22,6 @@ public class Liam extends PlayableCharacterUnit {
 
     public Liam() {
         this.characterName = "Liam Hudson";
-        this.setCharacterPortrait(ESTELLE_PORTRAIT);
-        this.setCharacterSprite(ESTELLE_SPRITE);
     }
 
     @Override
@@ -34,12 +33,21 @@ public class Liam extends PlayableCharacterUnit {
     protected void setPersonalAbility() {
         this.personalAbility = new BarrierAbility("Barrier", 14, 1, 1, Ability.AbilityType.DEFENSE_BUFF,
                 "Protect an ally from damage one time");
-        addPersonalAbilityToAbilityList();
     }
 
     @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new LiamSprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 }

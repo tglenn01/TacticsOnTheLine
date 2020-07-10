@@ -8,7 +8,7 @@ import main.model.characterSystem.StatSheet;
 
 public abstract class Ability {
     public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM,
-        MANA_GAIN, MOVEMENT, INVULNERABLE, ROOT}
+        MANA_GAIN, MOVEMENT, INVULNERABLE, ROOT, RANGE_INCREASE}
     protected String abilityName;
     protected int manaCost;
     protected int range;
@@ -51,11 +51,12 @@ public abstract class Ability {
 
     public void hasEnoughMana(CharacterUnit activeUnit) throws OutOfManaException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
-        if (activeUnitStatSheet.getMana() >= manaCost) {
-            activeUnitStatSheet.setMana(activeUnitStatSheet.getMana() - manaCost);
-        } else {
-            throw new OutOfManaException();
-        }
+        if (activeUnitStatSheet.getMana() < manaCost) throw new OutOfManaException();
+    }
+
+    public void payManaCost(CharacterUnit activeUnit) {
+        StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
+        activeUnitStatSheet.setMana(activeUnitStatSheet.getMana() - manaCost);
     }
 
     public boolean isAreaOfEffect() {

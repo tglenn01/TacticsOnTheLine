@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -38,5 +39,6 @@ public class Archer extends Job {
         this.jobResistance = 4;
         this.jobSpeed = 12;
         this.jobDexterity = 12;
+        this.jobMovement = StatSheet.BASE_MOVEMENT;
     }
 }

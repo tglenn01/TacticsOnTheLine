@@ -58,7 +58,7 @@ public class ScenarioSelectScreen extends DefaultScene implements EventHandler<A
         buttonTwo.setOnAction(this);
         scenarioButtonList.add(buttonTwo);
 
-        scenarios.getChildren().addAll(buttonOne, buttonTwo);
+        scenarios.getChildren().addAll(scenarioButtonList);
         scenarios.setAlignment(Pos.CENTER);
         return scenarios;
     }

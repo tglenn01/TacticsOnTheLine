@@ -2,12 +2,13 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
+import main.model.characterSystem.characterList.characterSprites.HarrySprite;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.TremorAbility;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.Warrior;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ESTELLE_SPRITE;
 
 public class Harry extends PlayableCharacterUnit {
     private final int personalHealthBoost = 8;
@@ -21,8 +22,6 @@ public class Harry extends PlayableCharacterUnit {
 
     public Harry() {
         this.characterName = "Harry North";
-        this.setCharacterPortrait(ESTELLE_PORTRAIT);
-        this.setCharacterSprite(ESTELLE_SPRITE);
     }
 
     @Override
@@ -35,12 +34,21 @@ public class Harry extends PlayableCharacterUnit {
         this.personalAbility = new TremorAbility("Tremor", 4, 0, 2,
                 Ability.AbilityType.DAMAGE, 6, 1.00,
                 "Damage neighbouring enemies while stopping their movement");
-        addPersonalAbilityToAbilityList();
     }
 
     @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new HarrySprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 }

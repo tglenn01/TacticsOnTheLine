@@ -2,8 +2,11 @@ package main.model.characterSystem;
 
 import javafx.util.Pair;
 import main.exception.OutOfManaException;
+import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
+import main.model.characterSystem.characterList.characterSprites.EnemySprite;
 import main.model.combatSystem.Ability;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
 import main.ui.TacticBaseBattle;
@@ -12,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ENEMY_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ENEMY_SPRITE;
+import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
 
 public class NPC extends CharacterUnit {
 
@@ -21,13 +23,21 @@ public class NPC extends CharacterUnit {
         this.characterName = name;
         this.characterJob = job;
         this.characterStatSheet = new StatSheet(this.characterJob);
-        this.setCharacterPortrait(ENEMY_PORTRAIT);
-        this.setCharacterSprite(ENEMY_SPRITE);
     }
 
     @Override
     protected void setPersonalStatBonuses() {
         //
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new EnemySprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 
     protected void addPersonalAbilityToAbilityList() {
@@ -39,11 +49,12 @@ public class NPC extends CharacterUnit {
     public void startTurn() {
         System.out.println("It is " + this.characterName + "'s turn");
         statusEffects.updateStatusEffect(this);
-        this.actionTokens = 2;
+        this.actionTokens = ACTIONS_PER_TURN;
+        this.movementToken = true;
         List<BoardSpace> damageActionRange = getDamageActionRange();
         List<BoardSpace> supportActionRange = getSupportActionRange();
-        if (isEnemyInRange(damageActionRange)) targetEnemy(damageActionRange);
-        else if (isAllyInRange(supportActionRange)) supportAlly(supportActionRange);
+        if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
+        else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);
         else takeMovement(Job.move);
     }
 
@@ -51,8 +62,8 @@ public class NPC extends CharacterUnit {
     protected void takeNextAction() {
         List<BoardSpace> damageActionRange = getDamageActionRange();
         List<BoardSpace> supportActionRange = getSupportActionRange();
-        if (isEnemyInRange(damageActionRange)) targetEnemy(damageActionRange);
-        else if (isAllyInRange(supportActionRange)) supportAlly(supportActionRange);
+        if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
+        else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);
         else if (movementToken) takeMovement(Job.move);
         else TacticBaseBattle.getInstance().getBattle().endTurn();
     }
@@ -69,19 +80,19 @@ public class NPC extends CharacterUnit {
 
     @Override
     public void takeMovement(Ability movementAbility) {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         CharacterUnit closetTarget = getClosetTarget();
         if (closetTarget != null) {
-            TacticBaseBattle.getInstance().getCurrentBoard().displayValidMovementSpaces(this, this.getCharacterStatSheet().getMovement());
+            board.displayValidMovementSpaces(this, this.getCharacterStatSheet().getMovement());
             List<BoardSpace> range = getMovementRange();
-            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(this);
+            board.stopShowingMovementSpaces(this);
             BoardSpace validSpace = getClosetSpaceToTarget(range, closetTarget);
 
-            this.boardSpace.removeOccupyingUnit();
-            validSpace.setOccupyingUnit(this);
+            this.setBoardSpace(validSpace);
             movementComplete(TacticBaseBattle.getInstance().getBattle());
         } else {
-            this.actionTokens = 0;
-            TacticBaseBattle.getInstance().getBattle().endTurn();
+            this.movementToken = false;
+            takeNextAction();
         }
 
     }
@@ -269,7 +280,6 @@ public class NPC extends CharacterUnit {
             possibleAbilities.remove(chosenAbility);
             chosenAbility = getChosenAbility(possibleAbilities); // keep repeating till it gets valid ability
         }
-
 
         return chosenAbility;
     }

@@ -6,9 +6,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class WoodsType extends LandType {
+public class WoodsLandType extends LandType {
 
-    public WoodsType() {
+    public WoodsLandType() {
     }
 
     protected void setTileColor() {

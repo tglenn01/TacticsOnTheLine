@@ -1,5 +1,6 @@
 package main.ui;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -23,7 +24,22 @@ public class Battle {
         TacticBaseBattle.getInstance().setBattle(this);
         enemyCharacters = scenario.getListOfEnemies();
         turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
+        battle();
         updateNextRound();
+    }
+
+    private void battle() {
+        final long startNanoTime = System.nanoTime();
+
+        new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                double t  = (now - startNanoTime) / 1000000000.0;
+                for (CharacterUnit unit : turnOrder.getFieldedCharacters()) {
+                    unit.getCharacterSprite().updateImage(t, unit.getDirection());
+                }
+            }
+        }.start();
     }
 
     private void updateNextRound() {

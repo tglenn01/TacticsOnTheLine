@@ -1,5 +1,6 @@
 package main.model.jobSystem.jobs;
 
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
@@ -36,5 +37,6 @@ public class Bard extends Job {
         this.jobResistance = 8;
         this.jobSpeed = 6;
         this.jobDexterity = 2;
+        this.jobMovement = StatSheet.BASE_MOVEMENT;
     }
 }

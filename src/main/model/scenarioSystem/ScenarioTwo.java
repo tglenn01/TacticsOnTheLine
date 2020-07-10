@@ -4,7 +4,7 @@ import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.boardSystem.tiles.GrassLandType;
 import main.model.boardSystem.tiles.WaterLandType;
-import main.model.boardSystem.tiles.WoodsType;
+import main.model.boardSystem.tiles.WoodsLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.jobSystem.jobs.*;
@@ -39,22 +39,22 @@ public class ScenarioTwo extends Scenario {
                 boardSpace.setMinSize(BOARD_SPACE_SIZE, BOARD_SPACE_SIZE);
             }
         }
-        scenarioBoard.getBoardSpace(1, 1).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(2, 1).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(2, 2).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(4, 1).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(5, 1).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(6, 1).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(6, 3).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(7, 3).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(7, 4).setLandType(new WoodsType());
+        scenarioBoard.getBoardSpace(1, 1).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(2, 1).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(2, 2).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(4, 1).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(5, 1).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(6, 1).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(6, 3).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(7, 3).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(7, 4).setLandType(new WoodsLandType());
         scenarioBoard.getBoardSpace(5, 4).setLandType(new WaterLandType());
-        scenarioBoard.getBoardSpace(3, 4).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(3, 5).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(3, 6).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(4, 6).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(5, 6).setLandType(new WoodsType());
-        scenarioBoard.getBoardSpace(6, 6).setLandType(new WoodsType());
+        scenarioBoard.getBoardSpace(3, 4).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(3, 5).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(3, 6).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(4, 6).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(5, 6).setLandType(new WoodsLandType());
+        scenarioBoard.getBoardSpace(6, 6).setLandType(new WoodsLandType());
         scenarioBoard.getBoardSpace(1, 6).setLandType(new WaterLandType());
         scenarioBoard.getBoardSpace(1, 7).setLandType(new WaterLandType());
     }

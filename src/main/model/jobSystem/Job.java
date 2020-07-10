@@ -4,6 +4,7 @@ import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
 import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.abilities.StatusEffectAbility;
@@ -33,6 +34,7 @@ public abstract class Job {
     protected int jobResistance;
     protected int jobSpeed;
     protected int jobDexterity;
+    protected int jobMovement;
 
     public Job() {
         jobAbilityList = new ArrayList<>();
@@ -57,7 +59,7 @@ public abstract class Job {
     private void updateMaxAbilityReach() {
         for (Ability ability : jobAbilityList) {
             if (ability.targetsAlly()) {
-                if (ability.getRange() > maxSupportingAbilityReach) maxSupportingAbilityReach = ability.getRange();
+                if (ability.getRange() > maxSupportingAbilityReach && ability.getClass() != ConsumableAbility.class) maxSupportingAbilityReach = ability.getRange();
             } else if (ability.getRange() > maxDamageAbilityReach) maxDamageAbilityReach = ability.getRange();
         }
     }
@@ -79,7 +81,7 @@ public abstract class Job {
         statSheet.setBaseResistance(jobResistance);
         statSheet.setBaseSpeed(jobSpeed);
         statSheet.setBaseDexterity(jobDexterity);
-        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+        statSheet.setMovement(jobMovement);
     }
 
     // For named characters that have stat bonuses
@@ -92,7 +94,7 @@ public abstract class Job {
         statSheet.setBaseResistance(jobResistance + statBonus.getResistanceBonus());
         statSheet.setBaseSpeed(jobSpeed + statBonus.getSpeedBonus());
         statSheet.setBaseDexterity(jobDexterity + statBonus.getDexterityBonus());
-        statSheet.setMovement(StatSheet.BASE_MOVEMENT);
+        statSheet.setMovement(jobMovement);
     }
 
     public void updateMaxStats() {

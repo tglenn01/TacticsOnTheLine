@@ -2,12 +2,13 @@ package main.model.characterSystem.characterList;
 
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
+import main.model.characterSystem.characterList.characterSprites.GrahamSprite;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.personalAbilities.TremorAbility;
+import main.model.combatSystem.abilities.personalAbilities.RescueAbility;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.Archer;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-import static main.model.graphics.sceneElements.images.CharacterSprite.ESTELLE_SPRITE;
 
 public class Graham extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
@@ -21,8 +22,6 @@ public class Graham extends PlayableCharacterUnit {
 
     public Graham() {
         this.characterName = "Graham Lost";
-        this.setCharacterPortrait(ESTELLE_PORTRAIT);
-        this.setCharacterSprite(ESTELLE_SPRITE);
     }
 
     @Override
@@ -31,10 +30,8 @@ public class Graham extends PlayableCharacterUnit {
     }
 
     protected void setPersonalAbility() {
-        this.personalAbility = new TremorAbility("Tremor", 4, 0, 2,
-                Ability.AbilityType.DAMAGE, 6, 1.00,
-                "Damage neighbouring enemies while stopping their movement");
-        addPersonalAbilityToAbilityList();
+        this.personalAbility = new RescueAbility("Rescue", 10, this.getCharacterStatSheet().getMagic(), 1,
+                Ability.AbilityType.MOVEMENT, "Teleport a far away ally to your side", this);
     }
 
 
@@ -42,6 +39,16 @@ public class Graham extends PlayableCharacterUnit {
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
+    }
+
+    @Override
+    protected void setCharacterSprite() {
+        this.sprite = new GrahamSprite(this);
+    }
+
+    @Override
+    protected void setCharacterPortrait() {
+        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 
     protected void setGrowthRate() {

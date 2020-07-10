@@ -3,6 +3,7 @@ package main.model.characterSystem;
 import javafx.scene.image.ImageView;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
+import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
@@ -32,18 +33,26 @@ public abstract class CharacterUnit {
     protected CharacterSprite sprite;
     protected BoardSpace boardSpace;
     protected boolean isAlive;
+    protected int direction = 2; // 0 = up, 1 = right, 2 = down, 3 = left
     protected boolean movementRangeIsVisable;
 
 
     public CharacterUnit() {
-        this.setPersonalStatBonuses();
+        setPersonalStatBonuses();
+        setCharacterSprite();
+        setCharacterPortrait();
         //this.setPersonalGrowthRate();
         this.isAlive = true;
         this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
+
     }
 
     protected abstract void setPersonalStatBonuses();
+    protected abstract void setCharacterSprite();
+    protected abstract void setCharacterPortrait();
+    protected abstract void addPersonalAbilityToAbilityList();
+
 
     //protected abstract void setPersonalGrowthRate();
 
@@ -57,6 +66,7 @@ public abstract class CharacterUnit {
 
     protected void takeAction(Ability ability, CharacterUnit receivingUnit) {
         try {
+            ability.payManaCost(this); // we know that we have enough mana to cast
             ability.takeAction(this, receivingUnit);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
@@ -88,27 +98,20 @@ public abstract class CharacterUnit {
     public void setJob(Job job) {
         this.characterJob = job;
         this.abilityList = new ArrayList<>(job.getJobAbilityList());
-        addPersonalAbilityToAbilityList();
         if (characterStatSheet != null) characterStatSheet.updateStatSheetAccordingToJob(job);
     }
 
-    protected abstract void addPersonalAbilityToAbilityList();
+
 
     public void setBoardSpace(BoardSpace boardSpace) {
+        if (this.boardSpace != null && this.boardSpace.getOccupyingUnit() == this) this.boardSpace.removeOccupyingUnit();
         this.boardSpace = boardSpace;
         if (boardSpace.getOccupyingUnit() != this) {
             boardSpace.setOccupyingUnit(this);
         }
     }
 
-    public void setCharacterPortrait(String fileLocation) {
-        this.characterPortrait = new CharacterPortrait(fileLocation);
-    }
 
-
-    public void setCharacterSprite(String fileLocation) {
-        this.sprite = new CharacterSprite(this, fileLocation);
-    }
 
     public void setAlive(boolean deathStatus) {
         this.isAlive = deathStatus;
@@ -155,8 +158,9 @@ public abstract class CharacterUnit {
     }
 
     public List<BoardSpace> getMovementRange() {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (Map.Entry<BoardSpace, List<CharacterUnit>> entry : TacticBaseBattle.getInstance().getCurrentBoard().getMovementHighlightedSpaces().entrySet()) {
+        for (Map.Entry<BoardSpace, List<CharacterUnit>> entry : board.getMovementHighlightedSpaces().entrySet()) {
             if (entry.getValue().contains(this)) possibleSpaces.add(entry.getKey());
         }
 
@@ -171,8 +175,9 @@ public abstract class CharacterUnit {
     }
 
     public List<BoardSpace> getActionRangeOfGivenAbility(Ability ability) {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 if (boardSpace.isValidAbilitySpace(this.boardSpace, ability.getRange())) {
                     possibleSpaces.add(boardSpace);
@@ -184,9 +189,10 @@ public abstract class CharacterUnit {
 
     // ability.getRange will ways be greater than 1
     public List<BoardSpace> getTargetedBoardSpacesForAreaOfEffect(Ability ability) {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
 
-        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
 
                 int simpleX = boardSpace.getXCoordinate() - this.boardSpace.getXCoordinate();
@@ -201,8 +207,9 @@ public abstract class CharacterUnit {
     }
 
     protected List<BoardSpace> getDamageActionRange() {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxDamageAbilityReach())) {
                     possibleSpaces.add(boardSpace);
@@ -213,8 +220,9 @@ public abstract class CharacterUnit {
     }
 
     protected List<BoardSpace> getSupportActionRange() {
+        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : TacticBaseBattle.getInstance().getCurrentBoard().getBoardSpaces()) {
+        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxSupportingAbilityReach())) {
                     possibleSpaces.add(boardSpace);
@@ -232,9 +240,7 @@ public abstract class CharacterUnit {
         if (usedAbility.endsTurn()) {
             this.actionTokens = 0;
             this.movementToken = false;
-        }
-
-        else this.actionTokens--;
+        } else this.actionTokens--;
     }
 
     public List<Ability> getAbilityList() {
@@ -247,6 +253,15 @@ public abstract class CharacterUnit {
 
     public void setMovementToken(boolean hasMovement) {
         this.movementToken = hasMovement;
+    }
+
+    public int getDirection() {
+        return this.direction;
+    }
+
+
+    public CharacterSprite getCharacterSprite() {
+        return this.sprite;
     }
 }
 
