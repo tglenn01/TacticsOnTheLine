@@ -55,6 +55,30 @@ public class Board {
             }
         }
     }
+
+    public void displayMovementSpaces(CharacterUnit activeUnit, List<BoardSpace> toHighlight) {
+        for (BoardSpace boardSpace : toHighlight) {
+            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.MOVEMENT_HIGHLIGHT_COLOUR);
+            List<CharacterUnit> list = movementHighlightedSpaces.get(boardSpace);
+            list.add(activeUnit);
+            movementHighlightedSpaces.put(boardSpace, list);
+        }
+    }
+
+    public void displayAbilitySpaces(List<BoardSpace> toHighlight) {
+        for (BoardSpace boardSpace : toHighlight) {
+            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
+            abilityHighlightedSpace.add(boardSpace);
+        }
+    }
+
+    public List<CharacterUnit> getPossibleTargets(List<BoardSpace> boardSpaces) {
+        List<CharacterUnit> possibleTargets = new ArrayList<>();
+        for (BoardSpace boardSpace : boardSpaces) {
+            if (boardSpace.isOccupied()) possibleTargets.add(boardSpace.getOccupyingUnit());
+        }
+        return possibleTargets;
+    }
     
     public void displayValidAbilitySpaces(CharacterUnit unit, int range) {
         BoardSpace currentSpace = unit.getBoardSpace();

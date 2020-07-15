@@ -2,20 +2,23 @@ package main.model.combatSystem.abilities;
 
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
+import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.itemSystem.ResourceReplenishBonus;
 
+import java.util.List;
+
 public abstract class SupportiveAbility extends Ability {
 
     public SupportiveAbility(String abilityName, int manaCost, int range, int areaOfEffect,
                              AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect,  abilityType, abilityDescription);
+        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
     }
 
     @Override
-    public abstract void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit)
+    public abstract void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces)
             throws AttackMissedException, UnitIsDeadException;
 
     protected void healUnit(CharacterUnit receivingUnit, StatSheet receivingUnitStatSheet, ResourceReplenishBonus healingEffect) {

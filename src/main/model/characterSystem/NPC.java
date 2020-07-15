@@ -12,6 +12,7 @@ import main.model.jobSystem.Job;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -89,7 +90,7 @@ public class NPC extends CharacterUnit {
             BoardSpace validSpace = getClosetSpaceToTarget(range, closetTarget);
 
             this.setBoardSpace(validSpace);
-            movementComplete(TacticBaseBattle.getInstance().getBattle());
+            //movementComplete(TacticBaseBattle.getInstance().getBattle());
         } else {
             this.movementToken = false;
             takeNextAction();
@@ -131,14 +132,18 @@ public class NPC extends CharacterUnit {
         List<CharacterUnit> possibleTargets = getEnemiesInRange(damageActionRange);
         Pair<CharacterUnit, List<Ability>> abilitiesThatCanTargetUnit = getReceivingEnemyAndPossibleAbilities(possibleTargets);
         Ability chosenAbility = getChosenAbility(abilitiesThatCanTargetUnit.getValue());
-        this.takeAction(chosenAbility, abilitiesThatCanTargetUnit.getKey());
+        List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
+        targetedBoardSpaces.add(abilitiesThatCanTargetUnit.getKey().getBoardSpace());
+        this.takeAction(chosenAbility, targetedBoardSpaces);
     }
 
     private void supportAlly(List<BoardSpace> supportActionRange) {
         List<CharacterUnit> possibleTargets = getAlliesInRange(supportActionRange);
         Pair<CharacterUnit, List<Ability>> abilitiesThatCanTargetUnit = getReceivingAllyAndPossibleAbilities(possibleTargets);
         Ability chosenAbility = getChosenAbility(abilitiesThatCanTargetUnit.getValue());
-        this.takeAction(chosenAbility, abilitiesThatCanTargetUnit.getKey());
+        List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
+        targetedBoardSpaces.add(abilitiesThatCanTargetUnit.getKey().getBoardSpace());
+        this.takeAction(chosenAbility, targetedBoardSpaces);
     }
 
     private List<CharacterUnit> getEnemiesInRange(List<BoardSpace> damageActionRange) {

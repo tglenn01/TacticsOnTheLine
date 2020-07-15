@@ -7,10 +7,6 @@ import java.io.FileInputStream;
 
 public class CharacterPortrait {
     public static final String ESTELLE_PORTRAIT = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\estellePortrait.jpg";
-    public static final String JOSHUA_PORTRAIT = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\joshuaPortrait.jpg";
-    public static final String KLOE_PORTRAIT = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\kloePortrait.jpg";
-    public static final String CASSIUS_PORTRAIT = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\cassiusPortrait.jpg";
-    public static final String ENEMY_PORTRAIT = "D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\enemyPortrait.png";
     private ImageView portrait;
     private Image image;
 

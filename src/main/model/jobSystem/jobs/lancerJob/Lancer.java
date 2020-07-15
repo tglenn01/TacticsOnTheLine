@@ -1,10 +1,11 @@
-package main.model.jobSystem.jobs;
+package main.model.jobSystem.jobs.lancerJob;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.PhysicalAbility;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.lancerJob.lancerAbilities.LungeAbility;
+import main.model.jobSystem.jobs.lancerJob.lancerAbilities.OverwhelmAbility;
+import main.model.jobSystem.jobs.lancerJob.lancerAbilities.WeakpointAbility;
 
 public class Lancer extends Job {
 
@@ -13,15 +14,9 @@ public class Lancer extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability lunge = new PhysicalAbility("Lunge", 4, 2, 1,
-                Ability.AbilityType.DAMAGE,12, .95,
-                "Strike a nearby enemy with a powerful lunge");
-        Ability overwhelm = new StatusEffectAbility("Overwhelm", 20, 2, 2,
-                3, Ability.AbilityType.DEFENSE_DEBUFF, 2,
-                "Scare all neighbouring enemies, weakening their defense");
-        Ability weakPoint = new PhysicalAbility("Weakpoint", 6, 1, 1,
-                Ability.AbilityType.DAMAGE,16, .80,
-                "Strike an Enemies weakpoint with the blunt of your spear");
+        Ability lunge = new LungeAbility();
+        Ability overwhelm = new OverwhelmAbility();
+        Ability weakPoint = new WeakpointAbility();
         jobAbilityList.add(lunge);
         jobAbilityList.add(overwhelm);
         jobAbilityList.add(weakPoint);
@@ -38,5 +33,6 @@ public class Lancer extends Job {
         this.jobSpeed = 10;
         this.jobDexterity = 10;
         this.jobMovement = StatSheet.BASE_MOVEMENT;
+        this.attackRange = 2;
     }
 }

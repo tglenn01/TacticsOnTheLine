@@ -2,7 +2,7 @@ package main.model.combatSystem.abilities;
 
 import main.model.characterSystem.CharacterUnit;
 
-public class MagicAbility extends DamageAbility {
+public abstract class MagicAbility extends DamageAbility {
 
     public MagicAbility(String abilityName, int manaCost, int range, int areaOfEffect,
                         AbilityType abilityType, int damage, double accuracy, String abilityDescription) {

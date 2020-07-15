@@ -1,9 +1,11 @@
-package main.model.jobSystem.jobs;
+package main.model.jobSystem.jobs.bardJob;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.bardJob.bardAbilities.InspireAbility;
+import main.model.jobSystem.jobs.bardJob.bardAbilities.SerenadeAbility;
+import main.model.jobSystem.jobs.bardJob.bardAbilities.SingAbility;
 
 public class Bard extends Job {
 
@@ -14,14 +16,9 @@ public class Bard extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability sing = new StatusEffectAbility("Sing", 10, 4, 2, 1,
-                Ability.AbilityType.HEAL, 2, "Calm your allies nerves with a song, healing them");
-        Ability serenade = new StatusEffectAbility("Serenade", 10, 4, 2,
-                3, Ability.AbilityType.DEFENSE_BUFF, 2,
-                "Serenade your allies, buffing their defense");
-        Ability inspire = new StatusEffectAbility("Inspire", 10, 4, 2,
-                3, Ability.AbilityType.ATTACK_BUFF, 2,
-                "Inspire your allies, boosting their attack");
+        Ability sing = new SingAbility();
+        Ability serenade = new SerenadeAbility();
+        Ability inspire = new InspireAbility();
         jobAbilityList.add(sing);
         jobAbilityList.add(serenade);
         jobAbilityList.add(inspire);
@@ -38,5 +35,6 @@ public class Bard extends Job {
         this.jobSpeed = 6;
         this.jobDexterity = 2;
         this.jobMovement = StatSheet.BASE_MOVEMENT;
+        this.attackRange = 3;
     }
 }

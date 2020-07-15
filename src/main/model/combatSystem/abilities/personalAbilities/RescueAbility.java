@@ -7,18 +7,35 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.ui.TacticBaseBattle;
 
-public class RescueAbility extends Ability {
-    CharacterUnit unit;
+import java.util.List;
 
-    public RescueAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription, CharacterUnit unit) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+public class RescueAbility extends Ability {
+    private CharacterUnit unit;
+
+    public RescueAbility(CharacterUnit unit) {
+        super("Rescue", 10, 1, 1,
+                Ability.AbilityType.MOVEMENT, "Teleport a far away ally to your side");
         this.unit = unit;
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-        BoardSpace closetBoardSpace = TacticBaseBattle.getInstance().getCurrentBoard().getClosetBoardSpace(activeUnit.getBoardSpace());
-        receivingUnit.setBoardSpace(closetBoardSpace);
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
+        for (BoardSpace boardSpace : targetedBoardSpaces) {
+            CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
+            BoardSpace closetBoardSpace = TacticBaseBattle.getInstance().getCurrentBoard().getClosetBoardSpace(activeUnit.getBoardSpace());
+            receivingUnit.setBoardSpace(closetBoardSpace);
+        }
+
+    }
+
+    @Override
+    protected boolean targetsSelf() {
+        return false;
+    }
+
+    @Override
+    protected boolean isAreaOfEffect() {
+        return false;
     }
 
     @Override
@@ -27,7 +44,7 @@ public class RescueAbility extends Ability {
     }
 
     @Override
-    public int getRange() {
-        return unit.getCharacterStatSheet().getMagic();
+    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMagic()); // their magic stat is their range
     }
 }

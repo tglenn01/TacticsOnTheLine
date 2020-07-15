@@ -2,7 +2,7 @@ package main.model.combatSystem.abilities;
 
 import main.model.characterSystem.CharacterUnit;
 
-public class PhysicalAbility extends DamageAbility {
+public abstract class PhysicalAbility extends DamageAbility {
 
     public PhysicalAbility(String abilityName, int manaCost, int range, int areaOfEffect,
                            AbilityType abilityType, int damage, double accuracy, String abilityDescription) {

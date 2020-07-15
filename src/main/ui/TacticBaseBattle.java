@@ -10,7 +10,15 @@ import main.model.graphics.scenes.ScenarioSelectScreen;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
-import main.model.jobSystem.jobs.*;
+import main.model.jobSystem.jobs.archerJob.Archer;
+import main.model.jobSystem.jobs.bardJob.Bard;
+import main.model.jobSystem.jobs.battleMageJob.BattleMage;
+import main.model.jobSystem.jobs.clericJob.Cleric;
+import main.model.jobSystem.jobs.gunnerJob.Gunner;
+import main.model.jobSystem.jobs.lancerJob.Lancer;
+import main.model.jobSystem.jobs.nobleJob.Noble;
+import main.model.jobSystem.jobs.thiefJob.Thief;
+import main.model.jobSystem.jobs.warriorJob.Warrior;
 import main.model.scenarioSystem.Scenario;
 
 import java.util.ArrayList;
@@ -44,6 +52,7 @@ public class TacticBaseBattle {
         availableJobs.add(new Bard());
         availableJobs.add(new BattleMage());
         availableJobs.add(new Cleric());
+        availableJobs.add(new Gunner());
         availableJobs.add(new Lancer());
         availableJobs.add(new Noble());
         availableJobs.add(new Thief());

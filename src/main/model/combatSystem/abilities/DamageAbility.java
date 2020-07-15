@@ -11,6 +11,8 @@ import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.ui.TacticBaseBattle;
 
+import java.util.List;
+
 public abstract class DamageAbility extends Ability {
     protected int damage;
     protected double accuracy;
@@ -23,20 +25,15 @@ public abstract class DamageAbility extends Ability {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces) throws
             AttackMissedException, UnitIsDeadException {
-        if (!isAreaOfEffect()) resolveBattle(activeUnit, receivingUnit);
-        else {
-            for (BoardSpace targetedBoardSpace : receivingUnit.getTargetedBoardSpacesForAreaOfEffect(this)) {
-                if (targetedBoardSpace.isOccupied()) {
-                    CharacterUnit targetedUnit = targetedBoardSpace.getOccupyingUnit();
-                    resolveBattle(activeUnit, targetedUnit);
-                }
-            }
+        for (BoardSpace boardSpace : chosenBoardSpaces) {
+                CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
+                resolveBattle(activeUnit, receivingUnit);
         }
     }
 
-    private void resolveBattle(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
+    protected void resolveBattle(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
         try {
             checkIfAbilityHitsOneself(activeUnit, targetedUnit); // cannot damage oneself
             checkIfAbilityHit(activeUnit, targetedUnit);
@@ -59,7 +56,7 @@ public abstract class DamageAbility extends Ability {
     private void calculateDamageDone(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws UnitIsDeadException {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         int defenderHealth = receivingUnitStatSheet.getHealth();
-        int damage =  calculateDamage(activeUnit, receivingUnit);
+        int damage = calculateDamage(activeUnit, receivingUnit);
         defenderHealth = defenderHealth - damage;
         if (defenderHealth < 0) defenderHealth = 0;
         System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +
@@ -94,8 +91,4 @@ public abstract class DamageAbility extends Ability {
     }
 
     protected abstract int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit);
-
-    public boolean targetsAlly() {
-        return false;
-    }
 }

@@ -7,11 +7,11 @@ import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
+import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
-import main.ui.Battle;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -64,10 +64,10 @@ public abstract class CharacterUnit {
 
     public abstract void takeMovement(Ability movementAbility);
 
-    protected void takeAction(Ability ability, CharacterUnit receivingUnit) {
+    public void takeAction(Ability ability, List<BoardSpace> chosenBoardSpaces) {
         try {
             ability.payManaCost(this); // we know that we have enough mana to cast
-            ability.takeAction(this, receivingUnit);
+            ability.takeAction(this, chosenBoardSpaces);
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
         } catch (UnitIsDeadException unitIsDeadException) {
@@ -80,8 +80,8 @@ public abstract class CharacterUnit {
         }
     }
 
-    protected void takeItemAction(ConsumableAbility itemAbility, Consumable consumable, CharacterUnit receivingUnit) {
-        itemAbility.takeAction(consumable, receivingUnit);
+    protected void takeItemAction(ConsumableAbility itemAbility, Consumable consumable, List<BoardSpace> possibleBoardSpaces) {
+        itemAbility.takeAction(consumable, possibleBoardSpaces);
         removeActionToken(itemAbility);
         if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
         else takeNextAction();
@@ -89,11 +89,11 @@ public abstract class CharacterUnit {
 
     protected abstract void takeNextAction();
 
-    public void movementComplete(Battle battle) {
-        this.movementToken = false;
-        if (actionTokens <= 0) battle.endTurn();
-        else takeNextAction();
-    }
+    //public void movementComplete(Battle battle) {
+    //   this.movementToken = false;
+    //    if (actionTokens <= 0) battle.endTurn();
+    //    else takeNextAction();
+    //}
 
     public void setJob(Job job) {
         this.characterJob = job;
@@ -239,6 +239,8 @@ public abstract class CharacterUnit {
     protected void removeActionToken(Ability usedAbility) {
         if (usedAbility.endsTurn()) {
             this.actionTokens = 0;
+            this.movementToken = false;
+        } else if (usedAbility.getClass() == MovementAbility.class) {
             this.movementToken = false;
         } else this.actionTokens--;
     }

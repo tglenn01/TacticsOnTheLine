@@ -2,25 +2,48 @@ package main.model.combatSystem.abilities.personalAbilities;
 
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
+import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.PermanentStatusEffect;
 import main.model.combatSystem.statusEffects.Invulnerable;
 
+import java.util.List;
+
 public class BarrierAbility extends Ability {
 
-    public BarrierAbility(String abilityName, int manaCost, int range, int areaOfEffect, AbilityType abilityType, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+    public BarrierAbility() {
+        super("Barrier", 14, 1, 1, Ability.AbilityType.DEFENSE_BUFF,
+                "Protect an ally from damage one time");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException, UnitIsDeadException {
-        PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
-        receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
+        for (BoardSpace boardSpace : targetedBoardSpaces) {
+            CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
+            PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
+            receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
+        }
+
+    }
+
+    @Override
+    protected boolean targetsSelf() {
+        return false;
+    }
+
+    @Override
+    protected boolean isAreaOfEffect() {
+        return false;
     }
 
     @Override
     public boolean targetsAlly() {
         return true;
+    }
+
+    @Override
+    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range);
     }
 }

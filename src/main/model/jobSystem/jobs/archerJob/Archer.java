@@ -1,10 +1,11 @@
-package main.model.jobSystem.jobs;
+package main.model.jobSystem.jobs.archerJob;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.PhysicalAbility;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.archerJob.archerAbilities.FlurryAbility;
+import main.model.jobSystem.jobs.archerJob.archerAbilities.HinderAbility;
+import main.model.jobSystem.jobs.archerJob.archerAbilities.SnipeAbility;
 
 public class Archer extends Job {
 
@@ -15,15 +16,9 @@ public class Archer extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability snipe = new PhysicalAbility("Snipe", 2, 6, 1,
-                Ability.AbilityType.DAMAGE,8, .95,
-                "Accurate attack from afar to damage a single foe");
-        Ability hinder = new StatusEffectAbility("Hinder", 7, 6, 1, 3,
-                Ability.AbilityType.DEFENSE_DEBUFF, 4, "Fire a trap to lower an enemies " +
-                "defense from afar");
-        Ability flurry = new PhysicalAbility("Flurry", 7, 6, 2,
-                Ability.AbilityType.DAMAGE,8, .95,
-                "Hit multiple enemies from afar for light damage");
+        Ability snipe = new SnipeAbility();
+        Ability hinder = new HinderAbility();
+        Ability flurry = new FlurryAbility();
         jobAbilityList.add(snipe);
         jobAbilityList.add(hinder);
         jobAbilityList.add(flurry);
@@ -40,5 +35,6 @@ public class Archer extends Job {
         this.jobSpeed = 12;
         this.jobDexterity = 12;
         this.jobMovement = StatSheet.BASE_MOVEMENT;
+        this.attackRange = 4;
     }
 }

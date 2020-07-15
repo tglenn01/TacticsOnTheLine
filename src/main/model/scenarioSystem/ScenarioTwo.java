@@ -7,7 +7,12 @@ import main.model.boardSystem.tiles.WaterLandType;
 import main.model.boardSystem.tiles.WoodsLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
-import main.model.jobSystem.jobs.*;
+import main.model.jobSystem.jobs.archerJob.Archer;
+import main.model.jobSystem.jobs.battleMageJob.BattleMage;
+import main.model.jobSystem.jobs.clericJob.Cleric;
+import main.model.jobSystem.jobs.lancerJob.Lancer;
+import main.model.jobSystem.jobs.nobleJob.Noble;
+import main.model.jobSystem.jobs.warriorJob.Warrior;
 
 import java.util.List;
 

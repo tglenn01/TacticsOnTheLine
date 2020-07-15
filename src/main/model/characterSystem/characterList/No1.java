@@ -3,10 +3,9 @@ package main.model.characterSystem.characterList;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.characterList.characterSprites.No1Sprite;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.DeactivateAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
-import main.model.jobSystem.jobs.Thief;
+import main.model.jobSystem.jobs.thiefJob.Thief;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
 
@@ -31,8 +30,7 @@ public class No1 extends PlayableCharacterUnit {
 
     @Override
     protected void setPersonalAbility() {
-        this.personalAbility = new DeactivateAbility("Deactivate", 0, 0, 1, Ability.AbilityType.HEAL,
-                "Pass your turn to heal to full");
+        this.personalAbility = new DeactivateAbility();
     }
 
     @Override

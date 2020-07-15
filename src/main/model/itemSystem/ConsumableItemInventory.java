@@ -1,6 +1,5 @@
 package main.model.itemSystem;
 
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ public class ConsumableItemInventory implements Iterable<Consumable> {
 
     private ConsumableItemInventory() {
         consumableList = new ArrayList<>();
-        itemAbility= new ConsumableAbility("Item", 0, 1, 1,
-                Ability.AbilityType.ITEM, "Use an item on an ally");
+        itemAbility= new ConsumableAbility();
     }
 
     public static ConsumableItemInventory getInstance() {

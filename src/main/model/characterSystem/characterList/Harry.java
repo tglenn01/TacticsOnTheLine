@@ -3,10 +3,9 @@ package main.model.characterSystem.characterList;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.characterList.characterSprites.HarrySprite;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.TremorAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
-import main.model.jobSystem.jobs.Warrior;
+import main.model.jobSystem.jobs.warriorJob.Warrior;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
 
@@ -31,9 +30,7 @@ public class Harry extends PlayableCharacterUnit {
 
     @Override
     protected void setPersonalAbility() {
-        this.personalAbility = new TremorAbility("Tremor", 4, 0, 2,
-                Ability.AbilityType.DAMAGE, 6, 1.00,
-                "Damage neighbouring enemies while stopping their movement");
+        this.personalAbility = new TremorAbility();
     }
 
     @Override

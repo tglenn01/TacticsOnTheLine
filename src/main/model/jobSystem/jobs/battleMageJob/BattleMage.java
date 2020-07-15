@@ -1,10 +1,11 @@
-package main.model.jobSystem.jobs;
+package main.model.jobSystem.jobs.battleMageJob;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.MagicAbility;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.battleMageJob.battleMageAbilities.CrippleAbility;
+import main.model.jobSystem.jobs.battleMageJob.battleMageAbilities.ScorchAbility;
+import main.model.jobSystem.jobs.battleMageJob.battleMageAbilities.ZapAbility;
 
 public class BattleMage extends Job {
 
@@ -15,14 +16,9 @@ public class BattleMage extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability zap = new MagicAbility("Zap", 2, 4, 1,
-                Ability.AbilityType.DAMAGE,16, .90,
-                "deal lightning damage to an enemy from afar");
-        Ability scorch = new MagicAbility("Scorch", 6, 3, 2,
-                Ability.AbilityType.DAMAGE,10, .70,
-                "deal light fire damage to multiple enemies from afar");
-        Ability cripple = new StatusEffectAbility("Cripple", 6, 2, 1,
-                3, Ability.AbilityType.ATTACK_DEBUFF, 6, "Lower a nearby enemies attack");
+        Ability zap = new ZapAbility();
+        Ability scorch = new ScorchAbility();
+        Ability cripple = new CrippleAbility();
         jobAbilityList.add(zap);
         jobAbilityList.add(scorch);
         jobAbilityList.add(cripple);
@@ -39,5 +35,6 @@ public class BattleMage extends Job {
         this.jobSpeed = 4;
         this.jobDexterity = 2;
         this.jobMovement = StatSheet.BASE_MOVEMENT;
+        this.attackRange = 3;
     }
 }

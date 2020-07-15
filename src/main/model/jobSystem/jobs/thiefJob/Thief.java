@@ -1,10 +1,11 @@
-package main.model.jobSystem.jobs;
+package main.model.jobSystem.jobs.thiefJob;
 
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.PhysicalAbility;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.thiefJob.thiefAbilities.BlindAbility;
+import main.model.jobSystem.jobs.thiefJob.thiefAbilities.CrossSlashAbility;
+import main.model.jobSystem.jobs.thiefJob.thiefAbilities.DaggerThrowAbility;
 
 public class Thief extends Job {
 
@@ -16,17 +17,12 @@ public class Thief extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability crossSlash = new PhysicalAbility("Cross-Slash", 2, 2, 1,
-                Ability.AbilityType.DAMAGE,12, .95,
-                "Slash an enemy with high accuracy");
-        Ability blind = new StatusEffectAbility("Blind", 10, 1, 1, 3,
-                Ability.AbilityType.ATTACK_DEBUFF, 7, "Blind enemies lowering their attack potency");
-        Ability dagger = new PhysicalAbility("Dagger Throw", 4, 8, 1,
-                Ability.AbilityType.DAMAGE,10, .70,
-                "Throw a dagger at an enemy from afar");
+        Ability crossSlash = new CrossSlashAbility();
+        Ability blind = new BlindAbility();
+        Ability daggerThrow = new DaggerThrowAbility();
         jobAbilityList.add(crossSlash);
         jobAbilityList.add(blind);
-        jobAbilityList.add(dagger);
+        jobAbilityList.add(daggerThrow);
     }
 
     @Override
@@ -40,5 +36,6 @@ public class Thief extends Job {
         this.jobSpeed = 16;
         this.jobDexterity = 18;
         this.jobMovement = StatSheet.BASE_MOVEMENT + 1;
+        this.attackRange = 1;
     }
 }

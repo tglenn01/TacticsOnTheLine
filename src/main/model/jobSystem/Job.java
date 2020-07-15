@@ -6,22 +6,18 @@ import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
-import main.model.combatSystem.abilities.PhysicalAbility;
-import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.model.jobSystem.jobs.Bard;
-import main.model.jobSystem.jobs.Cleric;
+import main.model.jobSystem.jobs.bardJob.Bard;
+import main.model.jobSystem.jobs.clericJob.Cleric;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Job {
-    public static Ability move = new MovementAbility("Move", 0, 0, 0,
-            Ability.AbilityType.MOVEMENT, "Move your character");
-    public static Ability attack = new PhysicalAbility("Attack", 0, 1, 1,
-            Ability.AbilityType.DAMAGE,0, .90, "Attack an enemy");
-    public static Ability defend = new StatusEffectAbility("Defend", 0, 0, 1,
-            1, Ability.AbilityType.DEFENSE_BUFF, 3, "Strengthen one's own defenses");
+    public static Ability move = new MovementAbility();
+    public static Ability defend = new DefendAbility();
+
+
     protected String jobTitle;
     protected List<Ability> jobAbilityList;
     protected int maxDamageAbilityReach;
@@ -35,6 +31,7 @@ public abstract class Job {
     protected int jobSpeed;
     protected int jobDexterity;
     protected int jobMovement;
+    protected int attackRange;
 
     public Job() {
         jobAbilityList = new ArrayList<>();
@@ -49,6 +46,7 @@ public abstract class Job {
 
     // All classes have these at their disposal
     protected void initializeAbilities() {
+        Ability attack = new BasicAttackAbility(this.attackRange);
         jobAbilityList.add(move);
         jobAbilityList.add(attack);
         jobAbilityList.add(defend);

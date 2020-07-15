@@ -3,10 +3,9 @@ package main.model.characterSystem.characterList;
 import main.model.characterSystem.PlayableCharacterUnit;
 import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.characterList.characterSprites.GrahamSprite;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.personalAbilities.RescueAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
-import main.model.jobSystem.jobs.Archer;
+import main.model.jobSystem.jobs.archerJob.Archer;
 
 import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
 
@@ -30,11 +29,8 @@ public class Graham extends PlayableCharacterUnit {
     }
 
     protected void setPersonalAbility() {
-        this.personalAbility = new RescueAbility("Rescue", 10, this.getCharacterStatSheet().getMagic(), 1,
-                Ability.AbilityType.MOVEMENT, "Teleport a far away ally to your side", this);
+        this.personalAbility = new RescueAbility(this);
     }
-
-
 
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,

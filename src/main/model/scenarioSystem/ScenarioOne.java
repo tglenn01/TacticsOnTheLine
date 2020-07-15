@@ -6,8 +6,8 @@ import main.model.boardSystem.tiles.GrassLandType;
 import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
-import main.model.jobSystem.jobs.Cleric;
-import main.model.jobSystem.jobs.Noble;
+import main.model.jobSystem.jobs.clericJob.Cleric;
+import main.model.jobSystem.jobs.nobleJob.Noble;
 
 import java.util.List;
 
