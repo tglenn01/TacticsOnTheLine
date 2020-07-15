@@ -1,0 +1,102 @@
+May 11th 2020
++ Implementing takeAction in the StatusEffectAbility Class (done)
++ Adding descriptions to each ability (done)
++ Job's altering character stats (done)
+
+May 12th 2020
++ Fix how a user will choose abilities with multiple words in it i.e. Dagger Throw (renamed all abilities to one word)
++ Create More Scenarios/Create a scenario select (done)
++ Give each Job a description
+
++ Area of Effect
++ Defend being only oneself (done)
++ Fix choosing an invalid option (done)
++ Max Health
++ Only one job per party (done)
++ Display a unit's mana when their turn comes up
+
+May 13th 2020
++ Give each Job a description (done)
++ Fix Area of Effect (done! ish)
++ Introduce Max Heal (done)
++ Make Status buffs only last a certain amount of turn (done)
++ Display a unit's mana when their turn comes up (done)
++ Work area of affect to work with exceptions, focus on overloaded takeAction in Ability class (done)
++ Update getTargetAbility in NPC class (done)
++ isSelfBuff for Defend and other self buffs in the getSingleTargetClass (done)
++ Area of effect has enough targets (done)
++ Max health math for user to see (done)
++ Get rid of repetition of "CharacterUnit is ability" when using area of effect (done)
+
++ Items deal damage (side track)
+
++ Go for the gui!
+
++ Save Data
+
+
+May 19th 2020
++ Finish the ScenarioOne stubs (done)
++ Create a simple visual of the board (delayed)
+
+GRAPH
++ Set max value (done)
++ try and make is not reset but instead more to new value from old (done)
+
++ Abilities update like the table (done)
+
++ When user chooses ability in a new pop out menu make the display method return the chosen ability
+
+May 25th 2020
++ Use the tooltip class! Page 169 Pro Java 9 game development
++ Set on action in the CharacterSprite Class
++ ScrollPane
+
+May 29th 2020
++ Implement takeAction in the movementAbility class
++ NPC startTurn
+
+May 31th 2020
++ individual units have inventories
++ isUnitInRange
+
+April 2nd
++ individual units have inventories
++ When a character dies they are removed from the battle (done)
++ No longer can select multiple targets with abilities (done)
++ Ability AOE (done)
++ NPC turns are not ending
++ Out of Mana exception for NPC
+
++ Defend auto ends on next turn (done)
++ Aggro Range (dumb)
++ Being Both buffed and debuffed at the same time (done)
++ Wrong person moving on the wrong turn causing game to soft lock (done)
+
+April 17th
++ Character start Popup
++ Character Damage Popup
++ Status Effect Popup
+
+
++ If you are moving one unit then click on another to see their range, then select a valid spot for both,
+they will both move (bug)
+
+July 5th
++ Character Sprites
++ Work on unique abilities
++ Iterate over CharacterStatusEffect
++ TacticBasedBattle happens during a while loop
++ StatusEffect implementation happens in the given class not StatusEffectAbility (done in status effect and is called after being added to the list in CharacterStatusEffects)
+
+July 7th
++ Create Art!
+
++clicking on a character during another persons turn then opening the menu then clicking a valid tile will move the non active character
+
+July 11th
++ direction system
++ status effect icons (done)
+
+July 13th
++ takeAction takes a list of boardSpace instead of a CharacterUnit where the ability damges all units in the boardspaces

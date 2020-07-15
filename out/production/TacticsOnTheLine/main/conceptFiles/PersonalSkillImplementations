@@ -1,0 +1,20 @@
+Barrier:
+    - Give the unit 99 defense
+    - Give the unit a status effect of immunity
+    - Problem comes from removing after being hit instead of for a set amount of turns (may rework to immune this turn)
+
+Tower:
+    - Have a status effect called range up that gives all magical abilities + range
+    - Remove action token at start of each turn
+
+Deactivate:
+    - Treat as a simple heal skill that can only target oneself
+    - Remove action token
+
+Tremor:
+    - Treat as an Aoe damage skill
+    - Apply root status effect (same as Tower)
+
+Rescue:
+    - Gonna be a little hard to code but shouldn't be impossible
+    - Make it a movement ability with the receiving unit getting the tp
