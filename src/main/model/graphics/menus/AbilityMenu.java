@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
-import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.sceneElements.buttons.AbilityButton;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.ui.TacticBaseBattle;
@@ -31,7 +30,7 @@ public class AbilityMenu {
             abilityButton.setOnAction(e -> {
                 window.close();
                 if (ability.getClass() == ConsumableAbility.class) openItemMenu(activeUnit, window);
-                else if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
+                //else if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
                 else activeUnit.useAbility(ability);
             });
         }

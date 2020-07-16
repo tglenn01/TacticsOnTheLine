@@ -6,6 +6,8 @@ import main.exception.MenuOpenedException;
 import main.exception.OutOfActionsException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
+import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.menus.AbilityMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
@@ -54,7 +56,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void useAbility(Ability chosenAbility) {
         try {
-            hasActionToken();
+            hasActionToken(chosenAbility);
             chosenAbility.hasEnoughMana(this);
             chosenAbility.getTargets(this);
         } catch (OutOfActionsException outOfActionsException) {
@@ -70,18 +72,21 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public void useItem(Consumable item) {
         try {
-            hasActionToken();
-            ConsumableItemInventory.getInstance().getItemAbility().getTargets(this, item);
+            ConsumableAbility consumableAbility = ConsumableItemInventory.getInstance().getItemAbility();
+            hasActionToken(consumableAbility);
+            consumableAbility.getTargets(this, item);
         } catch (OutOfActionsException outOfActionsException) {
             outOfActionsException.printOutOfActionsError();
         }  catch (MenuOpenedException e) {
             // menu is opened and no actions are taken
         }
-
     }
 
-    private void hasActionToken() throws OutOfActionsException {
-        if (actionTokens <= 0) throw new OutOfActionsException();
+    // if it is a movement ability, if movement token is false don't take action
+    // if it is a normal ability, if we have no action token then don't take action
+    private void hasActionToken(Ability chosenAbility) throws OutOfActionsException {
+        if (chosenAbility.getClass() == MovementAbility.class && !movementToken) throw new OutOfActionsException();
+        else if (chosenAbility.getClass() != MovementAbility.class && actionTokens <= 0) throw new OutOfActionsException();
     }
 
     public void takeMovement(Ability movementAbility) {

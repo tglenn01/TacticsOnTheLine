@@ -121,7 +121,7 @@ public abstract class Ability {
     }
 
     protected void addAreaOfEffect(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
-        List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(targetBoardSpace, this.areaOfEffect);
+        List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(targetBoardSpace, this.areaOfEffect - 1);
         for (BoardSpace effectedSpace : effectedBoardSpaces) {
             if (effectedSpace.isOccupied()) targetedBoardSpaces.add(effectedSpace);
         }
@@ -228,7 +228,7 @@ public abstract class Ability {
 
             for (int y = 1; y <= range; y++) {
                 if (x + y <= range) {
-                    if ((xPos - x >= 0) && (yPos - y <= 0))
+                    if ((xPos - x >= 0) && (yPos - y >= 0))
                         possibleBoardSpaces.add(boardSpaces[xPos - x][yPos - y]); // top left
                     if ((xPos + x < currentBoard.getBoardWidth()) && (yPos - y >= 0))
                         possibleBoardSpaces.add(boardSpaces[xPos + x][yPos - y]); // top right
