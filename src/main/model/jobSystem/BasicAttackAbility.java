@@ -2,21 +2,20 @@ package main.model.jobSystem;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 
 import java.util.List;
 
 public class BasicAttackAbility extends PhysicalAbility {
     public BasicAttackAbility(int range) {
-        super("Attack", 0, range, 1,
-                Ability.AbilityType.DAMAGE,0, .90, "Attack an enemy");
+        super("Attack", 0, range, 1, 0, .90,
+                "Attack an enemy");
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
         for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveBattle(activeUnit, boardSpace.getOccupyingUnit());
+            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
         }
     }
 

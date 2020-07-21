@@ -24,7 +24,7 @@ public class Lancer extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 26;
+        this.jobHealth = 36;
         this.jobMana = 30;
         this.jobStrength = 14;
         this.jobMagic = 2;

@@ -6,6 +6,7 @@ import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.characterList.characterSprites.EnemySprite;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
@@ -20,6 +21,7 @@ import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE
 
 public class NPC extends CharacterUnit {
 
+    // cannot be a gunner
     public NPC(Job job, String name) {
         this.characterName = name;
         this.characterJob = job;
@@ -52,8 +54,9 @@ public class NPC extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         this.actionTokens = ACTIONS_PER_TURN;
         this.movementToken = true;
-        List<BoardSpace> damageActionRange = getDamageActionRange();
-        List<BoardSpace> supportActionRange = getSupportActionRange();
+        List<BoardSpace> damageActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxDamageAbilityReach());
+        List<BoardSpace> supportActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxSupportingAbilityReach());
+
         if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
         else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);
         else takeMovement(Job.move);
@@ -274,7 +277,7 @@ public class NPC extends CharacterUnit {
 
 
 
-        if (chosenAbility.getAbilityType() == Ability.AbilityType.ITEM) {
+        if (chosenAbility.getClass() == ConsumableAbility.class) {
             possibleAbilities.remove(chosenAbility);
             chosenAbility = getChosenAbility(possibleAbilities); // NPCs can't use items
         }

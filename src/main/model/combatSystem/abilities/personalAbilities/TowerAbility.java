@@ -1,7 +1,5 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
-import main.exception.AttackMissedException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
@@ -14,12 +12,12 @@ import java.util.List;
 public class TowerAbility extends Ability {
 
     public TowerAbility() {
-        super("Tower", 20, 0, 1, null,
+        super("Tower", 20, 0, 1,
                 "Root yourself increasing the range of magical abilities");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
+    public void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         DecayingStatusEffect root = new Root(activeUnit, activeUnit.getCharacterStatSheet().getMovement(), 3);
         DecayingStatusEffect doubleRange = new IncreasedRange(activeUnit, 4, 3);
         activeUnit.getStatusEffects().addDecayingStatusEffect(root);

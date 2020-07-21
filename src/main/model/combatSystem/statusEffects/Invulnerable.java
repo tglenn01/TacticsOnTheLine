@@ -1,19 +1,13 @@
 package main.model.combatSystem.statusEffects;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.PermanentStatusEffect;
 
 public class Invulnerable extends PermanentStatusEffect {
 
-    // the potency and the uses are the same in this status effect
-    public Invulnerable(CharacterUnit receivingUnit, int potency) {
-        super(receivingUnit, potency, potency);
-    }
-
-    @Override
-    protected void setAbilityType() {
-        this.abilityType = Ability.AbilityType.INVULNERABLE;
+    // the potency will be the untouched and will represent how many uses their originally were
+    public Invulnerable(CharacterUnit receivingUnit, int uses) {
+        super(receivingUnit, uses, uses);
     }
 
     @Override
@@ -28,11 +22,6 @@ public class Invulnerable extends PermanentStatusEffect {
 
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
-
-    }
-
-    @Override
-    protected void removeStatusEffect(CharacterUnit receivingUnit) {
 
     }
 }

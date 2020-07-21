@@ -27,8 +27,8 @@ public class Noble extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 32;
-        this.jobMana = 15;
+        this.jobHealth = 42;
+        this.jobMana = 25;
         this.jobStrength = 10;
         this.jobMagic = 4;
         this.jobArmour = 8;

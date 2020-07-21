@@ -2,15 +2,21 @@ package main.model.jobSystem.jobs.battleMageJob.battleMageAbilities;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.StatusEffectAbility;
+import main.model.combatSystem.statusEffects.AttackDebuff;
 
 import java.util.List;
 
 public class CrippleAbility extends StatusEffectAbility {
     public CrippleAbility() {
-        super("Cripple", 6, 2, 1,
-                3, Ability.AbilityType.ATTACK_DEBUFF, 6, "Lower a nearby enemies attack");
+        super("Cripple", 6, 2, 1, 3, 6,
+                "Lower a nearby enemies attack");
+    }
+
+
+    @Override
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, this.potency, this.duration));
     }
 
     @Override

@@ -2,22 +2,20 @@ package main.model.jobSystem;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.StatusEffectAbility;
+import main.model.combatSystem.statusEffects.DefenseBuff;
 
 import java.util.List;
 
 public class DefendAbility extends StatusEffectAbility {
     public DefendAbility() {
-        super("Defend", 0, 0, 1,
-                1, Ability.AbilityType.DEFENSE_BUFF, 3, "Strengthen one's own defenses");
+        super("Defend", 0, 0, 1, 1, 3,
+                "Strengthen one's own defenses");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, this.potency, this.duration));
     }
 
     @Override
@@ -39,5 +37,4 @@ public class DefendAbility extends StatusEffectAbility {
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
         return getSelfBoardSpace(activeUnit);
     }
-
 }

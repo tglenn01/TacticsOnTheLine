@@ -30,7 +30,6 @@ public class AbilityMenu {
             abilityButton.setOnAction(e -> {
                 window.close();
                 if (ability.getClass() == ConsumableAbility.class) openItemMenu(activeUnit, window);
-                //else if (ability.getClass() == MovementAbility.class) activeUnit.takeMovement(ability);
                 else activeUnit.useAbility(ability);
             });
         }

@@ -19,7 +19,7 @@ import java.util.List;
 public class BuckShotAbility extends PhysicalAbility {
 
     public BuckShotAbility() {
-        super("Buckshot", 6, 4, 1, AbilityType.DAMAGE, 20, .85,
+        super("Buckshot", 6, 4, 1, 20, .85,
                 "Fire a cluster exploding on enemies in a unique patter");
     }
 
@@ -48,24 +48,24 @@ public class BuckShotAbility extends PhysicalAbility {
         int xPos = activeUnitBoardSpace.getXCoordinate();
         int yPos = activeUnitBoardSpace.getYCoordinate();
 
-        for (int i = 1; i <= range; i++) {
+        for (int i = 5; i <= range; i++) {
             if (xPos - i >= 0)
                 possibleBoardSpaces.add(boardSpaces[xPos - i][yPos]); // left
             if (xPos + i < currentBoard.getBoardWidth())
                 possibleBoardSpaces.add(boardSpaces[xPos + i][yPos]); // right
             if (yPos + i < currentBoard.getBoardHeight())
                 possibleBoardSpaces.add(boardSpaces[xPos][yPos + i]); // up
-            if (yPos - i <= 0)
+            if (yPos - i >= 0)
                 possibleBoardSpaces.add(boardSpaces[xPos][yPos - i]); // down
             if (i == range - 1) {
-                if ((xPos - i >= 0) && (yPos + 1 >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos - i][yPos + 1]);
+                if ((xPos - i >= 0) && (yPos + i >= 0))
+                    possibleBoardSpaces.add(boardSpaces[xPos - i][yPos + i]);
                 if ((xPos - i >= 0) && (yPos - 1 >= 0))
                     possibleBoardSpaces.add(boardSpaces[xPos - i][yPos - 1]);
-                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos + 1 >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos + i][yPos + 1]);
-                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos - 1 < currentBoard.getBoardHeight()))
+                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos - 1 >= 0))
                     possibleBoardSpaces.add(boardSpaces[xPos + i][yPos - 1]);
+                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos + 1 < currentBoard.getBoardHeight()))
+                    possibleBoardSpaces.add(boardSpaces[xPos + i][yPos + 1]);
                 if ((xPos - 1 >= 0) && (yPos - i >= 0))
                     possibleBoardSpaces.add(boardSpaces[xPos - 1][yPos - i]);
                 if ((xPos - 1 >= 0) && (yPos + i < currentBoard.getBoardHeight()))

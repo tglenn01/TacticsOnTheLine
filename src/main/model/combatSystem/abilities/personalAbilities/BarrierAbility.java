@@ -1,7 +1,5 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
-import main.exception.AttackMissedException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
@@ -13,18 +11,14 @@ import java.util.List;
 public class BarrierAbility extends Ability {
 
     public BarrierAbility() {
-        super("Barrier", 14, 1, 1, Ability.AbilityType.DEFENSE_BUFF,
+        super("Barrier", 14, 1, 1,
                 "Protect an ally from damage one time");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
-            PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
-            receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
-        }
-
+    public void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
+        receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
     }
 
     @Override

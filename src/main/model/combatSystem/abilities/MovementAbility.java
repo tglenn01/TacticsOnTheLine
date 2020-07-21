@@ -18,13 +18,17 @@ public class MovementAbility extends Ability {
 
     public MovementAbility() {
         super("Move", 0, 0, 0,
-                Ability.AbilityType.MOVEMENT, "Move your character");
+                 "Move your character");
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
         BoardSpace destination = targetedBoardSpaces.get(0);
         activeUnit.setBoardSpace(destination);
+    }
+
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        // this will not be called as it is called from the super takeAction which will not resolve in this class
     }
 
     @Override
@@ -56,6 +60,15 @@ public class MovementAbility extends Ability {
         for (BoardSpace boardSpace : possibleBoardSpaces) {
             boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, applyBoardHandler);
         }
+
+        // clicking on the sprite will open the menu and therefore must also close the event handlers to avoid bugs
+        activeUnit.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                removeBoardHandler(possibleBoardSpaces, applyBoardHandler);
+            }
+        });
     }
 
     protected class ApplyBoardHandler implements EventHandler<MouseEvent> {
@@ -82,9 +95,9 @@ public class MovementAbility extends Ability {
 
                 activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
             } else if (event.getButton() == MouseButton.SECONDARY)  {
-                AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
                 removeBoardHandler(possibleBoardSpaces, this);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
             }
         }
     }

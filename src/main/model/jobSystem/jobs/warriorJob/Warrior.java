@@ -26,8 +26,8 @@ public class Warrior extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 40;
-        this.jobMana = 8;
+        this.jobHealth = 50;
+        this.jobMana = 16;
         this.jobStrength = 13;
         this.jobMagic = 2;
         this.jobArmour = 8;

@@ -2,22 +2,20 @@ package main.model.jobSystem.jobs.archerJob.archerAbilities;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
-import main.model.combatSystem.abilities.PhysicalAbility;
+import main.model.combatSystem.abilities.MagicAbility;
 
 import java.util.List;
 
-public class SnipeAbility extends PhysicalAbility {
-    public SnipeAbility() {
-        super("Snipe", 2, 6, 1,
-                Ability.AbilityType.DAMAGE,8, .95,
-                "Accurate attack from afar to damage a single foe");
+public class FlamingArrowAbility extends MagicAbility {
+    public FlamingArrowAbility() {
+        super("Flame Arrow", 2, 6, 1, 8, .95,
+                "Accurately attack an enemy from afar using a magical arrow");
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
         for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveBattle(activeUnit, boardSpace.getOccupyingUnit());
+            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
         }
     }
 

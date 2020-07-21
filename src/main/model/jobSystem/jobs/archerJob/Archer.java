@@ -5,7 +5,7 @@ import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.archerJob.archerAbilities.FlurryAbility;
 import main.model.jobSystem.jobs.archerJob.archerAbilities.HinderAbility;
-import main.model.jobSystem.jobs.archerJob.archerAbilities.SnipeAbility;
+import main.model.jobSystem.jobs.archerJob.archerAbilities.FlamingArrowAbility;
 
 public class Archer extends Job {
 
@@ -16,7 +16,7 @@ public class Archer extends Job {
     @Override
     protected void initializeAbilities() {
         super.initializeAbilities();
-        Ability snipe = new SnipeAbility();
+        Ability snipe = new FlamingArrowAbility();
         Ability hinder = new HinderAbility();
         Ability flurry = new FlurryAbility();
         jobAbilityList.add(snipe);
@@ -26,10 +26,10 @@ public class Archer extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 24;
-        this.jobMana = 24;
+        this.jobHealth = 34;
+        this.jobMana = 30;
         this.jobStrength = 10;
-        this.jobMagic = 7;
+        this.jobMagic = 8;
         this.jobArmour = 4;
         this.jobResistance = 4;
         this.jobSpeed = 12;

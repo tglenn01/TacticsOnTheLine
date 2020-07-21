@@ -27,8 +27,8 @@ public class Thief extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 20;
-        this.jobMana = 16;
+        this.jobHealth = 30;
+        this.jobMana = 24;
         this.jobStrength = 10;
         this.jobMagic = 10;
         this.jobArmour = 2;

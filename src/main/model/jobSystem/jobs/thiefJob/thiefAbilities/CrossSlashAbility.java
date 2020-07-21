@@ -2,22 +2,20 @@ package main.model.jobSystem.jobs.thiefJob.thiefAbilities;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
 
 import java.util.List;
 
 public class CrossSlashAbility extends PhysicalAbility {
     public CrossSlashAbility() {
-        super("Cross-Slash", 2, 2, 1,
-                Ability.AbilityType.DAMAGE,12, .95,
+        super("Cross-Slash", 2, 2, 1, 12, .95,
                 "Slash an enemy with high accuracy");
     }
 
     @Override
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
         for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveBattle(activeUnit, boardSpace.getOccupyingUnit());
+            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
         }
     }
 

@@ -80,7 +80,7 @@ public abstract class CharacterUnit {
         }
     }
 
-    protected void takeItemAction(ConsumableAbility itemAbility, Consumable consumable, List<BoardSpace> possibleBoardSpaces) {
+    public void takeItemAction(ConsumableAbility itemAbility, Consumable consumable, List<BoardSpace> possibleBoardSpaces) {
         itemAbility.takeAction(consumable, possibleBoardSpaces);
         removeActionToken(itemAbility);
         if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();

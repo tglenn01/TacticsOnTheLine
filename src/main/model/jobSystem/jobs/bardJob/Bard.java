@@ -26,7 +26,7 @@ public class Bard extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 16;
+        this.jobHealth = 26;
         this.jobMana = 40;
         this.jobStrength = 2;
         this.jobMagic = 6;

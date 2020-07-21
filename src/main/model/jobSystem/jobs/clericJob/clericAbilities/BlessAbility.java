@@ -1,22 +1,28 @@
 package main.model.jobSystem.jobs.clericJob.clericAbilities;
 
-import main.exception.AttackMissedException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
+import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 
 import java.util.List;
 
 public class BlessAbility extends StatusEffectAbility {
     public BlessAbility() {
-        super("Bless", 4, 1, 1, 1,
-                Ability.AbilityType.HEAL, 6, "Heal a neighbouring ally");
+        super("Bless", 4, 1, 1, 1, 10,
+                "Heal a neighbouring ally");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces) throws AttackMissedException, UnitIsDeadException {
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
+        StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
+        healUnit(receivingUnit, receivingUnitStatSheet, this.potency + activeUnitStatSheet.getMagic());
+    }
+
+    @Override
+    public boolean targetsAlly() {
+        return true;
     }
 
     @Override

@@ -16,11 +16,6 @@ public class IncreasedRange extends DecayingStatusEffect {
     }
 
     @Override
-    protected void setAbilityType() {
-        this.abilityType = Ability.AbilityType.RANGE_INCREASE;
-    }
-
-    @Override
     protected void setCondensedName() {
         this.condensedName = "RNG_UP";
     }
@@ -33,7 +28,7 @@ public class IncreasedRange extends DecayingStatusEffect {
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         for (Ability ability : receivingUnit.getAbilityList()) {
-            if (ability.getClass() == MagicAbility.class || ability.getClass() == StatusEffectAbility.class) {
+            if (ability.getClass().getSuperclass() == MagicAbility.class || ability.getClass().getSuperclass() == StatusEffectAbility.class) {
                 ability.setRange(ability.getRange() + potency); // oldRange + increasedRange
             }
         }
@@ -41,9 +36,9 @@ public class IncreasedRange extends DecayingStatusEffect {
     }
 
     @Override
-    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+    public void removeStatusEffect(CharacterUnit receivingUnit) {
         for (Ability ability : receivingUnit.getAbilityList()) {
-            if (ability.getClass() == MagicAbility.class || ability.getClass() == StatusEffectAbility.class) {
+            if (ability.getClass().getSuperclass() == MagicAbility.class || ability.getClass().getSuperclass() == StatusEffectAbility.class) {
                 ability.setRange(ability.getRange() - amountChanged);
             }
         }

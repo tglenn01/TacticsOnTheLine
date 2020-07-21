@@ -4,36 +4,24 @@ import main.exception.AbilityTargetsSelfException;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.exception.UnitIsInvulnerableException;
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterStatusEffects;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.ui.TacticBaseBattle;
 
-import java.util.List;
-
 public abstract class DamageAbility extends Ability {
     protected int damage;
     protected double accuracy;
 
     public DamageAbility(String abilityName, int manaCost, int range, int areaOfEffect,
-                         AbilityType abilityType, int damage, double accuracy, String abilityDescription) {
-        super(abilityName, manaCost, range, areaOfEffect, abilityType, abilityDescription);
+                         int damage, double accuracy, String abilityDescription) {
+        super(abilityName, manaCost, range, areaOfEffect, abilityDescription);
         this.damage = damage;
         this.accuracy = accuracy;
     }
 
-    @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces) throws
-            AttackMissedException, UnitIsDeadException {
-        for (BoardSpace boardSpace : chosenBoardSpaces) {
-                CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
-                resolveBattle(activeUnit, receivingUnit);
-        }
-    }
-
-    protected void resolveBattle(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
         try {
             checkIfAbilityHitsOneself(activeUnit, targetedUnit); // cannot damage oneself
             checkIfAbilityHit(activeUnit, targetedUnit);
@@ -44,7 +32,8 @@ public abstract class DamageAbility extends Ability {
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
         } catch (UnitIsInvulnerableException unitIsInvulnerableException) {
-            targetedUnit.getStatusEffects().removeInvulnerable();
+            CharacterStatusEffects csf = targetedUnit.getStatusEffects();
+            csf.removePermanentStatusEffect(csf.getInvulnerable());
             unitIsInvulnerableException.printInvulnerableMessage();
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();

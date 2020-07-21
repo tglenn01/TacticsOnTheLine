@@ -2,23 +2,20 @@ package main.model.jobSystem.jobs.lancerJob.lancerAbilities;
 
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.StatusEffectAbility;
+import main.model.combatSystem.statusEffects.DefenseDebuff;
 
 import java.util.List;
 
 public class OverwhelmAbility extends StatusEffectAbility {
     public OverwhelmAbility() {
-        super("Overwhelm", 20, 2, 2,
-                3, Ability.AbilityType.DEFENSE_DEBUFF, 2,
+        super("Overwhelm", 20, 2, 2, 3, 2,
                 "Scare all neighbouring enemies, weakening their defense");
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, this.potency, this.duration));
     }
 
     @Override

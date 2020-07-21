@@ -26,8 +26,8 @@ public class BattleMage extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 20;
-        this.jobMana = 36;
+        this.jobHealth = 30;
+        this.jobMana = 42;
         this.jobStrength = 6;
         this.jobMagic = 12;
         this.jobArmour = 2;

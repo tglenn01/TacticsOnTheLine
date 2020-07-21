@@ -13,7 +13,6 @@ public abstract class PermanentStatusEffect extends StatusEffect {
     public int getUses() {
         return this.uses;
     }
-
     public void setUses(int newUses) {
         this.uses = newUses;
     }

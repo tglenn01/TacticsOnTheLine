@@ -22,4 +22,6 @@ public abstract class DecayingStatusEffect extends StatusEffect {
     public void setDuration(int newDuration) {
         this.duration = newDuration;
     }
+
+    public abstract void removeStatusEffect(CharacterUnit receivingUnit);
 }

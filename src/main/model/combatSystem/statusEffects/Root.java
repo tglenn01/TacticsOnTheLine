@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.Ability;
 import main.model.combatSystem.DecayingStatusEffect;
 
 public class Root extends DecayingStatusEffect {
@@ -12,12 +11,6 @@ public class Root extends DecayingStatusEffect {
 
     public Root(CharacterUnit receivingUnit, int potency, int duration) {
         super(receivingUnit, potency, duration);
-    }
-
-
-    @Override
-    protected void setAbilityType() {
-        this.abilityType = Ability.AbilityType.ROOT;
     }
 
     @Override
@@ -32,14 +25,14 @@ public class Root extends DecayingStatusEffect {
 
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
-        System.out.println(receivingUnit.getCharacterName() + "is rooted for " + potency);
+        System.out.println(receivingUnit.getCharacterName() + " is rooted for " + this.duration);
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         this.amountChanged = receivingUnitStatSheet.getMovement();
         receivingUnitStatSheet.setMovement(0);
     }
 
     @Override
-    protected void removeStatusEffect(CharacterUnit receivingUnit) {
+    public void removeStatusEffect(CharacterUnit receivingUnit) {
         receivingUnit.getCharacterStatSheet().setMovement(amountChanged);
     }
 }

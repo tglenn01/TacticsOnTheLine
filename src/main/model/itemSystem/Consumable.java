@@ -1,27 +1,15 @@
 package main.model.itemSystem;
 
-import main.model.combatSystem.Ability;
+import main.model.characterSystem.CharacterUnit;
 
-public class Consumable implements ResourceReplenishBonus {
-    private String consumableName;
-    private int potency;
-    private int duration;
-    private Ability.AbilityType abilityType;
+public abstract class Consumable {
+    protected String consumableName;
+    protected int potency;
 
-    public Consumable(String consumableName, int potency, int duration, Ability.AbilityType abilityType) {
+    public Consumable(String consumableName, int potency) {
         this.consumableName = consumableName;
         this.potency = potency;
-        this.duration = duration;
-        this.abilityType = abilityType;
     }
-
-    @Override
-    public int getHealingBonus() {
-        return potency;
-    }
-
-    @Override
-    public int getManaGainBonus() { return potency; }
 
     public String getConsumableName() {
         return consumableName;
@@ -31,11 +19,5 @@ public class Consumable implements ResourceReplenishBonus {
         return this.potency;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public Ability.AbilityType getAbilityType() {
-        return abilityType;
-    }
+    public abstract void applyItem(CharacterUnit receivingUnit);
 }

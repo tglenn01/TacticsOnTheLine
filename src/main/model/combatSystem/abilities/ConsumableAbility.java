@@ -1,26 +1,24 @@
 package main.model.combatSystem.abilities;
 
-import main.exception.AttackMissedException;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import main.exception.MenuOpenedException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.Ability;
-import main.model.combatSystem.statusEffects.*;
+import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.model.itemSystem.ResourceReplenishBonus;
 import main.ui.TacticBaseBattle;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ConsumableAbility extends SupportiveAbility {
 
     public ConsumableAbility() {
-        super("Item", 0, 1, 1,
-                Ability.AbilityType.ITEM, "Use an item on an ally");
+        super("Item", 0, 1, 1, "Use an item on an ally");
     }
 
     public void getTargets(CharacterUnit activeUnit, Consumable item) throws MenuOpenedException {
@@ -28,7 +26,7 @@ public class ConsumableAbility extends SupportiveAbility {
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         currentBoard.displayAbilitySpaces(possibleBoardSpaces);
 
-        setHandlers(activeUnit, possibleBoardSpaces);
+        setHandlers(activeUnit, possibleBoardSpaces, item);
     }
 
     @Override
@@ -42,49 +40,75 @@ public class ConsumableAbility extends SupportiveAbility {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces)
-            throws AttackMissedException, UnitIsDeadException {
-        System.out.println("Must have an item");
+    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+
     }
 
     public void takeAction(Consumable item, List<BoardSpace> targetedBoardSpaces) {
-         for (BoardSpace boardSpace : targetedBoardSpaces) {
-             CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
-             StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
-             if (item.getAbilityType() == AbilityType.HEAL) {
-                 healUnit(receivingUnit, receivingUnitStatSheet, item);
-             } else if (item.getAbilityType() == AbilityType.MANA_GAIN) {
-                 gainMana(receivingUnit, receivingUnitStatSheet, item);
-             } else if (item.getAbilityType() == AbilityType.ATTACK_BUFF) {
-                 receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, item.getPotency(), item.getDuration()));
-             } else if (item.getAbilityType() == AbilityType.DEFENSE_BUFF) {
-                 receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, item.getPotency(), item.getDuration()));
-             } else if (item.getAbilityType() == AbilityType.ATTACK_DEBUFF) {
-                 receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, item.getPotency(), item.getDuration()));
-             } else if (item.getAbilityType() == AbilityType.DEFENSE_DEBUFF) {
-                 receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, item.getPotency(), item.getDuration()));
-             } else if (item.getAbilityType() == AbilityType.INVULNERABLE) {
-                 receivingUnit.getStatusEffects().addPermanentStatusEffect(new Invulnerable(receivingUnit, item.getPotency()));
-             } else if (item.getAbilityType() == AbilityType.ROOT) {
-                 receivingUnit.getStatusEffects().addDecayingStatusEffect(new Root(receivingUnit, item.getPotency(), item.getDuration()));
-             }
-         }
-
+        for (BoardSpace boardSpace : targetedBoardSpaces) {
+            if (boardSpace.isOccupied()) {
+                CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
+                item.applyItem(receivingUnit);
+            }
+        }
         ConsumableItemInventory.getInstance().removeConsumableItem(item);
-    }
-
-    @Override
-    protected int getHealAmount(ResourceReplenishBonus bonus) {
-        return bonus.getHealingBonus();
-    }
-
-    @Override
-    protected int getManaGainAmount(ResourceReplenishBonus bonus) {
-        return bonus.getManaGainBonus();
     }
 
     public boolean targetsAlly() {
         return true;
+    }
+
+
+    protected void setHandlers(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces, Consumable item) throws MenuOpenedException {
+        List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
+
+        ReturnToMenuHandler returnToMenuHandler = new ReturnToMenuHandler(activeUnit, possibleBoardSpaces, possibleTargets);
+        ApplyItemTargetHandler applyItemTargetHandler = new ApplyItemTargetHandler(activeUnit, item, possibleBoardSpaces, possibleTargets, returnToMenuHandler);
+        returnToMenuHandler.setApplyTargetHandler(applyItemTargetHandler);
+
+        for (CharacterUnit possibleTarget : possibleTargets) {
+            possibleTarget.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, applyItemTargetHandler);
+        }
+
+        for (BoardSpace boardSpace : possibleBoardSpaces) {
+            boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, returnToMenuHandler);
+        }
+    }
+
+    private class ApplyItemTargetHandler implements EventHandler<MouseEvent> {
+        private CharacterUnit activeUnit;
+        private Consumable item;
+        private List<BoardSpace> possibleBoardSpaces;
+        private List<CharacterUnit> possibleTargets;
+        private EventHandler<MouseEvent> returnToMenuHandler;
+
+
+        public ApplyItemTargetHandler(CharacterUnit activeUnit, Consumable item, List<BoardSpace> possibleBoardSpaces,
+                                      List<CharacterUnit> possibleTargets, EventHandler<MouseEvent> returnToMenuHandler) {
+            this.activeUnit = activeUnit;
+            this.item = item;
+            this.possibleBoardSpaces = possibleBoardSpaces;
+            this.possibleTargets = possibleTargets;
+            this.returnToMenuHandler = returnToMenuHandler;
+        }
+
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                CharacterSprite targetSprite = (CharacterSprite) event.getSource();
+                CharacterUnit targetUnit = targetSprite.getUnit();
+
+                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                removeBoardHandler(possibleBoardSpaces, returnToMenuHandler);
+                removeTargetHandler(possibleTargets, this);
+
+                List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
+                targetedBoardSpaces.add(targetUnit.getBoardSpace());
+                addAreaOfEffect(targetUnit.getBoardSpace(), targetedBoardSpaces);
+
+                activeUnit.takeItemAction(ConsumableItemInventory.getInstance().getItemAbility(), item, targetedBoardSpaces);
+            }
+        }
     }
 
     @Override

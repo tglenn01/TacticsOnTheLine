@@ -1,11 +1,10 @@
 package main.model.characterSystem;
 
-import main.model.itemSystem.ResourceReplenishBonus;
 import main.model.jobSystem.Job;
 
 import java.util.List;
 
-public class StatSheet implements ResourceReplenishBonus {
+public class StatSheet {
     public static int BASE_MOVEMENT = 4;
     private int health;
     private int mana;
@@ -147,6 +146,10 @@ public class StatSheet implements ResourceReplenishBonus {
         this.armour -= removedArmour;
     }
 
+    public void removeDexterity(int removedDexterity) {
+        this.dexterity -= removedDexterity;
+    }
+
     public void addStrength(int addedStrength) {
         this.strength += addedStrength;
     }
@@ -250,15 +253,6 @@ public class StatSheet implements ResourceReplenishBonus {
         this.speed = this.baseSpeed;
     }
 
-    @Override
-    public int getHealingBonus() {
-        return getMagic();
-    }
-
-    @Override
-    public int getManaGainBonus() {
-        return getMagic();
-    }
 
     public double getSimpleHealth() {
         double value = SCALE_REFERENCE * ((maxHealth - LOWEST_HEALTH) / (HIGHEST_HEALTH - LOWEST_HEALTH));

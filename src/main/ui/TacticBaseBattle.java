@@ -4,11 +4,14 @@ import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
-import main.model.combatSystem.Ability;
 import main.model.graphics.scenes.CharacterSelect;
 import main.model.graphics.scenes.ScenarioSelectScreen;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
+import main.model.itemSystem.items.GlassShieldConsumable;
+import main.model.itemSystem.items.HealthPotionConsumable;
+import main.model.itemSystem.items.LiquidCourageConsumable;
+import main.model.itemSystem.items.ManaPotionConsumable;
 import main.model.jobSystem.Job;
 import main.model.jobSystem.jobs.archerJob.Archer;
 import main.model.jobSystem.jobs.bardJob.Bard;
@@ -62,12 +65,14 @@ public class TacticBaseBattle {
 
     private void initializeItems() {
         ConsumableItemInventory consumables = ConsumableItemInventory.getInstance();
-        Consumable healthPotion = new Consumable("Health Potion", 10,
-                1, Ability.AbilityType.HEAL);
-        Consumable manaPotion = new Consumable("Mana Potion", 15,
-                1, Ability.AbilityType.MANA_GAIN);
+        Consumable healthPotion = new HealthPotionConsumable();
+        Consumable manaPotion = new ManaPotionConsumable();
+        Consumable liquidCourage = new LiquidCourageConsumable();
+        Consumable glassShield = new GlassShieldConsumable();
         consumables.addConsumableItem(healthPotion);
         consumables.addConsumableItem(manaPotion);
+        consumables.addConsumableItem(liquidCourage);
+        consumables.addConsumableItem(glassShield);
     }
 
     // have the player choose the classes of the characters

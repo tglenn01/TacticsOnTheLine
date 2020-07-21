@@ -21,22 +21,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Ability {
-    public enum AbilityType {DAMAGE, HEAL, ATTACK_BUFF, DEFENSE_BUFF, ATTACK_DEBUFF, DEFENSE_DEBUFF, ITEM,
-        MANA_GAIN, MOVEMENT, INVULNERABLE, ROOT, RANGE_INCREASE}
     protected String abilityName;
     protected int manaCost;
     protected int range;
     protected int areaOfEffect;
-    protected AbilityType abilityType;
     protected String abilityDescription;
 
-    public Ability(String abilityName, int manaCost, int range, int areaOfEffect,
-                   AbilityType abilityType, String abilityDescription) {
+    public Ability(String abilityName, int manaCost, int range, int areaOfEffect, String abilityDescription) {
         this.abilityName = abilityName;
         this.manaCost = manaCost;
         this.range = range;
         this.areaOfEffect = areaOfEffect;
-        this.abilityType = abilityType;
         this.abilityDescription = abilityDescription;
     }
 
@@ -48,8 +43,17 @@ public abstract class Ability {
 
     protected abstract boolean isAreaOfEffect();
 
-    public abstract void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces)
-            throws AttackMissedException, UnitIsDeadException;
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces)
+            throws AttackMissedException, UnitIsDeadException {
+        for (BoardSpace boardSpace : chosenBoardSpaces) {
+            if (boardSpace.isOccupied()) {
+                CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
+                resolveEffect(activeUnit, receivingUnit);
+            }
+        }
+    }
+
+    protected abstract void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit);
 
     public int getManaCost() {
         return manaCost;
@@ -57,10 +61,6 @@ public abstract class Ability {
 
     public String getAbilityDescription() {
         return abilityDescription;
-    }
-
-    public AbilityType getAbilityType() {
-        return this.abilityType;
     }
 
     public int getAreaOfEffect() { return this.areaOfEffect;}
@@ -91,13 +91,17 @@ public abstract class Ability {
 
 
     public void getTargets(CharacterUnit activeUnit) throws MenuOpenedException {
-        List<BoardSpace> possibleBoardSpaces = getBoardSpaces(activeUnit);
-        Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
-        if (this.getClass() == MovementAbility.class) {
-            currentBoard.displayMovementSpaces(activeUnit, possibleBoardSpaces);
-        } else currentBoard.displayAbilitySpaces(possibleBoardSpaces);
+        if (this.targetsSelf()) activeUnit.takeAction(this, getSelfBoardSpace(activeUnit));
+        else {
+           List<BoardSpace> possibleBoardSpaces = getBoardSpaces(activeUnit);
+           Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
+            if (this.getClass() == MovementAbility.class) {
+                currentBoard.displayMovementSpaces(activeUnit, possibleBoardSpaces);
+            } else currentBoard.displayAbilitySpaces(possibleBoardSpaces);
 
-        setHandlers(activeUnit, possibleBoardSpaces);
+            setHandlers(activeUnit, possibleBoardSpaces);
+        }
+
     }
 
     protected abstract List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit);
@@ -105,11 +109,9 @@ public abstract class Ability {
     protected void setHandlers(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) throws MenuOpenedException {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
 
-        ReturnToMenuHandler returnToMenuHandler;
-        ApplyTargetHandler applyTargetHandler = null;
-
-        returnToMenuHandler = new ReturnToMenuHandler(activeUnit, possibleBoardSpaces, possibleTargets, applyTargetHandler);
-        applyTargetHandler =  new ApplyTargetHandler(activeUnit, this, possibleBoardSpaces, possibleTargets, returnToMenuHandler);
+        ReturnToMenuHandler returnToMenuHandler = new ReturnToMenuHandler(activeUnit, possibleBoardSpaces, possibleTargets);
+        ApplyTargetHandler applyTargetHandler = new ApplyTargetHandler(activeUnit, this, possibleBoardSpaces, possibleTargets, returnToMenuHandler);
+        returnToMenuHandler.setApplyTargetHandler(applyTargetHandler);
 
         for (CharacterUnit possibleTarget : possibleTargets) {
             possibleTarget.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, applyTargetHandler);
@@ -134,11 +136,10 @@ public abstract class Ability {
         private EventHandler<MouseEvent> applyTargetHandler;
 
         public ReturnToMenuHandler(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces,
-                                   List<CharacterUnit> possibleTargets, EventHandler<MouseEvent> applyTargetHandler) {
+                                   List<CharacterUnit> possibleTargets) {
             this.activeUnit = activeUnit;
             this.possibleBoardSpaces = possibleBoardSpaces;
             this.possibleTargets = possibleTargets;
-            this.applyTargetHandler = applyTargetHandler;
         }
 
         @Override
@@ -149,6 +150,10 @@ public abstract class Ability {
                 AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
             }
+        }
+
+        public void setApplyTargetHandler(EventHandler<MouseEvent> applyTargetHandler) {
+            this.applyTargetHandler = applyTargetHandler;
         }
     }
 
@@ -209,7 +214,7 @@ public abstract class Ability {
     }
 
     // Diamond pattern around the activeUnit, some abilities will have unique patterns which override this method
-    protected List<BoardSpace> getNormalTargetPattern(BoardSpace centreSpace, int range) {
+    public static List<BoardSpace> getNormalTargetPattern(BoardSpace centreSpace, int range) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         BoardSpace[][] boardSpaces = currentBoard.getBoardSpaces();
