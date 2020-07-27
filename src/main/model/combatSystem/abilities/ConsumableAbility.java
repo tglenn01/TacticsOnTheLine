@@ -113,6 +113,8 @@ public class ConsumableAbility extends SupportiveAbility {
 
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range);
+        List<BoardSpace> targetedBoardSpaces = getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
+        targetedBoardSpaces.add(activeUnit.getBoardSpace());
+        return targetedBoardSpaces;
     }
 }

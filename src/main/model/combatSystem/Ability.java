@@ -123,7 +123,7 @@ public abstract class Ability {
     }
 
     protected void addAreaOfEffect(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
-        List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(targetBoardSpace, this.areaOfEffect - 1);
+        List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(targetBoardSpace, this.areaOfEffect - 1, this);
         for (BoardSpace effectedSpace : effectedBoardSpaces) {
             if (effectedSpace.isOccupied()) targetedBoardSpaces.add(effectedSpace);
         }
@@ -214,7 +214,7 @@ public abstract class Ability {
     }
 
     // Diamond pattern around the activeUnit, some abilities will have unique patterns which override this method
-    public static List<BoardSpace> getNormalTargetPattern(BoardSpace centreSpace, int range) {
+    public static List<BoardSpace> getNormalTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         BoardSpace[][] boardSpaces = currentBoard.getBoardSpaces();
@@ -244,6 +244,9 @@ public abstract class Ability {
                 }
             }
         }
+
+        if (chosenAbility.targetsAlly()) possibleBoardSpaces.add(centreSpace);
+
         return possibleBoardSpaces;
     }
 

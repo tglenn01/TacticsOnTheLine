@@ -43,6 +43,6 @@ public class CrippleAbility extends StatusEffectAbility {
 
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range);
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

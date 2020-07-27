@@ -1,6 +1,5 @@
 package main.model.jobSystem;
 
-import javafx.scene.chart.XYChart;
 import main.model.characterSystem.StatBonus;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
@@ -106,59 +105,6 @@ public abstract class Job {
         StatSheet.updateHighestLowestDexterity(jobDexterity);
     }
 
-    // Used for Character Menu's and won't include health and mana
-    public XYChart.Series<Number, String> getRawStatData(StatSheet statSheet) {
-        XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getResistance(), "Resistance"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getArmour(), "Armour"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getMagic(), "Magic"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getStrength(), "Strength"));
-        return newSeries;
-    }
-
-    public XYChart.Series<Number, String> getSimpleStatData(StatSheet statSheet) {
-        XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleDexterity(), "Dexterity"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleSpeed(), "Speed"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleResistance(), "Resistance"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleArmour(), "Armour"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleMagic(), "Magic"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleStrength(), "Strength"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleMana(), "Mana"));
-        newSeries.getData().add(new XYChart.Data<>(statSheet.getSimpleHealth(), "Health"));
-        return newSeries;
-    }
-
-    public void getSimpleStatData(XYChart.Series<Number, String> oldSeries, StatSheet statSheet) {
-        for (XYChart.Data<Number, String> data : oldSeries.getData()) {
-            if (data.getYValue().equals("Health")) {
-                data.setXValue(statSheet.getSimpleHealth());
-            }
-            if (data.getYValue().equals("Mana")) {
-                data.setXValue(statSheet.getSimpleMana());
-            }
-            if (data.getYValue().equals("Strength")) {
-                data.setXValue(statSheet.getSimpleStrength());
-            }
-            if (data.getYValue().equals("Magic")) {
-                data.setXValue(statSheet.getSimpleMagic());
-            }
-            if (data.getYValue().equals("Armour")) {
-                data.setXValue(statSheet.getSimpleArmour());
-            }
-            if (data.getYValue().equals("Resistance")) {
-                data.setXValue(statSheet.getSimpleResistance());
-            }
-            if (data.getYValue().equals("Speed")) {
-                data.setXValue(statSheet.getSimpleSpeed());
-            }
-            if (data.getYValue().equals("Dexterity")) {
-                data.setXValue(statSheet.getSimpleDexterity());
-            }
-        }
-    }
 
     public int getMaxDamageAbilityReach() {
         return this.maxDamageAbilityReach;
@@ -172,7 +118,6 @@ public abstract class Job {
         return Math.max(this.maxDamageAbilityReach, this.maxSupportingAbilityReach);
     }
 
-
     public boolean hasSupportingAbility() {
         for (Ability ability : jobAbilityList) {
             if (ability.targetsAlly() && !ability.getAbilityName().equals("Defend")
@@ -183,5 +128,37 @@ public abstract class Job {
 
     public boolean isSupportJob() {
         return this.getClass() == Bard.class || this.getClass() == Cleric.class;
+    }
+
+    public int getJobHealth() {
+        return this.jobHealth;
+    }
+
+    public int getJobMana() {
+        return this.jobMana;
+    }
+
+    public int getJobStrength() {
+        return this.jobStrength;
+    }
+
+    public int getJobMagic() {
+        return this.jobMagic;
+    }
+
+    public int getJobArmour() {
+        return this.jobArmour;
+    }
+
+    public int getJobResistance() {
+        return this.jobResistance;
+    }
+
+    public int getJobSpeed() {
+        return this.jobSpeed;
+    }
+
+    public int getJobDexterity() {
+        return this.jobDexterity;
     }
 }

@@ -89,18 +89,11 @@ public abstract class CharacterUnit {
 
     protected abstract void takeNextAction();
 
-    //public void movementComplete(Battle battle) {
-    //   this.movementToken = false;
-    //    if (actionTokens <= 0) battle.endTurn();
-    //    else takeNextAction();
-    //}
-
     public void setJob(Job job) {
         this.characterJob = job;
         this.abilityList = new ArrayList<>(job.getJobAbilityList());
         if (characterStatSheet != null) characterStatSheet.updateStatSheetAccordingToJob(job);
     }
-
 
 
     public void setBoardSpace(BoardSpace boardSpace) {

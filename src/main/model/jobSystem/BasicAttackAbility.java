@@ -36,6 +36,6 @@ public class BasicAttackAbility extends PhysicalAbility {
 
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range);
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

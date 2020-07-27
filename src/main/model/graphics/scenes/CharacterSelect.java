@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,17 +29,16 @@ public class CharacterSelect extends DefaultScene {
     private int partySize;
     private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
-    private List<JobButton> jobButtonList;
+    private Pane jobButtonPane;
     private CharacterStatChart statChart;
     private AbilitiesList abilities;
     private Pane portrait;
-    private Label characterName;
+    private CharacterNameLabel characterName;
     private int characterCursor = 0;
 
     // called when you open this screen for the first time
     public CharacterSelect() {
         partyMemberList = new ArrayList<>();
-        jobButtonList = new ArrayList<>();
         initializeCharacterList();
         initializeGraphics();
     }
@@ -74,7 +72,7 @@ public class CharacterSelect extends DefaultScene {
         GridPane grid = new GridPane();
         grid.setGridLinesVisible(true);
         grid.setPadding(new Insets(10, 10, 10, 10));
-        Pane jobs = initializeJobButtons();
+        this.jobButtonPane = initializeJobButtons();
         this.portrait = characterPortrait();
         this.abilities = new AbilitiesList(activeCharacter.getAbilityList(), 600, 120);
         this.statChart = new CharacterStatChart(activeCharacter, 600, 360,
@@ -82,7 +80,7 @@ public class CharacterSelect extends DefaultScene {
         this.characterName = new CharacterNameLabel(activeCharacter, 600, 120);
         Button advanceButton = advanceButton();
         Button previousButton = previousButton();
-        grid.add(jobs, 0, 8, 10, 2);
+        grid.add(jobButtonPane, 0, 8, 10, 2);
         grid.add(portrait, 0, 0, 4, 8);
         grid.add(abilities, 4, 6, 6, 2);
         grid.add(statChart, 4, 2, 6, 4);
@@ -90,27 +88,26 @@ public class CharacterSelect extends DefaultScene {
         grid.add(advanceButton, 0, 9, 10, 2);
         grid.add(previousButton, 0, 9, 10, 2);
 
-        GridPane.setValignment(portrait, VPos.TOP);
+
         GridPane.setHalignment(advanceButton, HPos.RIGHT);
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
         GridPane.setHalignment(previousButton, HPos.LEFT);
         GridPane.setValignment(previousButton, VPos.BOTTOM);
-        GridPane.setHalignment(abilities, HPos.CENTER);
-        GridPane.setValignment(characterName, VPos.CENTER);
-        GridPane.setHalignment(characterName, HPos.CENTER);
         Scene scene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
-        addCSS(scene);
+        //addCSS(scene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
     }
 
-    private HBox initializeJobButtons() {
+    private Pane initializeJobButtons() {
         List<Job> jobList = TacticBaseBattle.getInstance().getAvailableJobs();
-        jobButtonList = new ArrayList<>();
+        List<Button> jobButtonList = new ArrayList<>();
         for (Job job : jobList) {
             JobButton jobButton = new JobButton(job.getJobTitle(), job);
             jobButton.setOnAction(e -> {
-                activeCharacter.setJob(job);
-                updateData();
+                if (job != activeCharacter.getCharacterJob()) {
+                    activeCharacter.setJob(job);
+                    updateData();
+                }
             });
             jobButton.setMinSize(100, 100);
             jobButtonList.add(jobButton);
@@ -119,10 +116,14 @@ public class CharacterSelect extends DefaultScene {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
-        hBox.setMinSize(1000, 160);
         hBox.getChildren().addAll(jobButtonList);
 
-        return hBox;
+        Pane jobButtonPane = new Pane();
+        jobButtonPane.getChildren().add(hBox);
+        jobButtonPane.setMinSize(1000, 160);
+
+        DefaultScene.centreRegionOnPane(jobButtonPane, hBox);
+        return jobButtonPane;
     }
 
     private Pane characterPortrait() {
@@ -165,7 +166,7 @@ public class CharacterSelect extends DefaultScene {
     private void nextCharacter() {
         activeCharacter = partyMemberList.get(characterCursor);
         updateData();
-        characterName.setText(activeCharacter.getCharacterName());
+        characterName.updateLabel(activeCharacter);
         portrait.getChildren().clear();
         portrait.getChildren().add(this.characterPortrait());
     }

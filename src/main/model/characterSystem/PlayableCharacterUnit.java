@@ -23,6 +23,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         this.characterStatSheet = new StatSheet(this.characterJob, this.personalStatBonus);
         setPersonalAbility();
         addPersonalAbilityToAbilityList();
+        addStatBonusToStats();
     }
 
     protected abstract void setPersonalAbility();
@@ -31,6 +32,11 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     protected void addPersonalAbilityToAbilityList() {
         this.abilityList.add(personalAbility);
+    }
+
+
+    protected void addStatBonusToStats() {
+        this.characterStatSheet.addStatBonus(personalStatBonus);
     }
 
     @Override
@@ -52,6 +58,8 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     public void setJob(Job job) {
         super.setJob(job);
         if (this.personalAbility != null) addPersonalAbilityToAbilityList();
+        if (this.personalStatBonus != null && this.characterStatSheet != null)
+            this.characterStatSheet.addStatBonus(personalStatBonus);
     }
 
     public void useAbility(Ability chosenAbility) {

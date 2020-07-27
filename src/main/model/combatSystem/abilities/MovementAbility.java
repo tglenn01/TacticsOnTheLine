@@ -50,7 +50,7 @@ public class MovementAbility extends Ability {
 
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMovement());
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMovement(), this);
     }
 
     @Override

@@ -39,6 +39,6 @@ public class RescueAbility extends Ability {
 
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMagic()); // their magic stat is their range
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMagic(), this); // their magic stat is their range
     }
 }

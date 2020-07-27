@@ -54,8 +54,8 @@ public class NPC extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         this.actionTokens = ACTIONS_PER_TURN;
         this.movementToken = true;
-        List<BoardSpace> damageActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxDamageAbilityReach());
-        List<BoardSpace> supportActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxSupportingAbilityReach());
+        List<BoardSpace> damageActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxDamageAbilityReach(), null);
+        List<BoardSpace> supportActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxSupportingAbilityReach(), null);
 
         if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
         else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);

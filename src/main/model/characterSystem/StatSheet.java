@@ -55,6 +55,23 @@ public class StatSheet {
         job.loadBaseStats(this);
     }
 
+    public void updateStatSheetAccordingToJob(Job job, StatBonus statBonus) {
+        job.loadBaseStats(this, statBonus);
+    }
+
+    public void addStatBonus(StatBonus statBonus) {
+        this.health += statBonus.getHealthBonus();
+        this.maxHealth = this.health;
+        this.mana += statBonus.getManaBonus();
+        this.maxMana = this.mana;
+        this.strength += statBonus.getStrengthBonus();
+        this.magic += statBonus.getMagicBonus();
+        this.armour += statBonus.getArmourBonus();
+        this.resistance += statBonus.getResistanceBonus();
+        this.dexterity += statBonus.getDexterityBonus();
+        this.speed += statBonus.getSpeedBonus();
+    }
+
     public int getHealth() {
         return health;
     }
@@ -254,50 +271,50 @@ public class StatSheet {
     }
 
 
-    public double getSimpleHealth() {
-        double value = SCALE_REFERENCE * ((maxHealth - LOWEST_HEALTH) / (HIGHEST_HEALTH - LOWEST_HEALTH));
+    public double getSimpleHealth(int jobHealth) {
+        double value = SCALE_REFERENCE * ((jobHealth - LOWEST_HEALTH) / (HIGHEST_HEALTH - LOWEST_HEALTH));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleMana() {
-        double value = SCALE_REFERENCE * ((maxMana - LOWEST_MANA) / (HIGHEST_MANA - LOWEST_MANA));
+    public double getSimpleMana(int jobMana) {
+        double value = SCALE_REFERENCE * ((jobMana - LOWEST_MANA) / (HIGHEST_MANA - LOWEST_MANA));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleStrength() {
-        double value = SCALE_REFERENCE * ((baseStrength - LOWEST_STRENGTH) / (HIGHEST_STRENGTH - LOWEST_STRENGTH));
+    public double getSimpleStrength(int jobStrength) {
+        double value = SCALE_REFERENCE * ((jobStrength - LOWEST_STRENGTH) / (HIGHEST_STRENGTH - LOWEST_STRENGTH));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleMagic() {
-        double value = SCALE_REFERENCE * ((baseMagic - LOWEST_MAGIC) / (HIGHEST_MAGIC - LOWEST_MAGIC));
+    public double getSimpleMagic(int jobMagic) {
+        double value = SCALE_REFERENCE * ((jobMagic - LOWEST_MAGIC) / (HIGHEST_MAGIC - LOWEST_MAGIC));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleArmour() {
-        double value = SCALE_REFERENCE * ((baseArmour - LOWEST_ARMOUR) / (HIGHEST_ARMOUR - LOWEST_ARMOUR));
+    public double getSimpleArmour(int jobArmour) {
+        double value = SCALE_REFERENCE * ((jobArmour - LOWEST_ARMOUR) / (HIGHEST_ARMOUR - LOWEST_ARMOUR));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleResistance() {
-        double value = SCALE_REFERENCE * ((baseResistance - LOWEST_RESISTANCE) / (HIGHEST_RESISTANCE - LOWEST_RESISTANCE));
+    public double getSimpleResistance(int jobResistance) {
+        double value = SCALE_REFERENCE * ((jobResistance - LOWEST_RESISTANCE) / (HIGHEST_RESISTANCE - LOWEST_RESISTANCE));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleSpeed() {
-        double value =  SCALE_REFERENCE * ((baseSpeed - LOWEST_SPEED) / (HIGHEST_SPEED - LOWEST_SPEED));
+    public double getSimpleSpeed(int jobSpeed) {
+        double value =  SCALE_REFERENCE * ((jobSpeed - LOWEST_SPEED) / (HIGHEST_SPEED - LOWEST_SPEED));
         if (value < 1) return 1;
         return value;
     }
 
-    public double getSimpleDexterity() {
-        double value =  SCALE_REFERENCE * ((baseDexterity - LOWEST_DEXTERITY) / (HIGHEST_DEXTERITY - LOWEST_DEXTERITY));
+    public double getSimpleDexterity(int jobDexterity) {
+        double value =  SCALE_REFERENCE * ((jobDexterity - LOWEST_DEXTERITY) / (HIGHEST_DEXTERITY - LOWEST_DEXTERITY));
         if (value < 1) return 1;
         return value;
     }

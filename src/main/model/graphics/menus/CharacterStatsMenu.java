@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import main.model.boardSystem.tiles.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.graphics.sceneElements.images.CharacterJobLabel;
@@ -39,7 +40,7 @@ public class CharacterStatsMenu {
         Pane portrait = characterPortrait(unit);
         Pane sprite = characterSprite(unit);
         BarChart<Number, String> statChart = statChart(unit);
-        Label characterName = new CharacterNameLabel(unit, 380, 60);
+        Pane characterName = new CharacterNameLabel(unit, 380, 60);
         Label characterJob = new CharacterJobLabel(unit.getCharacterJob(), 380, 60);
         HBox statusEffectBar = new StatusEffectList(unit);
         Label healthBar = healthBar(unit);
@@ -91,15 +92,17 @@ public class CharacterStatsMenu {
     }
 
     private static Pane characterSprite(CharacterUnit unit) {
-        Pane window = new Pane();
+        Pane spritePane = new Pane();
+        spritePane.setBackground(new WaterLandType().getTileColour());
         Image image = unit.getSprite().getImage();
         ImageView sprite = new ImageView(image);
-        sprite.fitWidthProperty().bind(window.widthProperty());
-        sprite.fitHeightProperty().bind(window.heightProperty());
-        sprite.setPreserveRatio(false);
-        window.getChildren().add(sprite);
-        window.setPrefSize(140, 140);
-        return window;
+        //sprite.fitWidthProperty().bind(spritePane.widthProperty());
+        sprite.fitHeightProperty().bind(spritePane.heightProperty());
+        sprite.layoutXProperty().bind(spritePane.widthProperty().subtract(sprite.fitWidthProperty()).divide(4.5));
+        sprite.setPreserveRatio(true);
+        spritePane.getChildren().add(sprite);
+        spritePane.setPrefSize(140, 140);
+        return spritePane;
     }
 
     private static BarChart<Number, String> statChart(CharacterUnit unit) {
@@ -114,11 +117,22 @@ public class CharacterStatsMenu {
 
         XYChart.Series<Number, String> series1;
         StatSheet statSheet = unit.getCharacterStatSheet();
-        series1 = unit.getCharacterJob().getRawStatData(statSheet);
+        series1 = getCharacterStats(statSheet);
         statChart.getData().add(series1);
         statChart.setPrefSize(460, 480);
 
         return statChart;
+    }
+
+    private static XYChart.Series<Number, String> getCharacterStats(StatSheet statSheet) {
+        XYChart.Series<Number, String> newSeries = new XYChart.Series<>();
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getDexterity(), "Dexterity"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getSpeed(), "Speed"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getResistance(), "Resistance"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getArmour(), "Armour"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getMagic(), "Magic"));
+        newSeries.getData().add(new XYChart.Data<>(statSheet.getStrength(), "Strength"));
+        return newSeries;
     }
 
     private static Label healthBar(CharacterUnit unit) {
