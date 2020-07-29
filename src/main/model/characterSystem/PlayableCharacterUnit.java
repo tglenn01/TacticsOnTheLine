@@ -8,7 +8,7 @@ import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
-import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.BattleMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
@@ -33,7 +33,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     protected void addPersonalAbilityToAbilityList() {
         this.abilityList.add(personalAbility);
     }
-
 
     protected void addStatBonusToStats() {
         this.characterStatSheet.addStatBonus(personalStatBonus);
@@ -111,6 +110,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     }
 
     protected void takeNextAction() {
-        AbilityMenu.display(this, this.abilityList);
+        BattleMenu.getInstance().displayCharacterMenu(this);
     }
 }

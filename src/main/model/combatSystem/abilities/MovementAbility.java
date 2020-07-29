@@ -8,7 +8,7 @@ import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
-import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.BattleMenu;
 import main.ui.TacticBaseBattle;
 
 import java.util.LinkedList;
@@ -46,8 +46,6 @@ public class MovementAbility extends Ability {
         return false;
     }
 
-    ;
-
     @Override
     protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
         return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMovement(), this);
@@ -62,25 +60,29 @@ public class MovementAbility extends Ability {
         }
 
         // clicking on the sprite will open the menu and therefore must also close the event handlers to avoid bugs
-        activeUnit.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                removeBoardHandler(possibleBoardSpaces, applyBoardHandler);
-            }
-        });
     }
 
     protected class ApplyBoardHandler implements EventHandler<MouseEvent> {
         private CharacterUnit activeUnit;
         private Ability chosenAbility;
         private List<BoardSpace> possibleBoardSpaces;
+        private EventHandler<MouseEvent> characterUnitOpensMenuHandler;
 
 
         public ApplyBoardHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
             this.activeUnit = activeUnit;
             this.chosenAbility = chosenAbility;
             this.possibleBoardSpaces = possibleBoardSpaces;
+
+
+            characterUnitOpensMenuHandler = new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                    removeBoardHandler(possibleBoardSpaces, this);
+                    event.consume();
+                }
+            };
         }
 
         @Override
@@ -89,6 +91,7 @@ public class MovementAbility extends Ability {
             if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
                 removeBoardHandler(possibleBoardSpaces, this);
+                activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
 
                 List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
                 targetedBoardSpaces.add(destination);
@@ -96,8 +99,9 @@ public class MovementAbility extends Ability {
                 activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
             } else if (event.getButton() == MouseButton.SECONDARY)  {
                 removeBoardHandler(possibleBoardSpaces, this);
+                activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
+                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
             }
         }
     }

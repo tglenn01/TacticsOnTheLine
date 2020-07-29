@@ -46,7 +46,11 @@ public class CharacterStatsMenu {
         Label healthBar = healthBar(unit);
         Label manaBar = manaBar(unit);
         Button closeButton = new Button("close");
-        closeButton.setOnAction(event -> window.close());
+        closeButton.setOnAction(event -> {
+            window.close();
+            if (unit == TacticBaseBattle.getInstance().getBattle().getActiveCharacter())
+                BattleMenu.getInstance().displayCharacterMenu(unit);
+        });
         characterJob.setAlignment(Pos.CENTER);
         grid.add(portrait, 0, 0, 4, 8);
         grid.add(sprite, 0, 8, 2, 2);
@@ -94,7 +98,7 @@ public class CharacterStatsMenu {
     private static Pane characterSprite(CharacterUnit unit) {
         Pane spritePane = new Pane();
         spritePane.setBackground(new WaterLandType().getTileColour());
-        Image image = unit.getSprite().getImage();
+        Image image = unit.getCharacterSprite().getStillImage();
         ImageView sprite = new ImageView(image);
         //sprite.fitWidthProperty().bind(spritePane.widthProperty());
         sprite.fitHeightProperty().bind(spritePane.heightProperty());

@@ -102,12 +102,12 @@ July 13th
 + takeAction takes a list of boardSpace instead of a CharacterUnit where the ability damages all units in the boardspaces
 
 
-+ Rework the ability menu!
++ Rework the ability menu! (Done)
     - Attack
     - Move
     - Ability
     - Status
     - End Turn
 
-+ Move anything to do with stat charts into the stat chart class
-+ Character select, everything is a pane with the nodes added on (so we can centre things on the pane and not the gridpane)
++ Move anything to do with stat charts into the stat chart class (done)
++ Character select, everything is a pane with the nodes added on (so we can centre things on the pane and not the gridpane) (done)

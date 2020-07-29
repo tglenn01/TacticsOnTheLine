@@ -11,6 +11,7 @@ import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
+import main.model.jobSystem.BasicAttackAbility;
 import main.model.jobSystem.Job;
 import main.ui.TacticBaseBattle;
 
@@ -45,7 +46,6 @@ public abstract class CharacterUnit {
         this.isAlive = true;
         this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
-
     }
 
     protected abstract void setPersonalStatBonuses();
@@ -258,5 +258,20 @@ public abstract class CharacterUnit {
     public CharacterSprite getCharacterSprite() {
         return this.sprite;
     }
+
+    public Ability getBasicAttack() {
+        for (Ability ability : abilityList) {
+            if (ability.getClass() == BasicAttackAbility.class) return ability;
+        }
+        return null;
+    }
+
+    public Ability getMovementAbility() {
+        for (Ability ability : abilityList) {
+            if (ability.getClass() == MovementAbility.class) return ability;
+        }
+        return null;
+    }
+
 }
 

@@ -12,7 +12,7 @@ import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.abilities.MovementAbility;
-import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
 
@@ -147,7 +147,7 @@ public abstract class Ability {
             if (event.getButton() == MouseButton.SECONDARY) {
                 removeBoardHandler(possibleBoardSpaces, this);
                 removeTargetHandler(possibleTargets, applyTargetHandler);
-                AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
+                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
             }
         }
@@ -245,7 +245,7 @@ public abstract class Ability {
             }
         }
 
-        if (chosenAbility.targetsAlly()) possibleBoardSpaces.add(centreSpace);
+        if (chosenAbility != null && chosenAbility.targetsAlly()) possibleBoardSpaces.add(centreSpace);
 
         return possibleBoardSpaces;
     }

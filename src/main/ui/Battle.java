@@ -6,7 +6,6 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
-import main.model.graphics.menus.AbilityMenu;
 import main.model.graphics.scenes.DefeatScreen;
 import main.model.graphics.scenes.VictoryScreen;
 import main.model.scenarioSystem.Scenario;
@@ -92,7 +91,6 @@ public class Battle {
         try{
             turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
         } catch (BattleIsOverException e) {
-            AbilityMenu.closeWindow();
             if (turnOrder.didUserWin()) new VictoryScreen();
             else new DefeatScreen();
         }

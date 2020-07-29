@@ -1,49 +1,37 @@
 package main.model.graphics.menus;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.sceneElements.buttons.ItemButton;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemMenu {
+public class ItemMenu extends DefaultMenu{
 
-    public static void display(CharacterUnit activeUnit) {
-        Stage window = new Stage();
-        window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
-        window.setTitle("Item Menu");
+    @Override
+    protected List<Button> setButtons(CharacterUnit activeUnit, BattleMenu battleMenu) {
+        List<Button> itemButtonList = getItemButtons(activeUnit, battleMenu);
 
-        Button returnButton = new Button("return");
-        returnButton.setOnAction(e -> {
-            window.hide();
-            TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-            AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
-        });
+        Button returnButton = getReturnButton(activeUnit, battleMenu);
+        itemButtonList.add(returnButton);
 
-        List<Button> itemList = new ArrayList<>();
+        return itemButtonList;
+    }
+
+    private List<Button> getItemButtons(CharacterUnit activeUnit, BattleMenu battleMenu) {
+        List<Button> itemButtonList = new ArrayList<>();
         for (Consumable consumable : ConsumableItemInventory.getInstance()) {
             ItemButton itemButton  = new ItemButton(consumable);
             itemButton.setOnAction(e -> {
-                window.close();
+                battleMenu.close();
                 Consumable item = itemButton.getConsumable();
                 activeUnit.useItem(item);
             });
-            itemList.add(itemButton);
+            itemButtonList.add(itemButton);
         }
-
-        VBox node = new VBox();
-        node.getChildren().add(returnButton);
-        node.getChildren().addAll(itemList);
-
-        Scene scene = new Scene(node);
-        window.setScene(scene);
-        window.show();
+        return itemButtonList;
     }
 }

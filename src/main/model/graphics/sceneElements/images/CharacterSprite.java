@@ -6,7 +6,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
-import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.menus.CharacterStatsMenu;
 import main.ui.TacticBaseBattle;
 
@@ -25,37 +25,17 @@ public abstract class CharacterSprite extends ImageView {
 
     private void initializeSprite() {
         this.setImage(spriteArray[2][0]); // default down looking
-        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
-            if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
-                    !currentBoard.isAbilitySpacesShowing()) {
-                if (!AbilityMenu.isDisplaying()) {
-                    AbilityMenu.display(unit, unit.getAbilityList());
-                }
-            } else if (!currentBoard.isAbilitySpacesShowing() &&
-                    event.getButton() == MouseButton.PRIMARY) {
-                if (unit.isMovementRangeIsVisable()) {
-                    currentBoard.stopShowingMovementSpaces(unit);
-                    unit.setMovementRangeIsVisable(false);
-                } else {
-                    currentBoard.displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
-                    unit.setMovementRangeIsVisable(true);
-                }
-                event.consume();
-            } else if (!currentBoard.isAbilitySpacesShowing() &&
-                    event.getButton() == MouseButton.SECONDARY) {
-                if (!CharacterStatsMenu.isDisplaying()) CharacterStatsMenu.display(unit);
-            }
-        });
+        this.setSpriteHandlers();
     }
 
     public ImageView getSprite() {
         return this;
     }
 
-    public Image getImage(int direction) {
-        return this.spriteArray[direction][0];
+    public Image getStillImage() {
+        return this.spriteArray[2][0];
     }
+
 
     // // 0 = up, 1 = right, 2 = down, 3 = left
     public void updateImage(double time, int direction) {
@@ -65,5 +45,29 @@ public abstract class CharacterSprite extends ImageView {
 
     public CharacterUnit getUnit() {
         return this.unit;
+    }
+
+    public void setSpriteHandlers() {
+        this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
+            if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
+                    !currentBoard.isAbilitySpacesShowing()) {
+                //if (!BattleMenu.getInstance().isShowing()) {
+                    BattleMenu.getInstance().displayCharacterMenu(unit);
+                //}
+            } else if (!currentBoard.isAbilitySpacesShowing() &&
+                    event.getButton() == MouseButton.PRIMARY) {
+                if (unit.isMovementRangeIsVisable()) {
+                    currentBoard.stopShowingMovementSpaces(unit);
+                    unit.setMovementRangeIsVisable(false);
+                } else {
+                    currentBoard.displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
+                    unit.setMovementRangeIsVisable(true);
+                }
+            } else if (!currentBoard.isAbilitySpacesShowing() &&
+                    event.getButton() == MouseButton.SECONDARY) {
+                if (!CharacterStatsMenu.isDisplaying()) CharacterStatsMenu.display(unit);
+            }
+        });
     }
 }

@@ -9,7 +9,7 @@ import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.PhysicalAbility;
-import main.model.graphics.menus.AbilityMenu;
+import main.model.graphics.menus.BattleMenu;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -148,7 +148,7 @@ public class BuckShotAbility extends PhysicalAbility {
             } else if (event.getButton() == MouseButton.SECONDARY)  {
                 removeBoardHandler(possibleBoardSpaces, this);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                AbilityMenu.display(activeUnit, activeUnit.getAbilityList());
+                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
             }
         }
     }
