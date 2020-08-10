@@ -22,7 +22,7 @@ public class ConsumableAbility extends SupportiveAbility {
     }
 
     public void getTargets(CharacterUnit activeUnit, Consumable item) throws MenuOpenedException {
-        List<BoardSpace> possibleBoardSpaces = getBoardSpaces(activeUnit);
+        List<BoardSpace> possibleBoardSpaces = getTargetedBoardSpaces(activeUnit);
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         currentBoard.displayAbilitySpaces(possibleBoardSpaces);
 
@@ -103,8 +103,8 @@ public class ConsumableAbility extends SupportiveAbility {
                 removeTargetHandler(possibleTargets, this);
 
                 List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
-                targetedBoardSpaces.add(targetUnit.getBoardSpace());
-                addAreaOfEffect(targetUnit.getBoardSpace(), targetedBoardSpaces);
+                //targetedBoardSpaces.add(targetUnit.getBoardSpace());
+                addTargetsToTargetedBoardSpaces(targetUnit.getBoardSpace(), targetedBoardSpaces);
 
                 activeUnit.takeItemAction(ConsumableItemInventory.getInstance().getItemAbility(), item, targetedBoardSpaces);
             }
@@ -112,9 +112,7 @@ public class ConsumableAbility extends SupportiveAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        List<BoardSpace> targetedBoardSpaces = getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
-        targetedBoardSpaces.add(activeUnit.getBoardSpace());
-        return targetedBoardSpaces;
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
+        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

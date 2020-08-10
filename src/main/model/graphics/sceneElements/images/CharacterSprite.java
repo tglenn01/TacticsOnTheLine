@@ -40,28 +40,32 @@ public abstract class CharacterSprite extends ImageView {
     // // 0 = up, 1 = right, 2 = down, 3 = left
     public void updateImage(double time, int direction) {
         int index = (int) ((time % (2 * duration)) / duration); // will alternate between 0 and 1
-        this.setImage(spriteArray[direction][index + 1]); // 1 and 2 are the walking animations so I added 1
+        this.setImage(spriteArray[direction][index + 1]); // 1 and 2 are the walking animations so 1 is added
     }
 
     public CharacterUnit getUnit() {
         return this.unit;
     }
 
+
+    // If active and not showing character menu, clicking on unit will open the menu
+    // If non-active and left-click, toggle between displaying their movement range
+    // If non-active and right-click, open their stats menu
     public void setSpriteHandlers() {
         this.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
             if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() == unit &&
                     !currentBoard.isAbilitySpacesShowing()) {
-                //if (!BattleMenu.getInstance().isShowing()) {
+                if (!BattleMenu.getInstance().isShowing()) {
                     BattleMenu.getInstance().displayCharacterMenu(unit);
-                //}
+                }
             } else if (!currentBoard.isAbilitySpacesShowing() &&
                     event.getButton() == MouseButton.PRIMARY) {
                 if (unit.isMovementRangeIsVisable()) {
                     currentBoard.stopShowingMovementSpaces(unit);
                     unit.setMovementRangeIsVisable(false);
                 } else {
-                    currentBoard.displayValidMovementSpaces(unit, unit.getCharacterStatSheet().getMovement());
+                    currentBoard.displayMovementSpaces(unit, currentBoard.getMovementArea(unit));
                     unit.setMovementRangeIsVisable(true);
                 }
             } else if (!currentBoard.isAbilitySpacesShowing() &&

@@ -43,7 +43,7 @@ public class TowerAbility extends Ability {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getSelfBoardSpace(activeUnit);
     }
 }

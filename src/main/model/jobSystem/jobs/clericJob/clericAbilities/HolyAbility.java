@@ -13,12 +13,6 @@ public class HolyAbility extends MagicAbility {
                 "Deal heavy light damage to a nearby enemy");
     }
 
-    @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
-    }
 
     @Override
     protected boolean targetsSelf() {
@@ -36,7 +30,7 @@ public class HolyAbility extends MagicAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

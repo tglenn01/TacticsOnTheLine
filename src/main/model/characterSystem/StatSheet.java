@@ -46,11 +46,6 @@ public class StatSheet {
         job.loadBaseStats(this);
     }
 
-    // For playable Characters and special Enemies
-    public StatSheet(Job job, StatBonus statBonus) {
-        job.loadBaseStats(this, statBonus);
-    }
-
     public void updateStatSheetAccordingToJob(Job job) {
         job.loadBaseStats(this);
     }
@@ -60,16 +55,14 @@ public class StatSheet {
     }
 
     public void addStatBonus(StatBonus statBonus) {
-        this.health += statBonus.getHealthBonus();
-        this.maxHealth = this.health;
-        this.mana += statBonus.getManaBonus();
-        this.maxMana = this.mana;
-        this.strength += statBonus.getStrengthBonus();
-        this.magic += statBonus.getMagicBonus();
-        this.armour += statBonus.getArmourBonus();
-        this.resistance += statBonus.getResistanceBonus();
-        this.dexterity += statBonus.getDexterityBonus();
-        this.speed += statBonus.getSpeedBonus();
+        this.maxHealth += statBonus.getHealthBonus();
+        this.maxMana += statBonus.getManaBonus();
+        this.baseStrength += statBonus.getStrengthBonus();
+        this.baseMagic += statBonus.getMagicBonus();
+        this.baseArmour += statBonus.getArmourBonus();
+        this.baseResistance += statBonus.getResistanceBonus();
+        this.baseDexterity += statBonus.getDexterityBonus();
+        this.baseSpeed += statBonus.getSpeedBonus();
     }
 
     public int getHealth() {
@@ -78,6 +71,30 @@ public class StatSheet {
 
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public int getBaseStrength() {
+        return baseStrength;
+    }
+
+    public int getBaseMagic() {
+        return baseMagic;
+    }
+
+    public int getBaseArmour() {
+        return baseArmour;
+    }
+
+    public int getBaseResistance() {
+        return baseResistance;
+    }
+
+    public int getBaseSpeed() {
+        return baseSpeed;
+    }
+
+    public int getBaseDexterity() {
+        return baseDexterity;
     }
 
     public int getMana() {

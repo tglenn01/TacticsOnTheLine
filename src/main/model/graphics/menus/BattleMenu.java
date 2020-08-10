@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.model.characterSystem.CharacterUnit;
 import main.model.itemSystem.ConsumableItemInventory;
+import main.ui.TacticBaseBattle;
 
 public class BattleMenu extends Stage {
     private static BattleMenu battleMenu;
@@ -14,7 +15,7 @@ public class BattleMenu extends Stage {
     private ItemMenu itemMenu;
 
     private BattleMenu() {
-        //this.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
+        this.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         this.setOpacity(.90);
         this.initStyle(StageStyle.UTILITY);
         this.setResizable(false);
@@ -32,7 +33,7 @@ public class BattleMenu extends Stage {
     public void displayCharacterMenu(CharacterUnit unit) {
         this.setScene(characterMenu.getMenu(unit, this));
         this.setTitle("Menu");
-        this.show();
+        if (!this.isShowing()) this.show();
     }
 
     public void displayAbilityMenu(CharacterUnit unit) {

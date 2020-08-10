@@ -106,8 +106,24 @@ July 13th
     - Attack
     - Move
     - Ability
+    - Item
     - Status
     - End Turn
 
 + Move anything to do with stat charts into the stat chart class (done)
 + Character select, everything is a pane with the nodes added on (so we can centre things on the pane and not the gridpane) (done)
+
+July 29th
++ add different colours for highlighted movement spaces
++ NPC ai... (big sad)
++ Characters moving to and from a space naturally
++ Fade dead character in turnOrderCompiler (done)
+
+
+August 6th
++ EXP system
+
+August 8th
++ Each Ability class has it's own method of choosing hwo much xp to gain
++ clean up the Level up menu
++ start creating nicer graphics

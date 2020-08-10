@@ -1,9 +1,9 @@
 package main.model.boardSystem;
 
-import main.model.boardSystem.tiles.GrassLandType;
-import main.model.boardSystem.tiles.LandType;
+import javafx.util.Pair;
+import main.model.boardSystem.landTypes.GrassLandType;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 
 import java.util.*;
 
@@ -40,89 +40,20 @@ public class Board {
         return this.boardSpaces[xValue][yValue];
     }
 
-    // get the boardSpace from the unit then use the unitMovement to display valid spaces within that range.
-    public void displayValidMovementSpaces(CharacterUnit unit, int movement) {
-        BoardSpace currentSpace = unit.getBoardSpace();
 
-        for (BoardSpace[] possibleSpaces : this.boardSpaces) {
-            for (BoardSpace possibleSpace : possibleSpaces) {
-                if (possibleSpace.isValidMovementSpace(currentSpace, movement)) {
-                    possibleSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.MOVEMENT_HIGHLIGHT_COLOUR);
-                    List<CharacterUnit> list = movementHighlightedSpaces.get(possibleSpace);
-                    list.add(unit);
-                    movementHighlightedSpaces.put(possibleSpace, list);
-                }
-            }
-        }
+    public List<BoardSpace> getMovementArea(CharacterUnit activeUnit) {
+        AreaFinder areaFinder = new AreaFinder(activeUnit);
+        return areaFinder.findArea();
     }
 
-    public void displayMovementSpaces(CharacterUnit activeUnit, List<BoardSpace> toHighlight) {
-        for (BoardSpace boardSpace : toHighlight) {
-            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.MOVEMENT_HIGHLIGHT_COLOUR);
-            List<CharacterUnit> list = movementHighlightedSpaces.get(boardSpace);
-            list.add(activeUnit);
-            movementHighlightedSpaces.put(boardSpace, list);
-        }
-    }
-
-    public void displayAbilitySpaces(List<BoardSpace> toHighlight) {
-        for (BoardSpace boardSpace : toHighlight) {
-            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
-            abilityHighlightedSpace.add(boardSpace);
-        }
-    }
-
-    public List<CharacterUnit> getPossibleTargets(List<BoardSpace> boardSpaces) {
-        List<CharacterUnit> possibleTargets = new ArrayList<>();
-        for (BoardSpace boardSpace : boardSpaces) {
-            if (boardSpace.isOccupied()) possibleTargets.add(boardSpace.getOccupyingUnit());
-        }
-        return possibleTargets;
-    }
-    
-    public void displayValidAbilitySpaces(CharacterUnit unit, int range) {
-        BoardSpace currentSpace = unit.getBoardSpace();
-
-        for (BoardSpace[] boardSpaceArray : this.boardSpaces) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isValidAbilitySpace(currentSpace, range)) {
-                    abilityHighlightedSpace.add(boardSpace);
-                    boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
-                }
-            }
-        }
-    }
-
-    public void stopShowingMovementSpaces(CharacterUnit unit) {
-        for (BoardSpace[] possibleSpaces : this.boardSpaces) {
-            for (BoardSpace possibleSpace : possibleSpaces) {
-                List<CharacterUnit> list = movementHighlightedSpaces.get(possibleSpace);
-                list.remove(unit);
-                if (list.isEmpty()) {
-                    possibleSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
-                }
-            }
-        }
-    }
 
     // remove the colour to either movement highlighted or normal
     public void stopShowingAbilitySpaces() {
         for (BoardSpace boardSpace : abilityHighlightedSpace) {
             if (movementHighlightedSpaces.get(boardSpace).isEmpty()) boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
-            else boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.MOVEMENT_HIGHLIGHT_COLOUR);
+            else boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
         }
         abilityHighlightedSpace.clear();
-    }
-
-    public List<CharacterUnit> getUnitsInRangeOfAbility(CharacterUnit activeUnit, Ability chosenAbility) {
-        List<CharacterUnit> unitsInRangeOfAbilities = new ArrayList<>();
-        for (BoardSpace boardSpace : abilityHighlightedSpace) {
-            if (boardSpace.isOccupied()) {
-                if (chosenAbility.targetsAlly()) unitsInRangeOfAbilities.add(boardSpace.getOccupyingUnit()); // can include oneself
-                else if (boardSpace.getOccupyingUnit() != activeUnit) unitsInRangeOfAbilities.add(boardSpace.getOccupyingUnit());; //don't include oneself
-            }
-        }
-        return unitsInRangeOfAbilities;
     }
 
     // find the closest boardSpace to the given board space. Start by checking above, right, down, left.
@@ -172,5 +103,84 @@ public class Board {
 
     public List<BoardSpace> getAbilityHighlightedSpace() {
         return this.abilityHighlightedSpace;
+    }
+
+    private class AreaFinder {
+        private CharacterUnit activeUnit;
+        private List<BoardSpace> path;
+
+        AreaFinder(CharacterUnit activeUnit) {
+            this.activeUnit = activeUnit;
+            path = new ArrayList<>(); // doesn't care about order
+        }
+
+        public List<BoardSpace> findArea() {
+            getMovementRange(activeUnit.getBoardSpace(), 5, activeUnit.getCharacterStatSheet().getMovement());
+            return path;
+        }
+
+
+        private void getMovementRange(BoardSpace currentSpace, int prevDirection, int movementPoints) {
+            if (movementPoints == 0) return;
+
+            List<Pair<BoardSpace, Integer>> neighbouringBoardSpaces = getNeighbouringBoardSpace(currentSpace, prevDirection);
+            for (Pair<BoardSpace, Integer> it : neighbouringBoardSpaces) {
+                BoardSpace nextSpace = it.getKey();
+                int direction = it.getValue();
+                if (!path.contains(nextSpace) && nextSpace.isTerrainable()) path.add(nextSpace);
+                if (nextSpace.isTerrainable()) getMovementRange(nextSpace, direction, movementPoints - 1);
+
+            }
+        }
+
+        // if we came from down we don't want to go up therefore 0, (coming from above), will stop going down
+        private List<Pair<BoardSpace, Integer>> getNeighbouringBoardSpace(BoardSpace currentSpace, int prevDirection)  {
+            List<Pair<BoardSpace, Integer>> neighbouringBoardSpaces = new ArrayList<>();
+            int yPos = currentSpace.getYCoordinate();
+            int xPos = currentSpace.getXCoordinate();
+            if (yPos - 1 >= 0 && prevDirection != 2) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos][yPos - 1], 0));
+            if (xPos + 1 < boardSpaces[0].length && prevDirection != 3) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos + 1][yPos], 1));
+            if (yPos + 1 < boardSpaces.length && prevDirection != 0) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos][yPos + 1], 2));
+            if (xPos - 1 >= 0 && prevDirection != 1) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos - 1][yPos], 3));
+            return neighbouringBoardSpaces;
+        }
+    }
+
+
+    public void displayMovementSpaces(CharacterUnit activeUnit, List<BoardSpace> toHighlight) {
+        for (BoardSpace boardSpace : toHighlight) {
+            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
+            List<CharacterUnit> list = movementHighlightedSpaces.get(boardSpace);
+            list.add(activeUnit);
+            movementHighlightedSpaces.put(boardSpace, list);
+        }
+    }
+
+    public void displayAbilitySpaces(List<BoardSpace> toHighlight) {
+        for (BoardSpace boardSpace : toHighlight) {
+            boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
+            abilityHighlightedSpace.add(boardSpace);
+        }
+    }
+
+    public List<CharacterUnit> getPossibleTargets(List<BoardSpace> boardSpaces) {
+        List<CharacterUnit> possibleTargets = new ArrayList<>();
+        for (BoardSpace boardSpace : boardSpaces) {
+            if (boardSpace.isOccupied()) possibleTargets.add(boardSpace.getOccupyingUnit());
+        }
+        return possibleTargets;
+    }
+
+
+    public void stopShowingMovementSpaces(CharacterUnit unit) {
+        for (BoardSpace[] possibleSpaces : this.boardSpaces) {
+            for (BoardSpace possibleSpace : possibleSpaces) {
+                List<CharacterUnit> list = movementHighlightedSpaces.get(possibleSpace);
+                list.remove(unit);
+                if (list.isEmpty()) {
+                    possibleSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
+                }
+            }
+        }
     }
 }

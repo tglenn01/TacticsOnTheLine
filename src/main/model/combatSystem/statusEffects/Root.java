@@ -25,7 +25,7 @@ public class Root extends DecayingStatusEffect {
 
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
-        System.out.println(receivingUnit.getCharacterName() + " is rooted for " + this.duration);
+        System.out.println(receivingUnit.getCharacterName() + " is now rooted");
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         this.amountChanged = receivingUnitStatSheet.getMovement();
         receivingUnitStatSheet.setMovement(0);

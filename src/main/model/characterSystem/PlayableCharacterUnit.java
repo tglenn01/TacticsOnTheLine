@@ -20,7 +20,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
 
     public PlayableCharacterUnit() {
         setBaseJob();
-        this.characterStatSheet = new StatSheet(this.characterJob, this.personalStatBonus);
+        this.characterStatSheet = new StatSheet(this.characterJob);
         setPersonalAbility();
         addPersonalAbilityToAbilityList();
         addStatBonusToStats();
@@ -47,10 +47,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(this);
         this.actionTokens = ACTIONS_PER_TURN;
         this.movementToken = !this.getStatusEffects().isRooted(); // if not rooted true, else false
-    }
-
-    private void startOfTurnNotification() {
-        Label turnStartNotification = new Label("It is " + this.characterName + "'s Turn");
     }
 
     @Override
@@ -94,19 +90,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     private void hasActionToken(Ability chosenAbility) throws OutOfActionsException {
         if (chosenAbility.getClass() == MovementAbility.class && !movementToken) throw new OutOfActionsException();
         else if (chosenAbility.getClass() != MovementAbility.class && actionTokens <= 0) throw new OutOfActionsException();
-    }
-
-    public void takeMovement(Ability movementAbility) {
-        try {
-            if (movementToken) this.takeAction(movementAbility, null);
-            else {
-                Popup noMovement = new Popup();
-                noMovement.getContent().add(new Label("Unit can no longer Move"));
-                noMovement.show(TacticBaseBattle.getInstance().getPrimaryStage());
-            }
-        } catch (Exception e) {
-            // can't die in movement
-        }
     }
 
     protected void takeNextAction() {

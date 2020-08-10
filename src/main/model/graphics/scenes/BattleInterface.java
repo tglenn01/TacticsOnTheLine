@@ -13,6 +13,7 @@ import main.ui.TacticBaseBattle;
 public class BattleInterface extends DefaultScene {
     private Board board;
     private Battle battle;
+    private GridPane boardLayout;
 
     public BattleInterface(Board board, Scenario scenario) {
         this.board = board;
@@ -21,7 +22,7 @@ public class BattleInterface extends DefaultScene {
     }
 
     protected void initializeGraphics() {
-        GridPane boardLayout = new GridPane();
+        boardLayout = new GridPane();
         for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 int xCoordinate = boardSpace.getXCoordinate();
@@ -38,5 +39,9 @@ public class BattleInterface extends DefaultScene {
         Scene newScene = new Scene(scrollPane);
         addCSS(newScene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(newScene);
+    }
+
+    public GridPane getBoardLayout() {
+        return this.boardLayout;
     }
 }

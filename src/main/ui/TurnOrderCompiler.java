@@ -1,5 +1,7 @@
 package main.ui;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.image.ImageView;
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
@@ -85,8 +87,7 @@ public class TurnOrderCompiler {
     }
 
     public void removeDeadCharacterFromFieldedCharacters(CharacterUnit deadCharacter) throws BattleIsOverException {
-        fieldedCharacters.remove(deadCharacter);
-        deadCharacter.getBoardSpace().removeOccupyingUnit();
+        fadeDeadCharacter(deadCharacter);
         if (isBattleOver()) throw new BattleIsOverException();
     }
 
@@ -96,5 +97,32 @@ public class TurnOrderCompiler {
 
     public boolean didUserWin() {
         return getAliveEnemyCharacters().isEmpty();
+    }
+
+    private void fadeDeadCharacter(CharacterUnit deadCharacter) {
+        ImageView sprite = deadCharacter.getSpriteImageView();
+
+        new AnimationTimer() {
+            private double opacity = 1;
+            private long delay = 1_000_000;
+            private long prevTime = 0;
+
+            @Override
+            public void handle(long now) {
+
+                if ((now - prevTime) >= delay) {
+                    opacity -= 0.01;
+                    sprite.opacityProperty().set(opacity);
+                }
+
+                prevTime = now;
+
+                if (opacity <= 0) {
+                    stop();
+                    fieldedCharacters.remove(deadCharacter);
+                    deadCharacter.getBoardSpace().removeOccupyingUnit();
+                }
+            }
+        }.start();
     }
 }

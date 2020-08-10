@@ -34,7 +34,7 @@ public class OverwhelmAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

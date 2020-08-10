@@ -9,20 +9,13 @@ import java.util.List;
 
 public class ProtectAbility extends StatusEffectAbility {
     public ProtectAbility() {
-        super("Protect", 8, 1, 1, 3,  4,
+        super("Protect", 8, 1, 2, 2,  4,
                 "Buff a neighbouring allies defense");
     }
 
     @Override
     protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, this.potency, this.duration));
-    }
-
-    @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
     }
 
     @Override
@@ -41,7 +34,7 @@ public class ProtectAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

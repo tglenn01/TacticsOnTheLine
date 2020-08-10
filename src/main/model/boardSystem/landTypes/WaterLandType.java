@@ -1,4 +1,4 @@
-package main.model.boardSystem.tiles;
+package main.model.boardSystem.landTypes;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
@@ -6,13 +6,15 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-public class WoodsLandType extends LandType {
+public class WaterLandType extends LandType {
 
-    public WoodsLandType() {
+    public WaterLandType() {
+        super();
+
     }
 
     protected void setTileColor() {
-        this.tileColor = new Color(0, .30, 0, 1);
+        this.tileColor = new Color(0, 0, 0.5, 1.0);
     }
 
     @Override
@@ -21,5 +23,4 @@ public class WoodsLandType extends LandType {
                 new CornerRadii(5), new Insets(0));
         this.background = new Background(background_fill);
     }
-
 }

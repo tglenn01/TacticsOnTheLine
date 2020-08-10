@@ -17,7 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import main.model.boardSystem.tiles.WaterLandType;
+import main.model.boardSystem.landTypes.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.graphics.sceneElements.images.CharacterJobLabel;
@@ -160,9 +160,5 @@ public class CharacterStatsMenu {
 
     public static boolean isDisplaying() {
         return isDisplaying;
-    }
-
-    public static void closeWindow() {
-        window.close();
     }
 }

@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.sceneElements.buttons.ScenarioButton;
-import main.model.scenarioSystem.ScenarioOne;
-import main.model.scenarioSystem.ScenarioTwo;
+import main.model.scenarioSystem.TrainingScenario;
+import main.model.scenarioSystem.WoodsScenario;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -51,10 +51,10 @@ public class ScenarioSelectScreen extends DefaultScene implements EventHandler<A
     private HBox getPossibleScenarios() {
         HBox scenarios = new HBox();
 
-        ScenarioButton buttonOne = new ScenarioButton(new ScenarioOne());
+        ScenarioButton buttonOne = new ScenarioButton(new TrainingScenario());
         buttonOne.setOnAction(this);
         scenarioButtonList.add(buttonOne);
-        ScenarioButton buttonTwo = new ScenarioButton(new ScenarioTwo());
+        ScenarioButton buttonTwo = new ScenarioButton(new WoodsScenario());
         buttonTwo.setOnAction(this);
         scenarioButtonList.add(buttonTwo);
 

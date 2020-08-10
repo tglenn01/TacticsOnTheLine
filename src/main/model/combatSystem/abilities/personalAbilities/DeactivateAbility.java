@@ -39,7 +39,7 @@ public class DeactivateAbility extends SupportiveAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getSelfBoardSpace(activeUnit);
     }
 }

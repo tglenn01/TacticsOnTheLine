@@ -2,9 +2,9 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
-import main.model.boardSystem.tiles.GrassLandType;
-import main.model.boardSystem.tiles.WaterLandType;
-import main.model.boardSystem.tiles.WoodsLandType;
+import main.model.boardSystem.landTypes.GrassLandType;
+import main.model.boardSystem.landTypes.WaterLandType;
+import main.model.boardSystem.landTypes.WoodsLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.jobSystem.jobs.archerJob.Archer;
@@ -18,9 +18,9 @@ import java.util.List;
 
 import static main.model.boardSystem.BoardSpace.BOARD_SPACE_SIZE;
 
-public class ScenarioTwo extends Scenario {
+public class WoodsScenario extends Scenario {
 
-    public ScenarioTwo() {
+    public WoodsScenario() {
         super();
         scenarioName = "Woods";
     }
@@ -66,11 +66,11 @@ public class ScenarioTwo extends Scenario {
 
     @Override
     protected void setAllyCharacters(List<CharacterUnit> playableCharacters) {
-        //assert(playableCharacters.size() == 4);
         scenarioBoard.setCharacterToBoardSpace(playableCharacters.get(0), 1, 0);
         scenarioBoard.setCharacterToBoardSpace(playableCharacters.get(1), 3, 0);
         scenarioBoard.setCharacterToBoardSpace(playableCharacters.get(2), 0, 2);
         scenarioBoard.setCharacterToBoardSpace(playableCharacters.get(3), 0, 4);
+        scenarioBoard.setCharacterToBoardSpace(playableCharacters.get(4), 0, 6);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class Battle {
     }
 
     private void startNewTurn(CharacterUnit activeCharacter) {
-        if (activeCharacter.getIsAlive()) {
+        if (activeCharacter.isAlive()) {
             Popup startOfTurnPopup = new Popup();
             startOfTurnPopup.getContent().add(new Label("It is " + activeCharacter.getCharacterName() + "'s Turn"));
             startOfTurnPopup.setWidth(140);

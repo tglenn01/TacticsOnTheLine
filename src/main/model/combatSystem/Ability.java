@@ -51,6 +51,17 @@ public abstract class Ability {
                 resolveEffect(activeUnit, receivingUnit);
             }
         }
+        if (this.getClass() != MovementAbility.class)
+            activeUnit.getExperiencePoints().addExperiencePoints(activeUnit, getAverageLevel(chosenBoardSpaces));
+    }
+
+    protected Integer getAverageLevel(List<BoardSpace> chosenBoardSpaces) {
+        int totalLevels = 0;
+        for (BoardSpace boardSpace : chosenBoardSpaces) {
+            totalLevels += boardSpace.getOccupyingUnit().getLevel();
+        }
+
+        return totalLevels / chosenBoardSpaces.size();
     }
 
     protected abstract void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit);
@@ -93,7 +104,7 @@ public abstract class Ability {
     public void getTargets(CharacterUnit activeUnit) throws MenuOpenedException {
         if (this.targetsSelf()) activeUnit.takeAction(this, getSelfBoardSpace(activeUnit));
         else {
-           List<BoardSpace> possibleBoardSpaces = getBoardSpaces(activeUnit);
+           List<BoardSpace> possibleBoardSpaces = getTargetedBoardSpaces(activeUnit);
            Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
             if (this.getClass() == MovementAbility.class) {
                 currentBoard.displayMovementSpaces(activeUnit, possibleBoardSpaces);
@@ -104,7 +115,7 @@ public abstract class Ability {
 
     }
 
-    protected abstract List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit);
+    public abstract List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit);
 
     protected void setHandlers(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) throws MenuOpenedException {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
@@ -122,7 +133,7 @@ public abstract class Ability {
         }
     }
 
-    protected void addAreaOfEffect(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
+    protected void addTargetsToTargetedBoardSpaces(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
         List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(targetBoardSpace, this.areaOfEffect - 1, this);
         for (BoardSpace effectedSpace : effectedBoardSpaces) {
             if (effectedSpace.isOccupied()) targetedBoardSpaces.add(effectedSpace);
@@ -185,8 +196,7 @@ public abstract class Ability {
                 removeTargetHandler(possibleTargets, this);
 
                 List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
-                targetedBoardSpaces.add(targetUnit.getBoardSpace());
-                addAreaOfEffect(targetUnit.getBoardSpace(), targetedBoardSpaces);
+                addTargetsToTargetedBoardSpaces(targetUnit.getBoardSpace(), targetedBoardSpaces);
 
                 activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
             }
@@ -245,7 +255,7 @@ public abstract class Ability {
             }
         }
 
-        if (chosenAbility != null && chosenAbility.targetsAlly()) possibleBoardSpaces.add(centreSpace);
+        possibleBoardSpaces.add(centreSpace);
 
         return possibleBoardSpaces;
     }

@@ -2,7 +2,7 @@ package main.model.boardSystem;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import main.model.boardSystem.tiles.LandType;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 
 public class BoardSpace extends BorderPane {
@@ -14,21 +14,13 @@ public class BoardSpace extends BorderPane {
 
     public BoardSpace(LandType landType, int xCoordinate, int yCoordinate) {
         setLandType(landType);
-        setXValue(xCoordinate);
-        setYValue(yCoordinate);
-    }
-
-    public void setXValue(int xValue) {
-        this.xCoordinate = xValue;
-    }
-
-    public void setYValue(int yValue) {
-        this.yCoordinate = yValue;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
     }
 
     public void setOccupyingUnit(CharacterUnit occupyingUnit) {
         this.occupyingUnit = occupyingUnit;
-        ImageView sprite = occupyingUnit.getSprite();
+        ImageView sprite = occupyingUnit.getSpriteImageView();
         sprite.fitWidthProperty().bind(this.widthProperty());
         sprite.fitHeightProperty().bind(this.heightProperty());
         this.setCenter(sprite);
@@ -40,7 +32,7 @@ public class BoardSpace extends BorderPane {
     }
 
     public void removeOccupyingUnit() {
-        this.getChildren().remove(occupyingUnit.getSprite());
+        this.getChildren().remove(occupyingUnit.getSpriteImageView());
         this.occupyingUnit = null;
     }
 
@@ -59,6 +51,12 @@ public class BoardSpace extends BorderPane {
         if (this.occupyingUnit != null) return false;
         return isInRange(currentSpace, movement);
     }
+
+    public boolean isTerrainable() {
+        if (!this.landType.isTerrainable()) return false;
+        return this.occupyingUnit == null;
+    }
+
 
     public boolean isValidAbilitySpace(BoardSpace currentSpace, int range) {
         return isInRange(currentSpace, range);

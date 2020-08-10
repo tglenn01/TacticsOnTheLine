@@ -1,4 +1,4 @@
-package main.model.boardSystem.tiles;
+package main.model.boardSystem.landTypes;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;

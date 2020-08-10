@@ -2,7 +2,6 @@ package main.model.characterSystem;
 
 import javafx.util.Pair;
 import main.exception.OutOfManaException;
-import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.characterList.characterSprites.EnemySprite;
 import main.model.combatSystem.Ability;
@@ -21,10 +20,9 @@ import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE
 
 public class NPC extends CharacterUnit {
 
-    // cannot be a gunner
     public NPC(Job job, String name) {
         this.characterName = name;
-        this.characterJob = job;
+        setJob(job);
         this.characterStatSheet = new StatSheet(this.characterJob);
     }
 
@@ -54,20 +52,36 @@ public class NPC extends CharacterUnit {
         statusEffects.updateStatusEffect(this);
         this.actionTokens = ACTIONS_PER_TURN;
         this.movementToken = true;
-        List<BoardSpace> damageActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxDamageAbilityReach(), null);
-        List<BoardSpace> supportActionRange = Ability.getNormalTargetPattern(this.boardSpace, this.characterJob.getMaxSupportingAbilityReach(), null);
+        List<BoardSpace> targetableEnemySpaces = getTargetableEnemySpaces();
+        List<BoardSpace> targetableAllySpaces = getTargetableAllySpaces();
 
-        if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
-        else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);
+        if (isEnemyInRange(targetableEnemySpaces) && actionTokens > 0) targetEnemy(targetableEnemySpaces);
+        else if (isAllyInRange(targetableAllySpaces) && actionTokens > 0) supportAlly(targetableAllySpaces);
         else takeMovement(Job.move);
+    }
+
+    private List<BoardSpace> getTargetableEnemySpaces() {
+        List<BoardSpace> targetableEnemySpaces = new LinkedList<>();
+        for (Ability ability : abilityList) {
+            if (!ability.targetsAlly()) targetableEnemySpaces.addAll(ability.getTargetedBoardSpaces(this));
+        }
+        return targetableEnemySpaces;
+    }
+
+    private List<BoardSpace> getTargetableAllySpaces() {
+        List<BoardSpace> targetableAllySpaces = new LinkedList<>();
+        for (Ability ability : abilityList) {
+            if (ability.targetsAlly()) targetableAllySpaces.addAll(ability.getTargetedBoardSpaces(this));
+        }
+        return targetableAllySpaces;
     }
 
     @Override
     protected void takeNextAction() {
-        List<BoardSpace> damageActionRange = getDamageActionRange();
-        List<BoardSpace> supportActionRange = getSupportActionRange();
-        if (isEnemyInRange(damageActionRange) && actionTokens > 0) targetEnemy(damageActionRange);
-        else if (isAllyInRange(supportActionRange) && actionTokens > 0) supportAlly(supportActionRange);
+        List<BoardSpace> targetableEnemySpaces = getTargetableEnemySpaces();
+        List<BoardSpace> targetableAllySpaces = getTargetableAllySpaces();
+        if (isEnemyInRange(targetableEnemySpaces) && actionTokens > 0) targetEnemy(targetableEnemySpaces);
+        else if (isAllyInRange(targetableAllySpaces) && actionTokens > 0) supportAlly(targetableAllySpaces);
         else if (movementToken) takeMovement(Job.move);
         else TacticBaseBattle.getInstance().getBattle().endTurn();
     }
@@ -82,18 +96,15 @@ public class NPC extends CharacterUnit {
         // stub
     }
 
-    @Override
+
     public void takeMovement(Ability movementAbility) {
-        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         CharacterUnit closetTarget = getClosetTarget();
         if (closetTarget != null) {
-            board.displayValidMovementSpaces(this, this.getCharacterStatSheet().getMovement());
             List<BoardSpace> range = getMovementRange();
-            board.stopShowingMovementSpaces(this);
             BoardSpace validSpace = getClosetSpaceToTarget(range, closetTarget);
-
-            this.setBoardSpace(validSpace);
-            //movementComplete(TacticBaseBattle.getInstance().getBattle());
+            List<BoardSpace> validSpaceList = new ArrayList<>();
+            validSpaceList.add(validSpace);
+            this.takeAction(movementAbility, validSpaceList);
         } else {
             this.movementToken = false;
             takeNextAction();
@@ -233,13 +244,12 @@ public class NPC extends CharacterUnit {
 
     // for every board space check to see if it is the closet unit to this unit
     private CharacterUnit getClosetTarget() {
-        BoardSpace currentSpace = this.getBoardSpace();
         int movementRange = this.characterStatSheet.getMovement() + this.characterJob.getMaxTotalAbilityReach(); // only move if enemy is in range of an ability + movement
         CharacterUnit target = null;
-        for (CharacterUnit unit : TacticBaseBattle.getInstance().getBattle().getTurnOrder().getFieldedCharacters()) {
+        for (CharacterUnit unit : TacticBaseBattle.getInstance().getBattle().getTurnOrder().getAlivePlayableCharacters()) {
             BoardSpace boardSpace = unit.getBoardSpace();
-            int differenceInXCord = boardSpace.getXCoordinate() - currentSpace.getXCoordinate();
-            int differenceInYCord = boardSpace.getYCoordinate() - currentSpace.getYCoordinate();
+            int differenceInXCord = boardSpace.getXCoordinate() - this.boardSpace.getXCoordinate();
+            int differenceInYCord = boardSpace.getYCoordinate() - this.boardSpace.getYCoordinate();
             int targetsRangeFromThisUnit = Math.abs(differenceInXCord) + Math.abs(differenceInYCord);
 
             if (targetsRangeFromThisUnit < movementRange && boardSpace.getOccupyingUnit() != this) {
@@ -293,7 +303,7 @@ public class NPC extends CharacterUnit {
     }
 
     private boolean isUnitInRangeOfAbility(Ability chosenAbility, CharacterUnit receivingUnit) {
-        BoardSpace receivingUnitBoardSpace = receivingUnit.getBoardSpace();
-        return receivingUnitBoardSpace.isValidAbilitySpace(this.boardSpace, chosenAbility.getRange());
+        List<BoardSpace> abilityRange = chosenAbility.getTargetedBoardSpaces(this);
+        return abilityRange.contains(receivingUnit.getBoardSpace());
     }
 }

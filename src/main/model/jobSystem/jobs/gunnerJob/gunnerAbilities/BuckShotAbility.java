@@ -23,7 +23,6 @@ public class BuckShotAbility extends PhysicalAbility {
                 "Fire a cluster exploding on enemies in a unique patter");
     }
 
-
     @Override
     protected boolean targetsSelf() {
         return false;
@@ -40,7 +39,7 @@ public class BuckShotAbility extends PhysicalAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();
         BoardSpace activeUnitBoardSpace = activeUnit.getBoardSpace();
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();

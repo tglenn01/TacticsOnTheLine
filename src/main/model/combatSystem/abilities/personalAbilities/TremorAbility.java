@@ -45,13 +45,13 @@ public class TremorAbility extends DamageAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         this.activeUnit = activeUnit;
         return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 
     @Override
-    protected void addAreaOfEffect(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
+    protected void addTargetsToTargetedBoardSpaces(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
         List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(activeUnit.getBoardSpace(), this.areaOfEffect - 1, this);
         for (BoardSpace effectedSpace : effectedBoardSpaces) {
             if (effectedSpace.isOccupied()) targetedBoardSpaces.add(effectedSpace);

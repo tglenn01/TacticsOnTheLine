@@ -22,13 +22,6 @@ public class SmokeAbility extends StatusEffectAbility {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
-    }
-
-    @Override
     protected boolean targetsSelf() {
         return false;
     }
@@ -44,7 +37,7 @@ public class SmokeAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         BoardSpace[][] boardSpaces = currentBoard.getBoardSpaces();

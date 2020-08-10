@@ -2,8 +2,8 @@ package main.model.scenarioSystem;
 
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
-import main.model.boardSystem.tiles.GrassLandType;
-import main.model.boardSystem.tiles.WaterLandType;
+import main.model.boardSystem.landTypes.GrassLandType;
+import main.model.boardSystem.landTypes.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.jobSystem.jobs.clericJob.Cleric;
@@ -13,9 +13,9 @@ import java.util.List;
 
 import static main.model.boardSystem.BoardSpace.BOARD_SPACE_SIZE;
 
-public class ScenarioOne extends Scenario {
+public class TrainingScenario extends Scenario {
 
-    public ScenarioOne() {
+    public TrainingScenario() {
         super();
         scenarioName = "Training";
     }

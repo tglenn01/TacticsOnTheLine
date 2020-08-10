@@ -22,30 +22,35 @@ import java.util.Map;
 
 public abstract class CharacterUnit {
     protected final int ACTIONS_PER_TURN = 1;
-    protected int actionTokens;
-    protected boolean movementToken;
 
     protected String characterName;
     protected Job characterJob;
+    protected BoardSpace boardSpace;
     protected List<Ability> abilityList = new ArrayList<>();
     protected StatSheet characterStatSheet;
-    protected CharacterStatusEffects statusEffects;
     protected CharacterPortrait characterPortrait;
     protected CharacterSprite sprite;
-    protected BoardSpace boardSpace;
-    protected boolean isAlive;
-    protected int direction = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-    protected boolean movementRangeIsVisable;
+    protected CharacterStatusEffects statusEffects;
+    protected ExperiencePoints experiencePoints;
 
+    protected int experience = 0;
+
+    protected int actionTokens;
+    protected boolean movementToken;
+    protected boolean isAlive;
+    protected boolean movementRangeIsVisable;
+    protected int direction = 2; // 0 = up, 1 = right, 2 = down, 3 = left
 
     public CharacterUnit() {
         setPersonalStatBonuses();
         setCharacterSprite();
         setCharacterPortrait();
-        //this.setPersonalGrowthRate();
         this.isAlive = true;
         this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
+        experiencePoints = new ExperiencePoints();
+        experiencePoints.setCurrentExperience(99);
+        experiencePoints.setLevel(1);
     }
 
     protected abstract void setPersonalStatBonuses();
@@ -53,16 +58,11 @@ public abstract class CharacterUnit {
     protected abstract void setCharacterPortrait();
     protected abstract void addPersonalAbilityToAbilityList();
 
-
-    //protected abstract void setPersonalGrowthRate();
-
     public abstract void startTurn();
 
     public abstract void useAbility(Ability chosenAbility);
 
     public abstract void useItem(Consumable item);
-
-    public abstract void takeMovement(Ability movementAbility);
 
     public void takeAction(Ability ability, List<BoardSpace> chosenBoardSpaces) {
         try {
@@ -87,6 +87,15 @@ public abstract class CharacterUnit {
         else takeNextAction();
     }
 
+    protected void removeActionToken(Ability usedAbility) {
+        if (usedAbility.endsTurn()) {
+            this.actionTokens = 0;
+            this.movementToken = false;
+        } else if (usedAbility.getClass() == MovementAbility.class) {
+            this.movementToken = false;
+        } else this.actionTokens--;
+    }
+
     protected abstract void takeNextAction();
 
     public void setJob(Job job) {
@@ -104,52 +113,6 @@ public abstract class CharacterUnit {
         }
     }
 
-
-
-    public void setAlive(boolean deathStatus) {
-        this.isAlive = deathStatus;
-    }
-
-    public String getCharacterName() {
-        return characterName;
-    }
-
-    public Job getCharacterJob() {
-        return characterJob;
-    }
-
-    public StatSheet getCharacterStatSheet() {
-        return characterStatSheet;
-    }
-
-    public boolean getIsAlive() {
-        return isAlive;
-    }
-
-    public CharacterStatusEffects getStatusEffects() {
-        return this.statusEffects;
-    }
-
-    public BoardSpace getBoardSpace() {
-        return this.boardSpace;
-    }
-
-    public ImageView getCharacterPortrait() {
-        return this.characterPortrait.getPortrait();
-    }
-
-    public ImageView getSprite() {
-        return this.sprite.getSprite();
-    }
-
-    public void setMovementRangeIsVisable(boolean visable) {
-        this.movementRangeIsVisable = visable;
-    }
-
-    public boolean isMovementRangeIsVisable() {
-        return this.movementRangeIsVisable;
-    }
-
     public List<BoardSpace> getMovementRange() {
         Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();
@@ -158,105 +121,6 @@ public abstract class CharacterUnit {
         }
 
         return possibleSpaces;
-    }
-
-    public List<BoardSpace> getActionRange() {
-        List<BoardSpace> damageActionRange = getDamageActionRange();
-        List<BoardSpace> supportActionRance = getSupportActionRange();
-        if (damageActionRange.size() > supportActionRance.size()) return damageActionRange;
-        else return supportActionRance;
-    }
-
-    public List<BoardSpace> getActionRangeOfGivenAbility(Ability ability) {
-        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
-        List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isValidAbilitySpace(this.boardSpace, ability.getRange())) {
-                    possibleSpaces.add(boardSpace);
-                }
-            }
-        }
-        return possibleSpaces;
-    }
-
-    // ability.getRange will ways be greater than 1
-    public List<BoardSpace> getTargetedBoardSpacesForAreaOfEffect(Ability ability) {
-        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
-        List<BoardSpace> possibleSpaces = new LinkedList<>();
-
-        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-
-                int simpleX = boardSpace.getXCoordinate() - this.boardSpace.getXCoordinate();
-                int simpleY = boardSpace.getYCoordinate() - this.boardSpace.getYCoordinate();
-
-                if ((Math.abs(simpleX) + Math.abs(simpleY)) < ability.getAreaOfEffect()) {
-                    possibleSpaces.add(boardSpace);
-                }
-            }
-        }
-        return possibleSpaces;
-    }
-
-    protected List<BoardSpace> getDamageActionRange() {
-        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
-        List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxDamageAbilityReach())) {
-                    possibleSpaces.add(boardSpace);
-                }
-            }
-        }
-        return possibleSpaces;
-    }
-
-    protected List<BoardSpace> getSupportActionRange() {
-        Board board = TacticBaseBattle.getInstance().getCurrentBoard();
-        List<BoardSpace> possibleSpaces = new LinkedList<>();
-        for (BoardSpace[] boardSpaceArray : board.getBoardSpaces()) {
-            for (BoardSpace boardSpace : boardSpaceArray) {
-                if (boardSpace.isValidAbilitySpace(this.boardSpace, this.getCharacterJob().getMaxSupportingAbilityReach())) {
-                    possibleSpaces.add(boardSpace);
-                }
-            }
-        }
-        return possibleSpaces;
-    }
-
-    protected boolean hasEnoughMana(int abilityManaCost, int characterMana) {
-        return abilityManaCost < characterMana;
-    }
-
-    protected void removeActionToken(Ability usedAbility) {
-        if (usedAbility.endsTurn()) {
-            this.actionTokens = 0;
-            this.movementToken = false;
-        } else if (usedAbility.getClass() == MovementAbility.class) {
-            this.movementToken = false;
-        } else this.actionTokens--;
-    }
-
-    public List<Ability> getAbilityList() {
-        return this.abilityList;
-    }
-
-    public void setActionToken(int actionsLeft) {
-        this.actionTokens = actionsLeft;
-    }
-
-    public void setMovementToken(boolean hasMovement) {
-        this.movementToken = hasMovement;
-    }
-
-    public int getDirection() {
-        return this.direction;
-    }
-
-
-    public CharacterSprite getCharacterSprite() {
-        return this.sprite;
     }
 
     public Ability getBasicAttack() {
@@ -273,5 +137,34 @@ public abstract class CharacterUnit {
         return null;
     }
 
+    public String getCharacterName() {
+        return characterName;
+    }
+    public Job getCharacterJob() {
+        return characterJob;
+    }
+    public BoardSpace getBoardSpace() { return this.boardSpace; }
+    public List<Ability> getAbilityList() { return this.abilityList; }
+    public StatSheet getCharacterStatSheet() { return characterStatSheet; }
+    public ImageView getCharacterPortrait() {
+        return this.characterPortrait.getPortrait();
+    }
+    public ImageView getSpriteImageView() { return this.sprite.getSprite(); }
+    public CharacterSprite getCharacterSprite() { return this.sprite; }
+    public CharacterStatusEffects getStatusEffects() { return this.statusEffects; }
+    public ExperiencePoints getExperiencePoints() { return this.experiencePoints; }
+    public int getLevel() {return this.experiencePoints.getLevel(); }
+    public int getDirection() { return this.direction; }
+
+    public void setAlive(boolean deathStatus) { this.isAlive = deathStatus; }
+    public void setMovementRangeIsVisable(boolean visable) { this.movementRangeIsVisable = visable; }
+    public void setMovementToken(boolean hasMovement) { this.movementToken = hasMovement; }
+    public void setActionToken(int actionsLeft) { this.actionTokens = actionsLeft; }
+
+    public boolean isAlive() { return isAlive; }
+    public boolean isMovementRangeIsVisable() {
+        return this.movementRangeIsVisable;
+    }
+    protected boolean hasEnoughMana(int abilityManaCost, int characterMana) { return abilityManaCost < characterMana; }
 }
 

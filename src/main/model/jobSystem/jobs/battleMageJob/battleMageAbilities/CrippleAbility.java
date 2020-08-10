@@ -20,13 +20,6 @@ public class CrippleAbility extends StatusEffectAbility {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
-        for (BoardSpace boardSpace : targetedBoardSpaces) {
-            resolveEffect(activeUnit, boardSpace.getOccupyingUnit());
-        }
-    }
-
-    @Override
     protected boolean targetsSelf() {
         return false;
     }
@@ -42,7 +35,7 @@ public class CrippleAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
         return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

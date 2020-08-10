@@ -23,8 +23,7 @@ public class MovementAbility extends Ability {
 
     @Override
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
-        BoardSpace destination = targetedBoardSpaces.get(0);
-        activeUnit.setBoardSpace(destination);
+        activeUnit.setBoardSpace(targetedBoardSpaces.get(0));
     }
 
     protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
@@ -47,8 +46,8 @@ public class MovementAbility extends Ability {
     }
 
     @Override
-    protected List<BoardSpace> getBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), activeUnit.getCharacterStatSheet().getMovement(), this);
+    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
+        return  TacticBaseBattle.getInstance().getCurrentBoard().getMovementArea(activeUnit);
     }
 
     @Override
@@ -58,8 +57,6 @@ public class MovementAbility extends Ability {
         for (BoardSpace boardSpace : possibleBoardSpaces) {
             boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, applyBoardHandler);
         }
-
-        // clicking on the sprite will open the menu and therefore must also close the event handlers to avoid bugs
     }
 
     protected class ApplyBoardHandler implements EventHandler<MouseEvent> {
@@ -105,5 +102,4 @@ public class MovementAbility extends Ability {
             }
         }
     }
-
 }
