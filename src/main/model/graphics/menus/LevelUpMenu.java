@@ -1,6 +1,7 @@
 package main.model.graphics.menus;
 
 import javafx.animation.FadeTransition;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,28 +22,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelUpMenu {
+    private final int TRANSITION_DELAY_IN_MS = 2000; // delay of transition in ms
     private List<ExperiencePoints.LevelUpButton> selectedLevels = new ArrayList<>();
+    public static boolean isDisplaying;
 
     public LevelUpMenu(CharacterUnit activeUnit, List<ExperiencePoints.LevelUpButton> levelUpButtons) {
-        BattleMenu.getInstance().close();
         Stage window = new Stage();
-        window.setTitle(activeUnit.getCharacterName() + " Level Up");
+        window.setOnCloseRequest(Event::consume); // only way to close the window is to choose 3 stat points
 
         Pane spritePane = setCharacterSpritePane(activeUnit);
         Pane characterInformationPane = setCharacterInformationPane(activeUnit);
-        HBox levelUpButtonPane = setLevelUpButtonsPane(window, activeUnit, levelUpButtons);
+
 
         GridPane levelInformationPane = new GridPane();
-        levelInformationPane.add(spritePane, 0,0);
+        levelInformationPane.add(spritePane, 0, 0);
         levelInformationPane.add(characterInformationPane, 1, 0);
 
         BorderPane chosenBonusStatPane = new BorderPane();
         Label nameLabel = new Label(activeUnit.getCharacterName());
+        Label buttonsLeftLabel = new Label("Choose " + (3 - selectedLevels.size()) + " More");
         chosenBonusStatPane.setPadding(new Insets(10));
+
+        HBox levelUpButtonPane = setLevelUpButtonsPane(window, activeUnit, levelUpButtons, buttonsLeftLabel);
+
 
         chosenBonusStatPane.setTop(nameLabel);
         chosenBonusStatPane.setCenter(levelUpButtonPane);
+        chosenBonusStatPane.setBottom(buttonsLeftLabel);
         BorderPane.setAlignment(nameLabel, Pos.TOP_CENTER);
+        BorderPane.setAlignment(buttonsLeftLabel, Pos.BOTTOM_CENTER);
         BorderPane.setAlignment(levelUpButtonPane, Pos.CENTER);
 
         StackPane stackPane = new StackPane();
@@ -60,14 +68,15 @@ public class LevelUpMenu {
         window.show();
 
         doFadeIn(stackPane, levelInformationPane, chosenBonusStatPane);
+        isDisplaying = true;
     }
 
-    // fade from levelInformationPane to levelButtonPane after 1000ms
+    // fade from levelInformationPane to levelButtonPane after TRANSITION_DELAY_IN_MS
     private void doFadeIn(Pane stackPane, Pane levelInformationPane, Pane chooseBonusStatPAne) {
         FadeTransition fadeInTransition = new FadeTransition(Duration.millis(1000));
         FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000));
 
-        fadeOutTransition.setDelay(Duration.millis(2000));
+        fadeOutTransition.setDelay(Duration.millis(TRANSITION_DELAY_IN_MS));
         fadeOutTransition.setNode(levelInformationPane);
         fadeOutTransition.setFromValue(1);
         fadeOutTransition.setToValue(0);
@@ -87,10 +96,15 @@ public class LevelUpMenu {
 
     private Pane setCharacterInformationPane(CharacterUnit activeUnit) {
         Pane informationPane = new GridPane();
-        Label levelUpLabel = new Label("Level UP!\n" + activeUnit.getLevel());
-        levelUpLabel.setAlignment(Pos.CENTER);
-        informationPane.getChildren().addAll(levelUpLabel);
-        return informationPane;
+        Label levelUpLabel = new Label("Level UP!");
+        Label newLevelLabel = new Label(Integer.toString(activeUnit.getLevel()));
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(levelUpLabel, newLevelLabel);
+
+        vBox.setPrefSize(450, 250);
+        vBox.setAlignment(Pos.CENTER);
+        informationPane.getChildren().addAll(vBox);
+        return vBox;
     }
 
     private Pane setCharacterSpritePane(CharacterUnit activeUnit) {
@@ -98,22 +112,23 @@ public class LevelUpMenu {
         spritePane.setBackground(new WaterLandType().getTileColour());
         Image image = activeUnit.getCharacterSprite().getStillImage();
         ImageView sprite = new ImageView(image);
+        sprite.setFitHeight(200);
         sprite.setPreserveRatio(true);
         spritePane.getChildren().add(sprite);
         return spritePane;
     }
 
-    private HBox setLevelUpButtonsPane(Stage window, CharacterUnit activeUnit, List<ExperiencePoints.LevelUpButton> levelUpButtons) {
+    private HBox setLevelUpButtonsPane(Stage window, CharacterUnit activeUnit, List<ExperiencePoints.LevelUpButton> levelUpButtons, Label buttonsLeftLabel) {
         for (ExperiencePoints.LevelUpButton levelUpButton : levelUpButtons) {
             levelUpButton.setOnMouseClicked(e -> {
                 if (selectedLevels.contains(levelUpButton)) {
                     selectedLevels.remove(levelUpButton);
                     levelUpButton.setOpacity(1.00);
-                }
-                else {
+                } else {
                     selectedLevels.add(levelUpButton);
                     levelUpButton.setOpacity(0.50);
                 }
+                buttonsLeftLabel.setText("Choose " + (3 - selectedLevels.size()) + " More");
                 if (selectedLevels.size() == 3) applyLevels(window, activeUnit);
             });
             levelUpButton.setPrefSize(120, 120);
@@ -130,7 +145,15 @@ public class LevelUpMenu {
     private void applyLevels(Stage window, CharacterUnit activeUnit) {
         for (ExperiencePoints.LevelUpButton levelUpButton : selectedLevels) {
             levelUpButton.addStat(activeUnit.getCharacterStatSheet());
-            window.close();
+        }
+        window.close();
+        isDisplaying = false;
+        if (activeUnit.getExperiencePoints().getCurrentExperience() >= 100) {
+            activeUnit.getExperiencePoints().levelUp(activeUnit);
+        } else {
+            if (activeUnit.getActionTokens() <= 0 && !activeUnit.getMovementToken())
+                TacticBaseBattle.getInstance().getBattle().endTurn();
+            else activeUnit.takeNextAction();
         }
     }
 }

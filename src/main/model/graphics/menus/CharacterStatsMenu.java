@@ -65,7 +65,6 @@ public class CharacterStatsMenu {
 
         grid.setPrefSize(1000, 800);
         GridPane.setValignment(portrait, VPos.TOP);
-       // GridPane.setHalignment(characterName, HPos.CENTER);
         GridPane.setValignment(characterName, VPos.CENTER);
         GridPane.setHalignment(characterName, HPos.CENTER);
         GridPane.setValignment(closeButton, VPos.BOTTOM);

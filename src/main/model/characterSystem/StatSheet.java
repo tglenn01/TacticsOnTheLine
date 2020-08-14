@@ -23,6 +23,14 @@ public class StatSheet {
     private int baseResistance;
     private int baseSpeed;
     private int baseDexterity;
+    private int healthGrowthRate;
+    private int manaGrowthRate;
+    private int strengthGrowthRate;
+    private int magicGrowthRate;
+    private int armourGrowthRate;
+    private int resistanceGrowthRate;
+    private int speedGrowthRate;
+    private int dexterityGrowthRate;
     private static double HIGHEST_HEALTH;
     private static double HIGHEST_MANA;
     private static double HIGHEST_STRENGTH;
@@ -334,6 +342,91 @@ public class StatSheet {
         double value =  SCALE_REFERENCE * ((jobDexterity - LOWEST_DEXTERITY) / (HIGHEST_DEXTERITY - LOWEST_DEXTERITY));
         if (value < 1) return 1;
         return value;
+    }
+
+    public void levelUpHealth() {
+        this.maxHealth++;
+    }
+
+    public void levelUpMana() {
+        this.maxMana++;
+    }
+
+    public void levelUpStrength() {
+        this.baseStrength++;
+        this.strength++;
+    }
+
+    public void levelUpMagic() {
+        this.baseMagic++;
+        this.magic++;
+    }
+
+    public void levelUpArmour() {
+        this.baseArmour++;
+        this.armour++;
+    }
+
+    public void levelUpResistance() {
+        this.baseResistance++;
+        this.resistance++;
+    }
+
+    public void levelUpSpeed() {
+        this.baseSpeed++;
+        this.speed++;
+    }
+
+    public void levelUpDexterity() {
+        this.baseDexterity++;
+        this.dexterity++;
+    }
+
+    public void setGrowthRates(int healthGrowthRate, int manaGrowthRate, int strengthGrowthRate, int magicGrowthRate,
+                               int armourGrowthRate, int resistanceGrowthRate, int speedGrowthRate, int dexterityGrowthRate) {
+        this.healthGrowthRate = healthGrowthRate;
+        this.manaGrowthRate = manaGrowthRate;
+        this.strengthGrowthRate = strengthGrowthRate;
+        this.magicGrowthRate = magicGrowthRate;
+        this.armourGrowthRate = armourGrowthRate;
+        this.resistanceGrowthRate = resistanceGrowthRate;
+        this.speedGrowthRate = speedGrowthRate;
+        this.dexterityGrowthRate = dexterityGrowthRate;
+        if (healthGrowthRate + manaGrowthRate + strengthGrowthRate + magicGrowthRate +
+                armourGrowthRate + resistanceGrowthRate + speedGrowthRate + dexterityGrowthRate != 100)
+            throw new RuntimeException();
+    }
+
+    public int getHealthGrowthRate() {
+        return this.healthGrowthRate;
+    }
+
+    public int getManaGrowthRate() {
+        return this.manaGrowthRate;
+    }
+
+    public int getStrengthGrowthRate() {
+        return this.strengthGrowthRate;
+    }
+
+    public int getMagicGrowthRate() {
+        return this.magicGrowthRate;
+    }
+
+    public int getArmourGrowthRate() {
+        return this.armourGrowthRate;
+    }
+
+    public int getResistanceGrowthRate() {
+        return this.resistanceGrowthRate;
+    }
+
+    public int getSpeedGrowthRate() {
+        return this.speedGrowthRate;
+    }
+
+    public int getDexterityGrowthRate() {
+        return this.dexterityGrowthRate;
     }
 
     public static void updateMaxStats(List<Job> availableJobs) {

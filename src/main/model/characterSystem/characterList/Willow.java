@@ -34,6 +34,12 @@ public class Willow extends PlayableCharacterUnit {
     }
 
     @Override
+    protected void setGrowthRate() {
+        characterStatSheet.setGrowthRates(5, 30, 2, 30,
+                3, 15, 10, 5);
+    }
+
+    @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);

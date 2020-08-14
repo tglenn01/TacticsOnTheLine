@@ -3,13 +3,10 @@ package main.model.characterSystem;
 import javafx.scene.control.Button;
 import main.model.graphics.menus.LevelUpMenu;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ExperiencePoints {
-    private final int BASE_EXPERIENCE = 25;
+    private final int BASE_EXPERIENCE = 1000;
     private int currentExperience;
     private int level;
 
@@ -22,10 +19,8 @@ public class ExperiencePoints {
     public void addExperiencePoints(CharacterUnit activeUnit, Integer averageLevelOfTargetedUnits) {
         int experienceGained = calculateExperience(activeUnit, averageLevelOfTargetedUnits);
         currentExperience = currentExperience + experienceGained;
-        while (currentExperience >= 100) {
+        if (currentExperience >= 100) {
             levelUp(activeUnit);
-            level++;
-            currentExperience =- 100;
         }
     }
 
@@ -37,7 +32,9 @@ public class ExperiencePoints {
         return experienceGained;
     }
 
-    private void levelUp(CharacterUnit activeUnit) {
+    public void levelUp(CharacterUnit activeUnit) {
+        level++;
+        currentExperience -= 100;
         List<LevelUpButton> levelUpButtons = initializeLevelUpButtons(activeUnit);
         new LevelUpMenu(activeUnit, levelUpButtons);
     }
@@ -56,105 +53,95 @@ public class ExperiencePoints {
         return levelUpButtons;
     }
 
+    // create a button to level up each different stat. Then add them all to a map and roll a random number
+    // using the experience increment search the map to see if the random number falls within the range of the
+    // growth rate of that stat. If not then add the range of the growth to the experienceIncrement and try
+    // the next entry
     private LevelUpButton getNextButton(StatSheet statSheet, List<Integer> randomNumberGenerator) {
         Random rand = new Random();
         int randomElement = randomNumberGenerator.get(rand.nextInt(randomNumberGenerator.size()));
 
-        LevelUpButton levelUpButton;
-        int maxRange;
-        int initialRange;
+
+        LevelUpButton healthButton = new LevelUpButton("Health", statSheet.getMaxHealth()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpHealth();
+            }
+        };
+        LevelUpButton manaButton = new LevelUpButton("Mana", statSheet.getMaxMana()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpMana();
+            }
+        };
+        LevelUpButton strengthButton = new LevelUpButton("Strength", statSheet.getBaseStrength()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpStrength();
+            }
+        };
+        LevelUpButton magicButton = new LevelUpButton("Magic", statSheet.getBaseMagic()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpMagic();
+            }
+        };
+        LevelUpButton armourButton = new LevelUpButton("Armour", statSheet.getBaseArmour()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpArmour();
+            }
+        };
+        LevelUpButton resistanceButton = new LevelUpButton("Resistance", statSheet.getBaseResistance()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpResistance();
+            }
+        };
+        LevelUpButton speedButton = new LevelUpButton("Speed", statSheet.getBaseSpeed()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpSpeed();
+            }
+        };
+        LevelUpButton dexterityButton = new LevelUpButton("Dexterity", statSheet.getBaseDexterity()) {
+            @Override
+            public void addStat(StatSheet statSheet) {
+                statSheet.levelUpDexterity();
+            }
+        };
 
 
-        if (randomElement >= 0 && 19 >= randomElement) {
-            LevelUpButton healthButton = new LevelUpButton("Health", statSheet.getMaxHealth()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setMaxHealth(this.maxStat + 1);
-                }
-            };
-            levelUpButton = healthButton;
-            maxRange = 19;
-            initialRange = 0;
-        } else if (randomElement >= 20 && 25 >= randomElement) {
-            LevelUpButton manaButton = new LevelUpButton("Mana" , statSheet.getMaxMana()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setMaxMana(this.maxStat + 1);
-                }
-            };
-            levelUpButton = manaButton;
-            maxRange = 25;
-            initialRange = 20;
-        } else if (randomElement >= 26 && 40 >= randomElement) {
-            LevelUpButton strengthButton = new LevelUpButton("Strength", statSheet.getBaseStrength()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseStrength(this.maxStat + 1);
-                }
-            };
-            levelUpButton = strengthButton;
-            maxRange = 40;
-            initialRange = 26;
-        } else if (randomElement >= 41 && 60 >= randomElement) {
-            LevelUpButton magicButton = new LevelUpButton("Magic" , statSheet.getBaseMagic()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseMagic(this.maxStat + 1);
-                }
-            };
-            levelUpButton = magicButton;
-            maxRange = 60;
-            initialRange = 41;
-        } else if (randomElement >= 61 && 67 >= randomElement) {
-            LevelUpButton armourButton = new LevelUpButton("Armour" , statSheet.getBaseArmour()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseArmour(this.maxStat + 1);
-                }
-            };
-            levelUpButton = armourButton;
-            maxRange = 67;
-            initialRange = 61;
-        } else if (randomElement >= 68 && 73 >= randomElement) {
-            LevelUpButton resistanceButton = new LevelUpButton("Resistance" , statSheet.getBaseResistance()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseResistance(this.maxStat + 1);
-                }
-            };
-            levelUpButton = resistanceButton;
-            maxRange = 73;
-            initialRange = 68;
-        } else if (randomElement >= 74 && 84 >= randomElement) {
-            LevelUpButton speedButton = new LevelUpButton("Speed" , statSheet.getBaseSpeed()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseSpeed(this.maxStat + 1);
-                }
-            };
-            levelUpButton = speedButton;
-            maxRange = 84;
-            initialRange = 74;
-        } else  {
-            LevelUpButton dexterityButton = new LevelUpButton("Dexterity", statSheet.getBaseDexterity()) {
-                @Override
-                public void addStat(StatSheet statSheet) {
-                    statSheet.setBaseDexterity(this.maxStat + 1);
-                }
-            };
-            levelUpButton = dexterityButton;
-            maxRange = 99;
-            initialRange = 85;
+
+        Map<LevelUpButton, Integer> growthRateList = new LinkedHashMap<>();
+        growthRateList.put(healthButton, statSheet.getHealthGrowthRate());
+        growthRateList.put(manaButton, statSheet.getManaGrowthRate());
+        growthRateList.put(strengthButton, statSheet.getStrengthGrowthRate());
+        growthRateList.put(magicButton, statSheet.getMagicGrowthRate());
+        growthRateList.put(armourButton, statSheet.getArmourGrowthRate());
+        growthRateList.put(resistanceButton, statSheet.getResistanceGrowthRate());
+        growthRateList.put(speedButton, statSheet.getSpeedGrowthRate());
+        growthRateList.put(dexterityButton, statSheet.getDexterityGrowthRate());
+
+        int experienceIncrement = 0;
+
+        for (Map.Entry<LevelUpButton, Integer> entry : growthRateList.entrySet()) {
+            if (randomElement >= experienceIncrement && experienceIncrement + entry.getValue() > randomElement) {
+                removeRangeFrom(experienceIncrement, entry.getValue() + experienceIncrement, randomNumberGenerator);
+                return entry.getKey();
+            } else experienceIncrement += entry.getValue();
         }
 
+        return null;
+    }
 
+    // Makes it so you cannot get the same button twice in one level Up
+    private void removeRangeFrom(int initialRange, int maxRange, List<Integer> randomNumberGenerator) {
         List<Integer> toRemove = new ArrayList<>();
         for (int it = initialRange; it <= maxRange; it++) {
             toRemove.add(it);
         }
         randomNumberGenerator.removeAll(toRemove);
-
-        return levelUpButton;
     }
 
     public int getLevel() {
@@ -167,6 +154,10 @@ public class ExperiencePoints {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getCurrentExperience() {
+        return this.currentExperience;
     }
 
 

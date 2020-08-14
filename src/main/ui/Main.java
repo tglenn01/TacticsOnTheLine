@@ -1,8 +1,11 @@
 package main.ui;
 
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import main.model.graphics.scenes.TitleScreen;
+
+import java.io.FileInputStream;
 
 import static main.model.graphics.DefaultScene.FINAL_HEIGHT;
 import static main.model.graphics.DefaultScene.FINAL_WIDTH;
@@ -19,7 +22,11 @@ public class Main extends Application {
         primaryStage.setTitle("Tactics On The Line");
         primaryStage.setMinWidth(FINAL_WIDTH);
         primaryStage.setMinHeight(FINAL_HEIGHT);
+
+        Font.loadFont(new FileInputStream("src/resources/fonts/tube-of-corn/TubeOfCorn.ttf"), 20);
+
         new TitleScreen();
         primaryStage.show();
+        primaryStage.setResizable(false);
     }
 }

@@ -29,14 +29,16 @@ public class AbilitiesList extends Pane implements EventHandler<MouseEvent> {
             if (ability.isUnique()) {
                 AbilityImage icon = new AbilityImage(ability);
                 icons.add(icon);
+                icon.setId("abilityNameLabels");
                 hBox.getChildren().add(icon);
                 icon.setAlignment(Pos.CENTER);
-                icon.setPrefSize(100, 100);
+                //icon.setPrefSize(100, 100);
                 icon.setOnMousePressed(this);
             }
         }
-        hBox.setSpacing(10);
+        hBox.setSpacing(32);
         hBox.setAlignment(Pos.CENTER);
+        hBox.setId("characterSelectElement");
 
 
         DefaultScene.centreRegionOnPane(this, hBox);
@@ -51,7 +53,7 @@ public class AbilitiesList extends Pane implements EventHandler<MouseEvent> {
                 AbilityImage icon = new AbilityImage(ability);
                 icons.add(icon);
                 hBox.getChildren().add(icon);
-                icon.setPrefSize(100, 100);
+                //icon.setPrefSize(100, 100);
                 icon.setOnMousePressed(this);
             }
         }
@@ -82,7 +84,7 @@ public class AbilitiesList extends Pane implements EventHandler<MouseEvent> {
             Label abilityName = new Label("Name: " + this.ability.getAbilityName());
             Label manaCost = new Label("Mana Cost " + this.ability.getManaCost());
             Label description = new Label(this.ability.getAbilityDescription());
-            //abilityDescription.setOnMouseExited(e -> window.close());
+            abilityDescription.setId("characterSelectElement");
             abilityDescription.getChildren().addAll(abilityName, manaCost, description);
             Scene scene = new Scene(abilityDescription);
             window.setScene(scene);

@@ -47,7 +47,9 @@ public class Graham extends PlayableCharacterUnit {
         this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
     }
 
+    @Override
     protected void setGrowthRate() {
-        // stub
+        characterStatSheet.setGrowthRates(20, 10, 15,
+                15, 5, 5, 10, 20);
     }
 }

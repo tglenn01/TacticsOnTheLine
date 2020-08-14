@@ -34,6 +34,12 @@ public class Liam extends PlayableCharacterUnit {
     }
 
     @Override
+    protected void setGrowthRate() {
+        characterStatSheet.setGrowthRates(20, 20, 5,
+                20, 5, 20, 5, 5);
+    }
+
+    @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);

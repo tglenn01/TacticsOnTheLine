@@ -77,7 +77,7 @@ public class NPC extends CharacterUnit {
     }
 
     @Override
-    protected void takeNextAction() {
+    public void takeNextAction() {
         List<BoardSpace> targetableEnemySpaces = getTargetableEnemySpaces();
         List<BoardSpace> targetableAllySpaces = getTargetableAllySpaces();
         if (isEnemyInRange(targetableEnemySpaces) && actionTokens > 0) targetEnemy(targetableEnemySpaces);

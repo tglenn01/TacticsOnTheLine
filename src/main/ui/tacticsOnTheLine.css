@@ -1,19 +1,47 @@
 
+
+
 #tacticsOnTheLineLabel {
     -fx-text-fill: #f5f5b9;
-    -fx-font: 80px "URW Chancery L", cursive;
+    -fx-font-size: 80px;
 }
 
 #mainMenuElement {
     -fx-text-fill: #f5f5b9;
-    -fx-font-size: 30px;
-    -fx-font-family: "URW Chancery L", cursive;
+    -fx-font-size: 45px;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
 }
 
 #mainMenuElement:hover {
     -fx-text-fill: #dbff4d;
 }
 
-#background {
+#defaultBackground {
     -fx-background-color: #a3f3ff;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+}
+
+#characterSelectElement {
+    -fx-font-size: 20px;
+    -fx-font-family: Gill Sans Extrabold, sans-serif;
+}
+
+#advanceAndReturnButtons {
+    -fx-font-size: 10px;
+    -fx-font-family: Gill Sans Extrabold, sans-serif;
+}
+
+#characterNameLabel {
+    -fx-font-size: 45px;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+}
+
+#abilityNameLabels:hover {
+    -fx-text-fill: #dbff4d;
 }

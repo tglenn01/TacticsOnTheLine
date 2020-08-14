@@ -18,6 +18,7 @@ public class CharacterStatChart extends Pane {
                               Axis<Number> numberAxis, Axis<String> stringAxis) {
         statChart = new BarChart<>(numberAxis, stringAxis);
 
+        this.setId("characterSelectElement");
         NumberAxis xAxis = (NumberAxis) numberAxis;
         CategoryAxis yAxis = (CategoryAxis) stringAxis;
 

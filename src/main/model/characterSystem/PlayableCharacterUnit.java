@@ -9,6 +9,7 @@ import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
 import main.model.graphics.menus.BattleMenu;
+import main.model.graphics.menus.LevelUpMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
@@ -22,11 +23,14 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         setBaseJob();
         this.characterStatSheet = new StatSheet(this.characterJob);
         setPersonalAbility();
+        setGrowthRate();
         addPersonalAbilityToAbilityList();
         addStatBonusToStats();
     }
 
     protected abstract void setPersonalAbility();
+
+    protected abstract void setGrowthRate();
 
     protected abstract void setBaseJob();
 
@@ -37,6 +41,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
     protected void addStatBonusToStats() {
         this.characterStatSheet.addStatBonus(personalStatBonus);
     }
+
 
     @Override
     public void startTurn() {
@@ -92,7 +97,7 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         else if (chosenAbility.getClass() != MovementAbility.class && actionTokens <= 0) throw new OutOfActionsException();
     }
 
-    protected void takeNextAction() {
-        BattleMenu.getInstance().displayCharacterMenu(this);
+    public void takeNextAction() {
+        if (!LevelUpMenu.isDisplaying) BattleMenu.getInstance().displayCharacterMenu(this);
     }
 }

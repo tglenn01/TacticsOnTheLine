@@ -4,7 +4,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
@@ -70,8 +69,9 @@ public class CharacterSelect extends DefaultScene {
 
     protected void initializeGraphics() {
         GridPane grid = new GridPane();
-        grid.setGridLinesVisible(true);
-        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setId("defaultBackground");
+        //grid.setGridLinesVisible(true);
+        grid.setPadding(new Insets(20));
         this.jobButtonPane = initializeJobButtons();
         this.portrait = characterPortrait();
         this.abilities = new AbilitiesList(activeCharacter.getAbilityList(), 600, 120);
@@ -93,9 +93,8 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
         GridPane.setHalignment(previousButton, HPos.LEFT);
         GridPane.setValignment(previousButton, VPos.BOTTOM);
-        Scene scene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
-        //addCSS(scene);
-        TacticBaseBattle.getInstance().getPrimaryStage().setScene(scene);
+
+        mainPane.getChildren().add(grid);
     }
 
     private Pane initializeJobButtons() {
@@ -119,6 +118,7 @@ public class CharacterSelect extends DefaultScene {
         hBox.getChildren().addAll(jobButtonList);
 
         Pane jobButtonPane = new Pane();
+        jobButtonPane.setId("characterSelectElement");
         jobButtonPane.getChildren().add(hBox);
         jobButtonPane.setMinSize(1000, 160);
 
@@ -138,8 +138,9 @@ public class CharacterSelect extends DefaultScene {
     }
 
     private Button advanceButton() {
-        Button advanceButton = new Button("Advance");
-        advanceButton.setAlignment(Pos.BOTTOM_RIGHT);
+        Button advanceButton = new Button("Next");
+        advanceButton.setId("advanceAndReturnButtons");
+        advanceButton.setPrefSize(40, 12);
         advanceButton.setOnAction(e -> {
             if (characterCursor == partySize - 1) new ScenarioSelectScreen();
             else {
@@ -151,8 +152,9 @@ public class CharacterSelect extends DefaultScene {
     }
 
     private Button previousButton() {
-        Button previousButton = new Button("Previous");
-        previousButton.setAlignment(Pos.BOTTOM_RIGHT);
+        Button previousButton = new Button("Back");
+        previousButton.setId("advanceAndReturnButtons");
+        previousButton.setPrefSize(40, 10);
         previousButton.setOnAction(e -> {
             if (characterCursor == 0) new TitleScreen();
             else {

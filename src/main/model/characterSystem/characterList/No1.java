@@ -34,6 +34,12 @@ public class No1 extends PlayableCharacterUnit {
     }
 
     @Override
+    protected void setGrowthRate() {
+        characterStatSheet.setGrowthRates(5, 5, 20, 10,
+                5, 5, 30, 20);
+    }
+
+    @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);

@@ -8,6 +8,7 @@ import main.model.boardSystem.BoardSpace;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
+import main.model.graphics.menus.LevelUpMenu;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
@@ -75,8 +76,10 @@ public abstract class CharacterUnit {
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
             removeActionToken(ability);
-            if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
-            else takeNextAction();
+            if (!LevelUpMenu.isDisplaying) {
+                if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
+                else takeNextAction();
+            }
         }
     }
 
@@ -96,7 +99,7 @@ public abstract class CharacterUnit {
         } else this.actionTokens--;
     }
 
-    protected abstract void takeNextAction();
+    public abstract void takeNextAction();
 
     public void setJob(Job job) {
         this.characterJob = job;
@@ -153,7 +156,9 @@ public abstract class CharacterUnit {
     public CharacterSprite getCharacterSprite() { return this.sprite; }
     public CharacterStatusEffects getStatusEffects() { return this.statusEffects; }
     public ExperiencePoints getExperiencePoints() { return this.experiencePoints; }
-    public int getLevel() {return this.experiencePoints.getLevel(); }
+    public int getLevel() { return this.experiencePoints.getLevel(); }
+    public int getActionTokens() { return this.actionTokens; }
+    public boolean getMovementToken() { return this.movementToken; }
     public int getDirection() { return this.direction; }
 
     public void setAlive(boolean deathStatus) { this.isAlive = deathStatus; }

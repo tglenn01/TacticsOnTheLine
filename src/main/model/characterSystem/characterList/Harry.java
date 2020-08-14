@@ -34,6 +34,12 @@ public class Harry extends PlayableCharacterUnit {
     }
 
     @Override
+    protected void setGrowthRate() {
+        characterStatSheet.setGrowthRates(25, 3, 25, 2,
+                20, 5, 10, 10);
+    }
+
+    @Override
     protected void setPersonalStatBonuses() {
         this.personalStatBonus = new StatBonus(personalHealthBoost, personalManaBoost, personalStrengthBoost, personalMagicBoost,
                 personalArmourBoost, personalResistanceBoost, personalSpeedBoost, personalDexterityBoost);
