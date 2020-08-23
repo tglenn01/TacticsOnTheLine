@@ -1,5 +1,6 @@
 package main.model.graphics;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
@@ -25,6 +26,7 @@ public abstract class DefaultScene {
     protected DefaultScene() {
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(mainScene);
         addCSS(mainScene);
+        mainPane.setId("defaultBackground");
     }
 
     protected abstract void initializeGraphics();
@@ -67,6 +69,15 @@ public abstract class DefaultScene {
         } catch (Exception e) {
             //
         }
+    }
+
+    protected void fadeMainPaneToGivenPane(Pane givenPane) {
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1));
+        fadeIn.setNode(givenPane);
+        fadeIn.setToValue(1.00);
+        fadeIn.setFromValue(0.00);
+        fadeIn.setOnFinished(e -> mainPane.getChildren().add(givenPane));
+        fadeIn.play();
     }
 
     // top right

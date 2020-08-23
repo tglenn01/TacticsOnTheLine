@@ -4,6 +4,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
@@ -23,17 +24,20 @@ import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 public class CharacterSelect extends DefaultScene {
     private int partySize;
     private List<CharacterUnit> partyMemberList;
     private CharacterUnit activeCharacter;
     private Pane jobButtonPane;
+    private Observable jobButtonObserver;
     private CharacterStatChart statChart;
     private AbilitiesList abilities;
     private Pane portrait;
     private CharacterNameLabel characterName;
     private int characterCursor = 0;
+    private Job activeJob;
 
     // called when you open this screen for the first time
     public CharacterSelect() {
@@ -65,11 +69,11 @@ public class CharacterSelect extends DefaultScene {
         TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
         partySize = partyMemberList.size();
         activeCharacter = partyMemberList.get(characterCursor);
+        activeJob = activeCharacter.getCharacterJob();
     }
 
     protected void initializeGraphics() {
         GridPane grid = new GridPane();
-        grid.setId("defaultBackground");
         //grid.setGridLinesVisible(true);
         grid.setPadding(new Insets(20));
         this.jobButtonPane = initializeJobButtons();
@@ -93,23 +97,43 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
         GridPane.setHalignment(previousButton, HPos.LEFT);
         GridPane.setValignment(previousButton, VPos.BOTTOM);
+        GridPane.setValignment(abilities, VPos.CENTER);
+        GridPane.setValignment(statChart, VPos.CENTER);
+        GridPane.setValignment(characterName, VPos.TOP);
 
-        mainPane.getChildren().add(grid);
+        //fadeMainPaneToGivenPane(grid);
+        Scene characterSelectScene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
+        grid.setId("defaultBackground");
+        addCSS(characterSelectScene);
+        TacticBaseBattle.getInstance().getPrimaryStage().setScene(characterSelectScene);
+        //mainPane.getChildren().add(grid);
     }
 
     private Pane initializeJobButtons() {
+        jobButtonObserver = new Observable() {
+            @Override
+            public void notifyObservers(Object arg) {
+                setChanged();
+                super.notifyObservers(arg);
+            }
+        };
+
         List<Job> jobList = TacticBaseBattle.getInstance().getAvailableJobs();
         List<Button> jobButtonList = new ArrayList<>();
         for (Job job : jobList) {
             JobButton jobButton = new JobButton(job.getJobTitle(), job);
             jobButton.setOnAction(e -> {
-                if (job != activeCharacter.getCharacterJob()) {
+                if (job != activeJob) {
                     activeCharacter.setJob(job);
-                    updateData();
+                    updateDisplayedCharacterData();
+                    jobButtonObserver.notifyObservers(job);
+                    activeJob = job;
                 }
             });
+            if (activeCharacter.getCharacterJob().equals(job)) jobButton.highlightButton();
             jobButton.setMinSize(100, 100);
             jobButtonList.add(jobButton);
+            jobButtonObserver.addObserver(jobButton);
         }
 
         HBox hBox = new HBox();
@@ -118,9 +142,9 @@ public class CharacterSelect extends DefaultScene {
         hBox.getChildren().addAll(jobButtonList);
 
         Pane jobButtonPane = new Pane();
-        jobButtonPane.setId("characterSelectElement");
+        jobButtonPane.setId("normalNode");
         jobButtonPane.getChildren().add(hBox);
-        jobButtonPane.setMinSize(1000, 160);
+        jobButtonPane.setMinSize(1000, 200);
 
         DefaultScene.centreRegionOnPane(jobButtonPane, hBox);
         return jobButtonPane;
@@ -133,14 +157,14 @@ public class CharacterSelect extends DefaultScene {
         portrait.fitHeightProperty().bind(window.heightProperty());
         portrait.setPreserveRatio(false);
         window.getChildren().add(portrait);
-        window.setPrefSize(400, 640);
+        window.setPrefSize(400, 600);
         return window;
     }
 
     private Button advanceButton() {
         Button advanceButton = new Button("Next");
-        advanceButton.setId("advanceAndReturnButtons");
-        advanceButton.setPrefSize(40, 12);
+        advanceButton.setId("normalNode");
+        advanceButton.setPrefSize(60, 12);
         advanceButton.setOnAction(e -> {
             if (characterCursor == partySize - 1) new ScenarioSelectScreen();
             else {
@@ -153,8 +177,8 @@ public class CharacterSelect extends DefaultScene {
 
     private Button previousButton() {
         Button previousButton = new Button("Back");
-        previousButton.setId("advanceAndReturnButtons");
-        previousButton.setPrefSize(40, 10);
+        previousButton.setId("normalNode");
+        previousButton.setPrefSize(60, 10);
         previousButton.setOnAction(e -> {
             if (characterCursor == 0) new TitleScreen();
             else {
@@ -167,14 +191,16 @@ public class CharacterSelect extends DefaultScene {
 
     private void nextCharacter() {
         activeCharacter = partyMemberList.get(characterCursor);
-        updateData();
+        updateDisplayedCharacterData();
         characterName.updateLabel(activeCharacter);
-        portrait.getChildren().clear();
-        portrait.getChildren().add(this.characterPortrait());
+        ImageView it = (ImageView) portrait.getChildren().get(0);
+        it.setImage(activeCharacter.getCharacterPortrait().getImage());
+
+        activeJob = activeCharacter.getCharacterJob();
+        jobButtonObserver.notifyObservers(activeJob);
     }
 
-
-    private void updateData() {
+    private void updateDisplayedCharacterData() {
         abilities.updateData(activeCharacter.getAbilityList());
         statChart.updateData(activeCharacter);
     }

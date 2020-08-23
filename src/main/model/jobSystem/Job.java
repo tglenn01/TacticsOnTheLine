@@ -11,6 +11,7 @@ import main.model.jobSystem.jobs.clericJob.Cleric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Job {
     public static Ability move = new MovementAbility();
@@ -160,5 +161,18 @@ public abstract class Job {
 
     public int getJobDexterity() {
         return this.jobDexterity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Job job = (Job) o;
+        return Objects.equals(jobTitle, job.jobTitle);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jobTitle);
     }
 }

@@ -17,9 +17,11 @@ public class TitleScreen extends DefaultScene {
 
     protected void initializeGraphics() {
         Pane titlePane = new Pane();
+
         Label tacticOnTheLine = new Label("Tactics On The Line");
         tacticOnTheLine.setId("tacticsOnTheLineLabel");
         tacticOnTheLine.setAlignment(Pos.CENTER_LEFT);
+
         Label chooseCharacterButton = new Label("Start New Adventure");
         chooseCharacterButton.setId("mainMenuElement");
         chooseCharacterButton.setAlignment(Pos.CENTER_LEFT);
@@ -34,20 +36,20 @@ public class TitleScreen extends DefaultScene {
         layout.setAlignment(Pos.CENTER_LEFT);
         layout.setSpacing(10.00);
         titlePane.getChildren().add(layout);
-        titlePane.setId("defaultBackground");
 
         mainPane.getChildren().add(titlePane);
         animateBackground(mainScene, mainPane);
     }
 
     private void fadeToCharacterSelect(Pane fadeOutPane) {
-        FadeTransition fade = new FadeTransition(Duration.seconds(1));
-        fade.setNode(fadeOutPane);
-        fade.setFromValue(1.00);
-        fade.setToValue(0.50);
-        fade.setOnFinished(e -> {
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1));
+        fadeOut.setNode(fadeOutPane);
+        fadeOut.setFromValue(1.00);
+        fadeOut.setToValue(0.00);
+        fadeOut.setOnFinished(e -> {
             mainPane.getChildren().remove(fadeOutPane);
             new CharacterSelect();
         });
+        fadeOut.play();
     }
 }
