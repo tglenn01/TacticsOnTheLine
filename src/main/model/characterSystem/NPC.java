@@ -63,7 +63,7 @@ public class NPC extends CharacterUnit {
     private List<BoardSpace> getTargetableEnemySpaces() {
         List<BoardSpace> targetableEnemySpaces = new LinkedList<>();
         for (Ability ability : abilityList) {
-            if (!ability.targetsAlly()) targetableEnemySpaces.addAll(ability.getTargetedBoardSpaces(this));
+            //if (!ability.targetsAlly()) targetableEnemySpaces.addAll(ability.getTargetedBoardSpaces(this));
         }
         return targetableEnemySpaces;
     }
@@ -71,7 +71,7 @@ public class NPC extends CharacterUnit {
     private List<BoardSpace> getTargetableAllySpaces() {
         List<BoardSpace> targetableAllySpaces = new LinkedList<>();
         for (Ability ability : abilityList) {
-            if (ability.targetsAlly()) targetableAllySpaces.addAll(ability.getTargetedBoardSpaces(this));
+            //if (ability.targetsAlly()) targetableAllySpaces.addAll(ability.getTargetedBoardSpaces(this));
         }
         return targetableAllySpaces;
     }
@@ -303,7 +303,8 @@ public class NPC extends CharacterUnit {
     }
 
     private boolean isUnitInRangeOfAbility(Ability chosenAbility, CharacterUnit receivingUnit) {
-        List<BoardSpace> abilityRange = chosenAbility.getTargetedBoardSpaces(this);
-        return abilityRange.contains(receivingUnit.getBoardSpace());
+        //List<BoardSpace> abilityRange = chosenAbility.getTargetedBoardSpaces(this);
+        //return abilityRange.contains(receivingUnit.getBoardSpace());
+        return false;
     }
 }

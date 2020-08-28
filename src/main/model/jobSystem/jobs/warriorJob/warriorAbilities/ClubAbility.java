@@ -1,10 +1,6 @@
 package main.model.jobSystem.jobs.warriorJob.warriorAbilities;
 
-import main.model.boardSystem.BoardSpace;
-import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.PhysicalAbility;
-
-import java.util.List;
 
 public class ClubAbility extends PhysicalAbility {
     public ClubAbility() {
@@ -25,10 +21,5 @@ public class ClubAbility extends PhysicalAbility {
     @Override
     public boolean targetsAlly() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

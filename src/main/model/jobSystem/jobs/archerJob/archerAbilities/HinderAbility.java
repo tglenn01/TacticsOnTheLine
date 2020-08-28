@@ -1,11 +1,8 @@
 package main.model.jobSystem.jobs.archerJob.archerAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.DefenseDebuff;
-
-import java.util.List;
 
 public class HinderAbility extends StatusEffectAbility {
     public HinderAbility() {
@@ -14,8 +11,9 @@ public class HinderAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, this.potency, this.duration));
+        return true;
     }
 
     @Override
@@ -31,10 +29,5 @@ public class HinderAbility extends StatusEffectAbility {
     @Override
     public boolean targetsAlly() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

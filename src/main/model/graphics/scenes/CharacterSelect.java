@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.characterList.*;
 import main.model.graphics.DefaultScene;
@@ -82,13 +83,17 @@ public class CharacterSelect extends DefaultScene {
         this.statChart = new CharacterStatChart(activeCharacter, 600, 360,
                 new NumberAxis(), new CategoryAxis());
         this.characterName = new CharacterNameLabel(activeCharacter, 600, 120);
+
+        VBox characterInformationLayout = new VBox();
+        characterInformationLayout.setPrefSize(600, 600);
+        characterInformationLayout.setSpacing(20.00);
+        characterInformationLayout.getChildren().addAll(characterName, statChart, abilities);
         Button advanceButton = advanceButton();
         Button previousButton = previousButton();
+
         grid.add(jobButtonPane, 0, 8, 10, 2);
         grid.add(portrait, 0, 0, 4, 8);
-        grid.add(abilities, 4, 6, 6, 2);
-        grid.add(statChart, 4, 2, 6, 4);
-        grid.add(characterName, 4, 0, 6, 2);
+        grid.add(characterInformationLayout, 4, 0, 6, 8);
         grid.add(advanceButton, 0, 9, 10, 2);
         grid.add(previousButton, 0, 9, 10, 2);
 
@@ -97,9 +102,6 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setValignment(advanceButton, VPos.BOTTOM);
         GridPane.setHalignment(previousButton, HPos.LEFT);
         GridPane.setValignment(previousButton, VPos.BOTTOM);
-        GridPane.setValignment(abilities, VPos.CENTER);
-        GridPane.setValignment(statChart, VPos.CENTER);
-        GridPane.setValignment(characterName, VPos.TOP);
 
         //fadeMainPaneToGivenPane(grid);
         Scene characterSelectScene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);

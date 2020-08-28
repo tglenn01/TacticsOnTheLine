@@ -6,7 +6,7 @@ import main.model.graphics.menus.LevelUpMenu;
 import java.util.*;
 
 public class ExperiencePoints {
-    private final int BASE_EXPERIENCE = 1000;
+    private final int BASE_EXPERIENCE = 25;
     private int currentExperience;
     private int level;
 

@@ -8,6 +8,7 @@ import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.targetTypes.TargetType;
 import main.model.graphics.menus.BattleMenu;
 import main.ui.TacticBaseBattle;
 
@@ -26,8 +27,9 @@ public class MovementAbility extends Ability {
         activeUnit.setBoardSpace(targetedBoardSpaces.get(0));
     }
 
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         // this will not be called as it is called from the super takeAction which will not resolve in this class
+        return false;
     }
 
     @Override
@@ -46,60 +48,75 @@ public class MovementAbility extends Ability {
     }
 
     @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return  TacticBaseBattle.getInstance().getCurrentBoard().getMovementArea(activeUnit);
+    public void setTargetType() {
+        this.targetType = new MovementTarget();
     }
 
-    @Override
-    protected void setHandlers(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) {
-        ApplyBoardHandler applyBoardHandler = new ApplyBoardHandler(activeUnit, this, possibleBoardSpaces);
+    protected static class MovementTarget extends TargetType {
 
-        for (BoardSpace boardSpace : possibleBoardSpaces) {
-            boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, applyBoardHandler);
-        }
-    }
-
-    protected class ApplyBoardHandler implements EventHandler<MouseEvent> {
-        private CharacterUnit activeUnit;
-        private Ability chosenAbility;
-        private List<BoardSpace> possibleBoardSpaces;
-        private EventHandler<MouseEvent> characterUnitOpensMenuHandler;
-
-
-        public ApplyBoardHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
-            this.activeUnit = activeUnit;
-            this.chosenAbility = chosenAbility;
-            this.possibleBoardSpaces = possibleBoardSpaces;
-
-
-            characterUnitOpensMenuHandler = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                    removeBoardHandler(possibleBoardSpaces, this);
-                    event.consume();
-                }
-            };
+        @Override
+        public List<BoardSpace> getTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility) {
+            return TacticBaseBattle.getInstance().getCurrentBoard().getMovementArea(centreSpace.getOccupyingUnit());
         }
 
         @Override
-        public void handle(MouseEvent event) {
-            BoardSpace destination = (BoardSpace) event.getSource();
-            if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                removeBoardHandler(possibleBoardSpaces, this);
-                activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
+        public void displayTargets(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) {
+            TacticBaseBattle.getInstance().getCurrentBoard().displayMovementSpaces(activeUnit, possibleBoardSpaces);
+        }
 
-                List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
-                targetedBoardSpaces.add(destination);
+        @Override
+        public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
+            MovementTargetHandler movementTargetHandler = new MovementTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces);
 
-                activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
-            } else if (event.getButton() == MouseButton.SECONDARY)  {
-                removeBoardHandler(possibleBoardSpaces, this);
-                activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
-                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+            for (BoardSpace boardSpace : possibleBoardSpaces) {
+                boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, movementTargetHandler);
+            }
+        }
+
+        protected class MovementTargetHandler implements EventHandler<MouseEvent> {
+            private CharacterUnit activeUnit;
+            private Ability chosenAbility;
+            private List<BoardSpace> possibleBoardSpaces;
+            private EventHandler<MouseEvent> characterUnitOpensMenuHandler;
+
+
+            public MovementTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
+                this.activeUnit = activeUnit;
+                this.chosenAbility = chosenAbility;
+                this.possibleBoardSpaces = possibleBoardSpaces;
+
+
+                characterUnitOpensMenuHandler = new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                        removeBoardHandler(possibleBoardSpaces, this);
+                        event.consume();
+                    }
+                };
+            }
+
+            @Override
+            public void handle(MouseEvent event) {
+                BoardSpace destination = (BoardSpace) event.getSource();
+                if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                    removeBoardHandler(possibleBoardSpaces, this);
+                    activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
+
+                    List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
+                    targetedBoardSpaces.add(destination);
+
+                    activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
+                } else if (event.getButton() == MouseButton.SECONDARY)  {
+                    removeBoardHandler(possibleBoardSpaces, this);
+                    activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, characterUnitOpensMenuHandler);
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
+                    BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+                }
             }
         }
     }
+
+
 }

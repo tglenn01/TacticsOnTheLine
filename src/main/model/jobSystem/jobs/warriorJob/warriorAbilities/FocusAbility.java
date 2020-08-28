@@ -1,11 +1,8 @@
 package main.model.jobSystem.jobs.warriorJob.warriorAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackBuff;
-
-import java.util.List;
 
 public class FocusAbility extends StatusEffectAbility {
     public FocusAbility() {
@@ -14,8 +11,9 @@ public class FocusAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, this.potency, this.duration));
+        return true;
     }
 
     @Override
@@ -33,8 +31,4 @@ public class FocusAbility extends StatusEffectAbility {
         return false;
     }
 
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getSelfBoardSpace(activeUnit);
-    }
 }

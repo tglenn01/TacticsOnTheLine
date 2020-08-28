@@ -1,11 +1,8 @@
 package main.model.jobSystem.jobs.bardJob.bardAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.DefenseBuff;
-
-import java.util.List;
 
 public class SerenadeAbility extends StatusEffectAbility {
     public SerenadeAbility() {
@@ -14,8 +11,9 @@ public class SerenadeAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseBuff(receivingUnit, this.potency, this.duration));
+        return true;
     }
 
     @Override
@@ -31,10 +29,5 @@ public class SerenadeAbility extends StatusEffectAbility {
     @Override
     public boolean targetsAlly() {
         return true;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

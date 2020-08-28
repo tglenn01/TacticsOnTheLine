@@ -21,23 +21,27 @@ public abstract class DamageAbility extends Ability {
         this.accuracy = accuracy;
     }
 
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit targetedUnit) {
         try {
             checkIfAbilityHitsOneself(activeUnit, targetedUnit); // cannot damage oneself
             checkIfAbilityHit(activeUnit, targetedUnit);
             checkIfUnitIsInvulnerable(targetedUnit);
             calculateDamageDone(activeUnit, targetedUnit);
+            return true;
         } catch (AbilityTargetsSelfException abilityTargetsSelfExceptions) {
-            // do nothing and just skip them
+            return false;
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
+            return false;
         } catch (UnitIsInvulnerableException unitIsInvulnerableException) {
             CharacterStatusEffects csf = targetedUnit.getStatusEffects();
             csf.removePermanentStatusEffect(csf.getInvulnerable());
             unitIsInvulnerableException.printInvulnerableMessage();
+            return false;
         } catch (UnitIsDeadException unitIsDeadException) {
             unitIsDeadException.printDeathMessage();
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
+            return true;
         }
     }
 

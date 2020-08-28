@@ -1,19 +1,17 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.DecayingStatusEffect;
 import main.model.combatSystem.abilities.DamageAbility;
 import main.model.combatSystem.statusEffects.Root;
 
-import java.util.List;
-
 public class TremorAbility extends DamageAbility {
-    private CharacterUnit activeUnit;
+    private CharacterUnit unitWithThisAbility;
 
-    public TremorAbility() {
+    public TremorAbility(CharacterUnit unitWithThisAbility) {
         super("Tremor", 4, 1, 2, 6, 1.00,
                 "Damage neighbouring enemies while stopping their movement");
+        this.unitWithThisAbility = unitWithThisAbility;
     }
 
     @Override
@@ -42,19 +40,5 @@ public class TremorAbility extends DamageAbility {
     @Override
     public boolean targetsAlly() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        this.activeUnit = activeUnit;
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
-    }
-
-    @Override
-    protected void addTargetsToTargetedBoardSpaces(BoardSpace targetBoardSpace, List<BoardSpace> targetedBoardSpaces) {
-        List<BoardSpace> effectedBoardSpaces = getNormalTargetPattern(activeUnit.getBoardSpace(), this.areaOfEffect - 1, this);
-        for (BoardSpace effectedSpace : effectedBoardSpaces) {
-            if (effectedSpace.isOccupied()) targetedBoardSpaces.add(effectedSpace);
-        }
     }
 }

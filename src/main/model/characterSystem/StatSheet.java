@@ -434,4 +434,16 @@ public class StatSheet {
             job.updateMaxStats();
         }
     }
+
+    public void setAllStatsToMax() {
+        this.health = maxHealth;
+        this.mana = maxMana;
+        this.strength = baseStrength;
+        this.magic = baseMagic;
+        this.armour = baseArmour;
+        this.resistance = baseResistance;
+        this.speed = baseSpeed;
+        this.dexterity = baseDexterity;
+    }
+
 }

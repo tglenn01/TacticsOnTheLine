@@ -29,7 +29,7 @@ public class AbilitiesList extends Pane implements EventHandler<MouseEvent> {
             if (ability.isUnique()) {
                 AbilityImage icon = new AbilityImage(ability);
                 icons.add(icon);
-                icon.setId("normalNode");
+                icon.setId("abilityNameLabel");
                 hBox.getChildren().add(icon);
                 icon.setAlignment(Pos.CENTER);
                 //icon.setPrefSize(100, 100);
@@ -51,7 +51,7 @@ public class AbilitiesList extends Pane implements EventHandler<MouseEvent> {
             if (ability.isUnique()) {
                 AbilityImage icon = new AbilityImage(ability);
                 icons.add(icon);
-                icon.setId("normalNode");
+                icon.setId("abilityNameLabel");
                 hBox.getChildren().add(icon);
                 //icon.setPrefSize(100, 100);
                 icon.setOnMousePressed(this);

@@ -1,11 +1,8 @@
 package main.model.jobSystem.jobs.battleMageJob.battleMageAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackDebuff;
-
-import java.util.List;
 
 public class CrippleAbility extends StatusEffectAbility {
     public CrippleAbility() {
@@ -15,8 +12,9 @@ public class CrippleAbility extends StatusEffectAbility {
 
 
     @Override
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, this.potency, this.duration));
+        return true;
     }
 
     @Override
@@ -34,8 +32,4 @@ public class CrippleAbility extends StatusEffectAbility {
         return false;
     }
 
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
-    }
 }

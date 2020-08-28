@@ -1,11 +1,8 @@
 package main.model.jobSystem.jobs.clericJob.clericAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.abilities.StatusEffectAbility;
-
-import java.util.List;
 
 public class BlessAbility extends StatusEffectAbility {
     public BlessAbility() {
@@ -14,10 +11,11 @@ public class BlessAbility extends StatusEffectAbility {
     }
 
     @Override
-    protected void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         healUnit(receivingUnit, receivingUnitStatSheet, this.potency + activeUnitStatSheet.getMagic());
+        return true;
     }
 
     @Override
@@ -33,10 +31,5 @@ public class BlessAbility extends StatusEffectAbility {
     @Override
     protected boolean isAreaOfEffect() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

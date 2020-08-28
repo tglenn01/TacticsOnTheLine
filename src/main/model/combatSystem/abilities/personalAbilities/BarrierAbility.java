@@ -1,12 +1,9 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
-import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.PermanentStatusEffect;
 import main.model.combatSystem.statusEffects.Invulnerable;
-
-import java.util.List;
 
 public class BarrierAbility extends Ability {
 
@@ -16,9 +13,10 @@ public class BarrierAbility extends Ability {
     }
 
     @Override
-    public void resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+    public boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
         receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
+        return true;
     }
 
     @Override
@@ -34,10 +32,5 @@ public class BarrierAbility extends Ability {
     @Override
     public boolean targetsAlly() {
         return true;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }

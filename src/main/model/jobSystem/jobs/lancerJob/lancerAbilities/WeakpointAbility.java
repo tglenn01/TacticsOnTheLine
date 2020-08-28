@@ -1,10 +1,6 @@
 package main.model.jobSystem.jobs.lancerJob.lancerAbilities;
 
-import main.model.boardSystem.BoardSpace;
-import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.PhysicalAbility;
-
-import java.util.List;
 
 public class WeakpointAbility extends PhysicalAbility {
     public WeakpointAbility() {
@@ -25,11 +21,6 @@ public class WeakpointAbility extends PhysicalAbility {
     @Override
     public boolean targetsAlly() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 
 }

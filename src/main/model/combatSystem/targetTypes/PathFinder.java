@@ -1,4 +1,4 @@
-package main.ui;
+package main.model.combatSystem.targetTypes;
 
 import main.model.boardSystem.BoardSpace;
 
@@ -29,7 +29,7 @@ public class PathFinder {
         this.yStart = initialYPos;
     }
 
-    // Node class for convienience
+    // Node class for convenience
     static class Node implements Comparable {
         public Node parent;
         public int x, y;

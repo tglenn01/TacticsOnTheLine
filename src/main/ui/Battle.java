@@ -23,11 +23,12 @@ public class Battle {
         TacticBaseBattle.getInstance().setBattle(this);
         enemyCharacters = scenario.getListOfEnemies();
         turnOrder = new TurnOrderCompiler(playableCharacters, scenario.getListOfEnemies());
-        battle();
+        startAnimations();
+        playableCharacters.forEach(e -> e.getCharacterStatSheet().setAllStatsToMax());
         updateNextRound();
     }
 
-    private void battle() {
+    private void startAnimations() {
         final long startNanoTime = System.nanoTime();
 
         new AnimationTimer() {

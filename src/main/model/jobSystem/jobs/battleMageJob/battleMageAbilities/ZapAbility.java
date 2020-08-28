@@ -1,10 +1,6 @@
 package main.model.jobSystem.jobs.battleMageJob.battleMageAbilities;
 
-import main.model.boardSystem.BoardSpace;
-import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.MagicAbility;
-
-import java.util.List;
 
 public class ZapAbility extends MagicAbility {
     public ZapAbility() {
@@ -25,10 +21,5 @@ public class ZapAbility extends MagicAbility {
     @Override
     public boolean targetsAlly() {
         return false;
-    }
-
-    @Override
-    public List<BoardSpace> getTargetedBoardSpaces(CharacterUnit activeUnit) {
-        return getNormalTargetPattern(activeUnit.getBoardSpace(), this.range, this);
     }
 }
