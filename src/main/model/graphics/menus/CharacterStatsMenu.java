@@ -32,7 +32,7 @@ public class CharacterStatsMenu {
     public static void display(CharacterUnit unit) {
         window = new Stage();
         window.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
-        window.setTitle("Ability Menu");
+        window.setTitle("Ability Menu!");
 
         GridPane grid = new GridPane();
         grid.setGridLinesVisible(true);
