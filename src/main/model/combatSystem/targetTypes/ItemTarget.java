@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.ConsumableAbility;
+import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
@@ -19,17 +20,9 @@ public class ItemTarget extends AreaTarget {
     public void setHandlers(CharacterUnit activeUnit, Consumable item, List<BoardSpace> possibleBoardSpaces) {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
 
-        ReturnToMenuHandler returnToMenuHandler = new ReturnToMenuHandler(activeUnit, possibleBoardSpaces, possibleTargets);
-        ApplyItemTargetHandler applyItemTargetHandler = new ApplyItemTargetHandler(activeUnit, item, possibleBoardSpaces, possibleTargets, returnToMenuHandler);
-        returnToMenuHandler.setApplyTargetHandler(applyItemTargetHandler);
+        ApplyItemTargetHandler applyItemTargetHandler = new ApplyItemTargetHandler(activeUnit, item, possibleBoardSpaces, possibleTargets);
 
-        for (CharacterUnit possibleTarget : possibleTargets) {
-            possibleTarget.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, applyItemTargetHandler);
-        }
-
-        for (BoardSpace boardSpace : possibleBoardSpaces) {
-            boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, returnToMenuHandler);
-        }
+        setHandlersToNodes(applyItemTargetHandler, possibleBoardSpaces, possibleTargets);
     }
 
     // the same targeting as AreaTarget only we take an itemActionInsteadOf
@@ -38,16 +31,14 @@ public class ItemTarget extends AreaTarget {
         private Consumable item;
         private List<BoardSpace> possibleBoardSpaces;
         private List<CharacterUnit> possibleTargets;
-        private EventHandler<MouseEvent> returnToMenuHandler;
 
 
         public ApplyItemTargetHandler(CharacterUnit activeUnit, Consumable item, List<BoardSpace> possibleBoardSpaces,
-                                  List<CharacterUnit> possibleTargets, EventHandler<MouseEvent> returnToMenuHandler) {
+                                  List<CharacterUnit> possibleTargets) {
             this.activeUnit = activeUnit;
             this.item = item;
             this.possibleBoardSpaces = possibleBoardSpaces;
             this.possibleTargets = possibleTargets;
-            this.returnToMenuHandler = returnToMenuHandler;
         }
 
         @Override
@@ -57,8 +48,7 @@ public class ItemTarget extends AreaTarget {
                 CharacterUnit targetUnit = targetSprite.getUnit();
 
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                removeBoardHandler(possibleBoardSpaces, returnToMenuHandler);
-                removeTargetHandler(possibleTargets, this);
+                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
 
                 List<BoardSpace> targetedBoardSpaces = new LinkedList<>();
                 ConsumableAbility consumableAbility = ConsumableItemInventory.getInstance().getItemAbility();
@@ -66,6 +56,10 @@ public class ItemTarget extends AreaTarget {
                 addAreaOfEffectToTargetedBoardSpace(consumableAbility, targetUnit.getBoardSpace(), targetedBoardSpaces);
 
                 activeUnit.takeItemAction(consumableAbility, item, targetedBoardSpaces);
+            } else if (event.getButton() == MouseButton.SECONDARY) {
+                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
+                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
             }
         }
     }

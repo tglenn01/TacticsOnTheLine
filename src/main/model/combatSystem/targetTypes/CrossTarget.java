@@ -7,7 +7,9 @@ import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.TargetType;
 import main.model.graphics.menus.BattleMenu;
+import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
 
 import java.util.LinkedList;
@@ -86,28 +88,34 @@ public class CrossTarget extends TargetType {
                 down.add(boardSpace);
         }
 
-        CrossTargetHandler crossTargetHandler = new CrossTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces,
+        List<CharacterUnit> possibleTargets = new LinkedList<>();
+        possibleBoardSpaces.forEach(space -> {
+            if (space.isOccupied()) possibleTargets.add(space.getOccupyingUnit());
+        });
+
+        CrossTargetHandler crossTargetHandler = new CrossTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets,
                 left, right, up, down);
 
-        for (BoardSpace boardSpace : possibleBoardSpaces) {
-            boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, crossTargetHandler);
-        }
+
+        setHandlersToNodes(crossTargetHandler, possibleBoardSpaces, possibleTargets);
     }
 
     private class CrossTargetHandler implements EventHandler<MouseEvent> {
         private CharacterUnit activeUnit;
         private Ability chosenAbility;
         private List<BoardSpace> possibleBoardSpaces;
+        private List<CharacterUnit> possibleTargets;
         private List<BoardSpace> left;
         private List<BoardSpace> right;
         private List<BoardSpace> up;
         private List<BoardSpace> down;
 
-        public CrossTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces,
+        public CrossTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces, List<CharacterUnit> possibleTargets,
                                   List<BoardSpace> left, List<BoardSpace> right, List<BoardSpace> up, List<BoardSpace> down) {
             this.activeUnit = activeUnit;
             this.chosenAbility = chosenAbility;
             this.possibleBoardSpaces = possibleBoardSpaces;
+            this.possibleTargets = possibleTargets;
             this.left = left;
             this.right = right;
             this.up = up;
@@ -116,10 +124,17 @@ public class CrossTarget extends TargetType {
 
         @Override
         public void handle(MouseEvent event) {
-            BoardSpace destination = (BoardSpace) event.getSource();
+            BoardSpace destination;
+            if (event.getSource().getClass() == BoardSpace.class) {
+                destination = (BoardSpace) event.getSource();
+            } else {
+                 CharacterSprite sprite = (CharacterSprite) event.getSource();
+                 destination = sprite.getUnit().getBoardSpace();
+            }
+
             if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                removeBoardHandler(possibleBoardSpaces, this);
+                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
 
                 if (left.contains(destination)) activeUnit.takeAction(chosenAbility, left);
                 else if (right.contains(destination)) activeUnit.takeAction(chosenAbility, right);
@@ -127,7 +142,7 @@ public class CrossTarget extends TargetType {
                 else activeUnit.takeAction(chosenAbility, down);
 
             } else if (event.getButton() == MouseButton.SECONDARY)  {
-                removeBoardHandler(possibleBoardSpaces, this);
+                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                 BattleMenu.getInstance().displayCharacterMenu(activeUnit);
             }

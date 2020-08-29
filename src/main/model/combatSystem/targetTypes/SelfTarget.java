@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.TargetType;
 import main.model.graphics.menus.BattleMenu;
 import main.ui.TacticBaseBattle;
 
@@ -43,6 +44,7 @@ public class SelfTarget extends TargetType {
         public void handle(MouseEvent event) {
             if (event.getButton() == MouseButton.PRIMARY) {
                 activeUnit.getCharacterSprite().removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
+                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                 activeUnit.takeAction(chosenAbility, possibleBoardSpaces);
             }
             if (event.getButton() == MouseButton.SECONDARY) {

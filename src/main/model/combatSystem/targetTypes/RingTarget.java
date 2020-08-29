@@ -1,10 +1,10 @@
 package main.model.combatSystem.targetTypes;
 
-import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
+import main.model.combatSystem.TargetType;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -38,16 +38,7 @@ public class RingTarget extends TargetType {
     public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
 
-        ReturnToMenuHandler returnToMenuHandler = new ReturnToMenuHandler(activeUnit, possibleBoardSpaces, possibleTargets);
-        ApplyTargetHandler applyTargetHandler = new ApplyTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets, returnToMenuHandler);
-        returnToMenuHandler.setApplyTargetHandler(applyTargetHandler);
-
-        for (CharacterUnit possibleTarget : possibleTargets) {
-            possibleTarget.getCharacterSprite().addEventHandler(MouseEvent.MOUSE_CLICKED, applyTargetHandler);
-        }
-
-        for (BoardSpace boardSpace : possibleBoardSpaces) {
-            boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, returnToMenuHandler);
-        }
+        ApplyTargetHandler applyTargetHandler = new ApplyTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets);
+        setHandlersToNodes(applyTargetHandler, possibleBoardSpaces, possibleTargets);
     }
 }

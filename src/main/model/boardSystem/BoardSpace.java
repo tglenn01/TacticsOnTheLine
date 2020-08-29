@@ -2,7 +2,7 @@ package main.model.boardSystem;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import main.model.boardSystem.landTypes.LandType;
+import main.model.boardSystem.landTypes.*;
 import main.model.characterSystem.CharacterUnit;
 
 public class BoardSpace extends BorderPane {

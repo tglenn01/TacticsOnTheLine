@@ -8,6 +8,7 @@ import main.model.characterSystem.CharacterStatusEffects;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.graphics.sceneElements.images.HealthBar;
 import main.ui.TacticBaseBattle;
 
 public abstract class DamageAbility extends Ability {
@@ -50,6 +51,11 @@ public abstract class DamageAbility extends Ability {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         int defenderHealth = receivingUnitStatSheet.getHealth();
         int damage = calculateDamage(activeUnit, receivingUnit);
+
+        HealthBar healthBar = new HealthBar(receivingUnit.getCharacterStatSheet().getMaxHealth(), defenderHealth, defenderHealth - damage);
+        healthBar.showAndWait();
+
+
         defenderHealth = defenderHealth - damage;
         if (defenderHealth < 0) defenderHealth = 0;
         System.out.println(activeUnit.getCharacterName() + " dealt " + damage + " to " +

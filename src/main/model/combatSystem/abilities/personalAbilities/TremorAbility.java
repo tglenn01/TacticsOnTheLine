@@ -4,14 +4,19 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.DecayingStatusEffect;
 import main.model.combatSystem.abilities.DamageAbility;
 import main.model.combatSystem.statusEffects.Root;
+import main.model.combatSystem.targetTypes.SurroundingTarget;
 
 public class TremorAbility extends DamageAbility {
-    private CharacterUnit unitWithThisAbility;
 
-    public TremorAbility(CharacterUnit unitWithThisAbility) {
+
+    public TremorAbility() {
         super("Tremor", 4, 1, 2, 6, 1.00,
                 "Damage neighbouring enemies while stopping their movement");
-        this.unitWithThisAbility = unitWithThisAbility;
+    }
+
+    @Override
+    protected void setTargetType() {
+        this.targetType = new SurroundingTarget();
     }
 
     @Override

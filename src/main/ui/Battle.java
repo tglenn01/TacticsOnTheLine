@@ -54,14 +54,37 @@ public class Battle {
     private void startNewTurn(CharacterUnit activeCharacter) {
         if (activeCharacter.isAlive()) {
             Popup startOfTurnPopup = new Popup();
-            startOfTurnPopup.getContent().add(new Label("It is " + activeCharacter.getCharacterName() + "'s Turn"));
+            Label characterNameLabel = new Label("It is " + activeCharacter.getCharacterName() + "'s Turn");
+            characterNameLabel.setId("startOfTurnPopup");
+            startOfTurnPopup.getContent().add(characterNameLabel);
             startOfTurnPopup.setWidth(140);
             startOfTurnPopup.setHeight(100);
-            Stage primaryStage = TacticBaseBattle.getInstance().getPrimaryStage();
-           // startOfTurnPopup.show(primaryStage);
+
             startOfTurnPopup.centerOnScreen();
             startOfTurnPopup.setAutoHide(true);
+            startOfTurnPopup.setOpacity(0);
+            startOfTurnPopup.setOnShown(e -> new AnimationTimer() {
+                private double opacity = 0;
+                private long delay = 15_000_000;
+                private long prevTime = 0;
 
+                @Override
+                public void handle(long now) {
+
+                    if ((now - prevTime) >= delay) {
+                        opacity += 0.01;
+                        startOfTurnPopup.setOpacity(opacity);
+                    }
+
+                    prevTime = now;
+
+                    if (opacity >= 1) {
+                        stop();
+                    }
+                }
+            }.start());
+
+            Stage primaryStage = TacticBaseBattle.getInstance().getPrimaryStage();
             startOfTurnPopup.show(primaryStage, primaryStage.getWidth() / 2.00, primaryStage.getHeight() / 2.00);
             this.activeCharacter = activeCharacter;
             activeCharacter.startTurn();

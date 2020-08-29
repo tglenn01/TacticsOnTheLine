@@ -1,8 +1,7 @@
 package main.model.boardSystem;
 
 import javafx.util.Pair;
-import main.model.boardSystem.landTypes.GrassLandType;
-import main.model.boardSystem.landTypes.LandType;
+import main.model.boardSystem.landTypes.*;
 import main.model.characterSystem.CharacterUnit;
 
 import java.util.*;

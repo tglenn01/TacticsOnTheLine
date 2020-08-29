@@ -30,7 +30,7 @@ public class Harry extends PlayableCharacterUnit {
 
     @Override
     protected void setPersonalAbility() {
-        this.personalAbility = new TremorAbility(this);
+        this.personalAbility = new TremorAbility();
     }
 
     @Override

@@ -53,3 +53,13 @@
     -fx-font-family: Gill Sans Extrabold, sans-serif;
 }
 
+#startOfTurnPopup {
+    -fx-font-size: 32px;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+}
+

@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 
 public abstract class LandType {
     public enum BOARD_SPACE_HIGHLIGHT_COLOUR {NORMAL, NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR, ABILITY_HIGHLIGHT_COLOUR}
+
     protected Color tileColor;
     protected Background background;
     protected Color movementHighlightColour = new Color(0.5, 0, 0, 0.5);
@@ -34,7 +35,8 @@ public abstract class LandType {
     public Background highlightSpace(BOARD_SPACE_HIGHLIGHT_COLOUR colour) {
         Color newColour;
         if (colour == BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR) newColour = abilityHighlightColour;
-        else if (colour == BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR) newColour = movementHighlightColour;
+        else if (colour == BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR)
+            newColour = movementHighlightColour;
         else newColour = this.tileColor;
         BackgroundFill highlightFill = new BackgroundFill(newColour,
                 new CornerRadii(5), new Insets(0));
@@ -55,5 +57,5 @@ public abstract class LandType {
     public boolean isTerrainable() {
         return this.getClass() == GrassLandType.class;
     }
-
 }
+

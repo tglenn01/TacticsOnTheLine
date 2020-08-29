@@ -11,7 +11,6 @@ import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.abilities.MovementAbility;
 import main.model.combatSystem.targetTypes.AreaTarget;
 import main.model.combatSystem.targetTypes.SelfTarget;
-import main.model.combatSystem.targetTypes.TargetType;
 
 import java.util.LinkedList;
 import java.util.List;
