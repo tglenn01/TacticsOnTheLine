@@ -22,6 +22,7 @@ public abstract class StatusEffect {
         return this.condensedName;
     }
 
+    public abstract int getDurationInformation();
     protected abstract void setCondensedName();
     protected abstract void setIcon();
     protected abstract void applyStatusEffect(CharacterUnit receivingUnit, int potency);

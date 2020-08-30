@@ -19,11 +19,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import main.model.boardSystem.landTypes.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.ExperiencePoints;
 import main.model.characterSystem.StatSheet;
 import main.model.graphics.sceneElements.images.CharacterJobLabel;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
 import main.model.graphics.sceneElements.list.StatusEffectList;
 import main.ui.TacticBaseBattle;
+
+
+
+import static main.model.graphics.DefaultScene.CSS_FILE;
 
 public class CharacterStatsMenu {
     private static boolean isDisplaying;
@@ -43,8 +48,9 @@ public class CharacterStatsMenu {
         Pane characterName = new CharacterNameLabel(unit, 380, 60);
         Label characterJob = new CharacterJobLabel(unit.getCharacterJob(), 380, 60);
         HBox statusEffectBar = new StatusEffectList(unit);
-        Label healthBar = healthBar(unit);
-        Label manaBar = manaBar(unit);
+        HBox hpAndMpLayout= healthAndManaLayout(unit);
+        HBox experienceLayout = experienceLayout(unit);
+
         Button closeButton = new Button("close");
         closeButton.setOnAction(event -> {
             window.close();
@@ -52,15 +58,40 @@ public class CharacterStatsMenu {
                 BattleMenu.getInstance().displayCharacterMenu(unit);
         });
         characterJob.setAlignment(Pos.CENTER);
-        grid.add(portrait, 0, 0, 4, 8);
+        /*grid.add(portrait, 0, 0, 4, 8);
         grid.add(sprite, 0, 8, 2, 2);
-        grid.add(characterName, 4, 0, 4, 1);
-        grid.add(characterJob, 4, 1, 4, 1);
-        grid.add(healthBar, 8, 0, 2, 1);
-        grid.add(manaBar, 8, 1, 2, 1);
+        grid.add(characterName, 4, 0, 3, 1);
+        grid.add(characterJob, 4, 1, 3, 1);
+        grid.add(hpAndMpLayout, 7, 0, 3, 1);
+        grid.add(experienceLayout, 7, 1, 3, 1);
         grid.add(statChart, 4, 2, 6, 6);
-        grid.add(statusEffectBar, 2, 8,7, 2);
-        grid.add(closeButton, 9, 9, 1, 1);
+        grid.add(statusEffectBar, 2, 8,8, 2);
+        grid.add(closeButton, 9, 9, 1, 1);*/
+
+
+        GridPane.setConstraints(portrait, 0,0, 4, 8);
+        GridPane.setConstraints(sprite, 0, 8, 2, 2);
+        GridPane.setConstraints(characterName, 4, 0, 3, 1);
+        GridPane.setConstraints(characterJob, 4, 1, 3, 1);
+        GridPane.setConstraints(hpAndMpLayout, 7, 0, 3, 1);
+        GridPane.setConstraints(experienceLayout, 7, 1, 3, 1);
+        GridPane.setConstraints(statChart, 4, 2, 6 ,6);
+        GridPane.setConstraints(statusEffectBar, 2, 8, 7 ,2);
+        GridPane.setConstraints(closeButton, 9, 9, 1, 2);
+
+        grid.getChildren().addAll(portrait, sprite, characterName, characterJob, hpAndMpLayout, experienceLayout, statChart, statusEffectBar, closeButton);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         grid.setPrefSize(1000, 800);
@@ -70,8 +101,14 @@ public class CharacterStatsMenu {
         GridPane.setValignment(closeButton, VPos.BOTTOM);
         GridPane.setHalignment(closeButton, HPos.RIGHT);
 
+        grid.getChildren().forEach(node -> node.setId("normalNode"));
+        characterName.setId("fancyNode");
+        characterJob.setId("fancyNode");
+        hpAndMpLayout.setId("fancyNode");
+        experienceLayout.setId("fancyNode");
 
         Scene scene = new Scene(grid, 1000, 800);
+        scene.getStylesheets().add(CSS_FILE);
 
         window.setOnCloseRequest(e -> isDisplaying = false);
         window.setOnHidden(e -> isDisplaying = false);
@@ -90,7 +127,6 @@ public class CharacterStatsMenu {
         portrait.fitHeightProperty().bind(window.heightProperty());
         portrait.setPreserveRatio(false);
         window.getChildren().add(portrait);
-        window.setMinSize(380, 620);
         return window;
     }
 
@@ -99,7 +135,6 @@ public class CharacterStatsMenu {
         spritePane.setBackground(new WaterLandType().getTileColour());
         Image image = unit.getCharacterSprite().getStillImage();
         ImageView sprite = new ImageView(image);
-        //sprite.fitWidthProperty().bind(spritePane.widthProperty());
         sprite.fitHeightProperty().bind(spritePane.heightProperty());
         sprite.layoutXProperty().bind(spritePane.widthProperty().subtract(sprite.fitWidthProperty()).divide(4.5));
         sprite.setPreserveRatio(true);
@@ -138,24 +173,35 @@ public class CharacterStatsMenu {
         return newSeries;
     }
 
-    private static Label healthBar(CharacterUnit unit) {
+    private static HBox healthAndManaLayout(CharacterUnit unit) {
         StatSheet statSheet = unit.getCharacterStatSheet();
         int currentHealth = statSheet.getHealth();
         int maxHealth = statSheet.getMaxHealth();
         Label healthLabel = new Label("HP: " + currentHealth + "/" + maxHealth);
-        healthLabel.setPrefSize(180, 80);
-        return healthLabel;
-    }
 
-    private static Label manaBar(CharacterUnit unit) {
-        StatSheet statSheet = unit.getCharacterStatSheet();
         int currentMana = statSheet.getMana();
         int maxMana = statSheet.getMaxMana();
 
         Label manaLabel = new Label("MP: " + currentMana + "/" + maxMana);
-        manaLabel.setPrefSize(180, 80);
-        return manaLabel;
+
+        HBox healthAndManaLabel = new HBox(healthLabel, manaLabel);
+
+        healthAndManaLabel.setSpacing(15.0);
+        healthAndManaLabel.setAlignment(Pos.CENTER);
+        return healthAndManaLabel;
     }
+
+    private static HBox experienceLayout(CharacterUnit unit) {
+        ExperiencePoints unitXP = unit.getExperiencePoints();
+        Label currentExperience = new Label(unitXP.getCurrentExperience() + "/100");
+        Label currentLevel = new Label("Level " + unitXP.getLevel());
+        HBox experienceLayout = new HBox(currentLevel, currentExperience);
+
+        experienceLayout.setSpacing(15.0);
+        experienceLayout.setAlignment(Pos.CENTER);
+        return experienceLayout;
+    }
+
 
     public static boolean isDisplaying() {
         return isDisplaying;

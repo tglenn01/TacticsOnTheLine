@@ -55,12 +55,11 @@ public abstract class Ability {
         for (BoardSpace boardSpace : chosenBoardSpaces) {
             if (boardSpace.isOccupied()) {
                 CharacterUnit receivingUnit = boardSpace.getOccupyingUnit();
-                effectedUnits.add(receivingUnit);
                 boolean effectResolved = resolveEffect(activeUnit, receivingUnit);
                 if (effectResolved) effectedUnits.add(receivingUnit);
             }
         }
-        if (this.getClass() != MovementAbility.class)
+        if (this.getClass() != MovementAbility.class && !effectedUnits.isEmpty())
             addExperienceAfterEffectResolves(activeUnit, effectedUnits);
     }
 

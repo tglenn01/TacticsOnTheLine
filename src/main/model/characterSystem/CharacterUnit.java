@@ -34,7 +34,6 @@ public abstract class CharacterUnit {
     protected CharacterStatusEffects statusEffects;
     protected ExperiencePoints experiencePoints;
 
-    protected int experience = 0;
 
     protected int actionTokens;
     protected boolean movementToken;
@@ -50,8 +49,6 @@ public abstract class CharacterUnit {
         this.movementRangeIsVisable = false;
         statusEffects = new CharacterStatusEffects();
         experiencePoints = new ExperiencePoints();
-        experiencePoints.setCurrentExperience(99);
-        experiencePoints.setLevel(1);
     }
 
     protected abstract void setPersonalStatBonuses();
@@ -171,5 +168,7 @@ public abstract class CharacterUnit {
         return this.movementRangeIsVisable;
     }
     protected boolean hasEnoughMana(int abilityManaCost, int characterMana) { return abilityManaCost < characterMana; }
+    public boolean hasActionToken() { return this.actionTokens != 0; }
+    public boolean hasMovementToken() { return this.movementToken; }
 }
 

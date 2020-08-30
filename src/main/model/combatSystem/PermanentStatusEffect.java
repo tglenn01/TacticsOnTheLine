@@ -10,6 +10,10 @@ public abstract class PermanentStatusEffect extends StatusEffect {
         this.uses = uses;
     }
 
+    public int getDurationInformation() {
+        return this.uses;
+    }
+
     public int getUses() {
         return this.uses;
     }

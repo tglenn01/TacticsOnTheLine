@@ -26,7 +26,7 @@ public class Cleric extends Job {
 
     @Override
     protected void initializeJobStats() {
-        this.jobHealth = 44;
+        this.jobHealth = 34;
         this.jobMana = 38;
         this.jobStrength = 6;
         this.jobMagic = 10;

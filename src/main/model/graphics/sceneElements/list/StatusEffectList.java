@@ -10,21 +10,23 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.DecayingStatusEffect;
+import main.model.combatSystem.StatusEffect;
 
 
 public class StatusEffectList extends HBox {
 
     public StatusEffectList(CharacterUnit unit) {
-        for (DecayingStatusEffect statusEffect : unit.getStatusEffects().getDecayingStatusEffects()) {
+        for (StatusEffect statusEffect : unit.getStatusEffects()) {
             HBox statusEffectToolTip = new HBox();
             ImageView icon = statusEffect.getIcon();
             icon.setFitWidth(50.00);
             icon.setFitHeight(50.00);
             String condensedName = statusEffect.getCondensedName();
-            int duration = statusEffect.getDuration();
+
+            int durationInformation = statusEffect.getDurationInformation();
+
             Label condensedNameLabel = new Label(condensedName);
-            Label durationLabel = new Label(Integer.toString(duration));
+            Label durationLabel = new Label(Integer.toString(durationInformation));
             statusEffectToolTip.getChildren().addAll(icon, condensedNameLabel, durationLabel);
             statusEffectToolTip.setAlignment(Pos.CENTER);
             statusEffectToolTip.setSpacing(4.00);

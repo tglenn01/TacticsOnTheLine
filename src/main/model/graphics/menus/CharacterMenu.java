@@ -17,6 +17,7 @@ public class CharacterMenu extends DefaultMenu {
     protected List<Button> setButtons(CharacterUnit activeUnit, BattleMenu battleMenu) {
         List<Button> buttonList = new ArrayList<>();
 
+
         Button attackButton = getAttackButton(activeUnit, battleMenu);
         Button moveButton = getMovementButton(activeUnit, battleMenu);
         Button abilitiesButton = getAbilitiesButton(activeUnit, battleMenu);
@@ -24,12 +25,25 @@ public class CharacterMenu extends DefaultMenu {
         Button statusButton = getStatusButton(activeUnit, battleMenu);
         Button  endTurnButton = getEndTurnButton(battleMenu);
 
+
+        if (!activeUnit.hasActionToken()) {
+            disableButton(attackButton);
+            disableButton(abilitiesButton);
+            disableButton(itemButton);
+        }
+
+        if (!activeUnit.hasMovementToken()) {
+            disableButton(moveButton);
+        }
+
         buttonList.add(attackButton);
         buttonList.add(moveButton);
         buttonList.add(abilitiesButton);
         buttonList.add(itemButton);
         buttonList.add(statusButton);
         buttonList.add(endTurnButton);
+
+        buttonList.forEach(button -> button.setId("defaultNode"));
 
         return buttonList;
     }
@@ -86,5 +100,9 @@ public class CharacterMenu extends DefaultMenu {
             TacticBaseBattle.getInstance().getBattle().endTurn();
         });
         return endTurnButton;
+    }
+
+    private void disableButton(Button button) {
+        button.setDisable(true);
     }
 }

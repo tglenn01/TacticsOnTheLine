@@ -2,13 +2,15 @@ package main.model.characterSystem;
 
 import main.model.combatSystem.DecayingStatusEffect;
 import main.model.combatSystem.PermanentStatusEffect;
+import main.model.combatSystem.StatusEffect;
 import main.model.combatSystem.statusEffects.Invulnerable;
 import main.model.combatSystem.statusEffects.Root;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CharacterStatusEffects {
+public class CharacterStatusEffects implements Iterable<StatusEffect> {
     private List<DecayingStatusEffect> decayingStatusEffects;
     private List<PermanentStatusEffect> permanentStatusEffects;
 
@@ -53,6 +55,7 @@ public class CharacterStatusEffects {
         }
         for (DecayingStatusEffect endedStatusEffect : toRemove) {
             endedStatusEffect.removeStatusEffect(activeUnit);
+            decayingStatusEffects.remove(endedStatusEffect);
             System.out.println(endedStatusEffect.getCondensedName() + " Has ended");
         }
     }
@@ -88,5 +91,32 @@ public class CharacterStatusEffects {
             if (permanentStatusEffect.getClass() == Invulnerable.class) return permanentStatusEffect;
         }
         return null;
+    }
+
+
+    @Override
+    public Iterator<StatusEffect> iterator() {
+        return new StatusEffectIterator();
+    }
+
+    private class StatusEffectIterator implements Iterator<StatusEffect> {
+        private int cursor = 0;
+        private int roof = decayingStatusEffects.size() + permanentStatusEffects.size();
+
+        @Override
+        public boolean hasNext() {
+            return cursor < roof;
+        }
+
+        @Override
+        public StatusEffect next() {
+            StatusEffect statusEffect;
+            int midPoint = decayingStatusEffects.size();
+
+            if (cursor < midPoint) statusEffect = decayingStatusEffects.get(cursor);
+            else statusEffect = permanentStatusEffects.get(cursor - midPoint);
+            cursor++;
+            return statusEffect;
+        }
     }
 }

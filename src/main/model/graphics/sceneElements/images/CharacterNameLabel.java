@@ -16,7 +16,7 @@ public class CharacterNameLabel extends Pane {
         DefaultScene.centreRegionOnPane(this, name);
         this.setMinSize(minXSize, minYSize);
         this.getChildren().add(name);
-        this.setId("characterNameLabel");
+        this.setId("fancyNode");
     }
 
     public void updateLabel(CharacterUnit unit) {

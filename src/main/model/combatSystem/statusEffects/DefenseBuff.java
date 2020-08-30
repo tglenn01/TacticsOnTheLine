@@ -6,8 +6,6 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.DecayingStatusEffect;
 
-import java.io.FileInputStream;
-
 public class DefenseBuff extends DecayingStatusEffect {
 
     public DefenseBuff(CharacterUnit receivingUnit, int potency, int duration) {
@@ -20,13 +18,7 @@ public class DefenseBuff extends DecayingStatusEffect {
 
     @Override
     protected void setIcon() {
-        try {
-            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\statusEffects\\DefenseBuff.png");
-            Image image = new Image(input);
-            this.icon = new ImageView(image);
-        } catch (Exception e) {
-            //
-        }
+        this.icon = new ImageView(new Image("resources/statusEffects/DefenseBuff.png"));
     }
 
     @Override

@@ -126,13 +126,13 @@ public class CrossTarget extends TargetType {
         public void handle(MouseEvent event) {
             BoardSpace destination;
             if (event.getSource().getClass() == BoardSpace.class) {
-                destination = (BoardSpace) event.getSource();
+                 destination = (BoardSpace) event.getSource();
             } else {
                  CharacterSprite sprite = (CharacterSprite) event.getSource();
                  destination = sprite.getUnit().getBoardSpace();
             }
 
-            if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
+            if (event.getButton() == MouseButton.PRIMARY) {
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                 removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
 

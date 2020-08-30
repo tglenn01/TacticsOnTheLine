@@ -38,14 +38,10 @@
 }
 
 #fancyNode {
-    -fx-font-size: 16px;
+    -fx-font-size: 24px;
     -fx-font-family: "TubeOfCorn";
     -fx-stroke: #000000;
     -fx-stroke-width: 1;
-}
-
-#fancyNode:hover {
-    -fx-text-fill: #dbff4d;
 }
 
 #normalNode {
@@ -61,5 +57,9 @@
     -fx-background-color: white;
     -fx-border-color: black;
     -fx-border-width: 2;
+}
+
+#normalNode:disable {
+    -fx-background-color: grey;
 }
 

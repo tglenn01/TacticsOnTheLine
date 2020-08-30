@@ -41,6 +41,7 @@ public class HealthBar {
         healthBarWindow.setScene(healthBarScene);
         healthBarWindow.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         healthBarWindow.initStyle(StageStyle.UTILITY);
+        healthBarWindow.setOpacity(0);
 
         AnimationTimer depleteHealth = depleteHealthAnimationTimer(maxHealthPoints, oldHealthPoints, newHealthPoints, healthBar, healthPoints);
         AnimationTimer fadeInAnimation = fadeInAnimation(depleteHealth);

@@ -127,3 +127,13 @@ August 8th
 + Each Ability class has it's own method of choosing how much xp to gain
 + clean up the Level up menu (done)
 + start creating nicer graphics
+
+August 29th
++ Added visual indicators of status effects
++ Audio
++ Enemy AI
++ Update character stat menu, include current xp
++ Grey out unavailable options in Battle Menu (done)
++ Health Bar working for healing
++ Item Descriptions
++ Ability Descriptions

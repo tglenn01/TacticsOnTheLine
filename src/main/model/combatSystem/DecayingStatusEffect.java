@@ -19,6 +19,10 @@ public abstract class DecayingStatusEffect extends StatusEffect {
         return this.duration;
     }
 
+    public int getDurationInformation() {
+        return this.duration;
+    }
+
     public void setDuration(int newDuration) {
         this.duration = newDuration;
     }
