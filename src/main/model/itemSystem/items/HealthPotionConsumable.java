@@ -7,7 +7,7 @@ import main.model.itemSystem.Consumable;
 public class HealthPotionConsumable extends Consumable {
 
     public HealthPotionConsumable() {
-        super("Health Potion", 20);
+        super("Health Potion", 20, "Heal an ally");
     }
 
     @Override

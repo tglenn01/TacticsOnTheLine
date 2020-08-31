@@ -37,6 +37,11 @@ public class ConsumableAbility extends SupportiveAbility {
     }
 
     @Override
+    public String getEffectType() {
+        return "Item";
+    }
+
+    @Override
     protected void setTargetType() {
         this.targetType = new ItemTarget();
     }

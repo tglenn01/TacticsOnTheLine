@@ -7,7 +7,7 @@ import main.model.itemSystem.Consumable;
 public class ManaPotionConsumable extends Consumable {
 
     public ManaPotionConsumable() {
-        super("Mana Potion", 15);
+        super("Mana Potion", 15, "Grant an ally mana");
     }
 
     @Override

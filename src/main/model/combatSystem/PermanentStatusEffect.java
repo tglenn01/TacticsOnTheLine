@@ -10,6 +10,11 @@ public abstract class PermanentStatusEffect extends StatusEffect {
         this.uses = uses;
     }
 
+    @Override
+    protected void addStatusEffectToCharacterStatusEffects(CharacterUnit receivingUnit) {
+        receivingUnit.getStatusEffects().addPermanentStatusEffect(this);
+    }
+
     public int getDurationInformation() {
         return this.uses;
     }

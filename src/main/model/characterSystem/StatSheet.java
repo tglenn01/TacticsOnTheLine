@@ -200,6 +200,10 @@ public class StatSheet {
         this.armour += addedArmour;
     }
 
+    public void addDexterity(int addedDexterity) {
+        this.dexterity += addedDexterity;
+    }
+
     public void setMaxMana(int maxMana) {
         this.maxMana = maxMana;
         setMana(maxMana);

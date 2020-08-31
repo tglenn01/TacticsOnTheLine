@@ -11,8 +11,8 @@ public abstract class LandType {
 
     protected Color tileColor;
     protected Background background;
-    protected Color movementHighlightColour = new Color(0.5, 0, 0, 0.5);
-    protected Color abilityHighlightColour = new Color(0.5, 0.5, 0, 0.5);
+    protected Color movementHighlightColour = Color.valueOf("#1450FF");
+    protected Color abilityHighlightColour = Color.valueOf("#F7C625");
 
 
     public LandType() {

@@ -3,8 +3,8 @@ package main.model.jobSystem.jobs.nobleJob;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.jobSystem.Job;
+import main.model.jobSystem.jobs.nobleJob.nobleAbilities.BestowAbility;
 import main.model.jobSystem.jobs.nobleJob.nobleAbilities.DaggerAbility;
-import main.model.jobSystem.jobs.nobleJob.nobleAbilities.DesperationAbility;
 import main.model.jobSystem.jobs.nobleJob.nobleAbilities.StrikeAbility;
 
 // default/base class
@@ -19,10 +19,10 @@ public class Noble extends Job {
         super.initializeAbilities();
         Ability strike = new StrikeAbility();
         Ability dagger = new DaggerAbility();
-        Ability desperation = new DesperationAbility();
+        Ability bestow = new BestowAbility();
         jobAbilityList.add(strike);
         jobAbilityList.add(dagger);
-        jobAbilityList.add(desperation);
+        jobAbilityList.add(bestow);
     }
 
     @Override

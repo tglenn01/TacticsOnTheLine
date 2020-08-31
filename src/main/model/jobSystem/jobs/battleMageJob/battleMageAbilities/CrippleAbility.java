@@ -13,7 +13,7 @@ public class CrippleAbility extends StatusEffectAbility {
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackDebuff(receivingUnit, this.potency, this.duration));
+        new AttackDebuff(receivingUnit, this.potency, this.duration);
         return true;
     }
 

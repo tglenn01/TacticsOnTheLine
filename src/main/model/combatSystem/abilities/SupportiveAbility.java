@@ -3,6 +3,7 @@ package main.model.combatSystem.abilities;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
+import main.model.graphics.sceneElements.images.HealthBar;
 
 public abstract class SupportiveAbility extends Ability {
 
@@ -13,11 +14,18 @@ public abstract class SupportiveAbility extends Ability {
 
     public static void healUnit(CharacterUnit receivingUnit, StatSheet receivingUnitStatSheet, int healAmount) {
         int initialHealth = receivingUnitStatSheet.getHealth();
+        int maxHealth = receivingUnitStatSheet.getMaxHealth();
         int newHealth = initialHealth + healAmount;
-        if (newHealth > receivingUnitStatSheet.getMaxHealth()) {
-            newHealth = receivingUnitStatSheet.getMaxHealth();
+
+        if (newHealth > maxHealth) {
+            newHealth = maxHealth;
             healAmount = newHealth - initialHealth;
         }
+
+        HealthBar healthBar = new HealthBar(maxHealth, initialHealth, newHealth);
+        healthBar.showAndWait();
+
+
         receivingUnitStatSheet.setHealth(newHealth);
         System.out.println(receivingUnit.getCharacterName() + " was healed " + healAmount);
         System.out.println(receivingUnit.getCharacterName() + " health is now " +

@@ -1,6 +1,7 @@
 package main.model.combatSystem;
 
 import javafx.event.EventHandler;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.BoardSpace;
@@ -14,6 +15,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class TargetType {
+    protected ImageView targetTypeImage;
+
+    public TargetType() {
+        setTargetTypeImage();
+    }
+
+    public abstract void setTargetTypeImage();
+
+    public ImageView getTargetTypeImage() {
+        return this.targetTypeImage;
+    }
 
     public abstract List<BoardSpace> getTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility);
 
@@ -84,6 +96,7 @@ public abstract class TargetType {
 
                 CharacterSprite targetSprite = (CharacterSprite) event.getSource();
                 CharacterUnit targetUnit = targetSprite.getUnit();
+                if (targetUnit == activeUnit) return;
 
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
                 removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);

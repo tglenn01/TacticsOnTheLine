@@ -1,7 +1,6 @@
 package main.model.combatSystem.statusEffects;
 
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.DecayingStatusEffect;
@@ -20,7 +19,7 @@ public class Root extends DecayingStatusEffect {
 
     @Override
     protected void setIcon() {
-        this.icon = new ImageView(new Image("resources/statusEffects/MovementDown.png"));
+        this.icon = new Image("resources/statusEffects/MovementDown.png");
     }
 
     @Override

@@ -6,13 +6,13 @@ import main.model.combatSystem.statusEffects.Blind;
 
 public class BlindAbility extends StatusEffectAbility {
     public BlindAbility() {
-        super("Blind", 10, 1, 1, 3, 15,
+        super("Blind", 10, 1, 2, 3, 15,
                 "Blind enemies lowering their attack potency");
     }
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(new Blind(receivingUnit, this.potency, this.duration));
+        new Blind(receivingUnit, this.potency, this.duration);
         return true;
     }
 

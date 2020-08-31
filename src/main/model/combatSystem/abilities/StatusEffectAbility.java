@@ -10,4 +10,9 @@ public abstract class StatusEffectAbility extends SupportiveAbility {
         this.duration = duration;
         this.potency = potency;
     }
+
+    @Override
+    public String getEffectType() {
+        return "Support";
+    }
 }

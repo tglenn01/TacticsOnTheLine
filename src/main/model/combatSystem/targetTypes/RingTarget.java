@@ -1,5 +1,7 @@
 package main.model.combatSystem.targetTypes;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
@@ -11,6 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RingTarget extends TargetType {
+
+    @Override
+    public void setTargetTypeImage() {
+        this.targetTypeImage = new ImageView(new Image("resources/targetTypeImages/RingTargetType.png"));
+    }
+
     @Override
     public List<BoardSpace> getTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();

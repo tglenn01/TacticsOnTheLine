@@ -12,7 +12,7 @@ public class InspireAbility extends StatusEffectAbility {
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(new AttackBuff(receivingUnit, this.potency, this.duration));
+        new AttackBuff(receivingUnit, this.potency, this.duration);
         return true;
     }
 

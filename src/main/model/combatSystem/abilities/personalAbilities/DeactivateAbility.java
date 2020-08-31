@@ -11,6 +11,11 @@ public class DeactivateAbility extends SupportiveAbility {
     }
 
     @Override
+    public String getEffectType() {
+        return "Support";
+    }
+
+    @Override
     // receivingUnit and activeUnit are the same in this ability
     public boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         healUnit(receivingUnit, receivingUnit.getCharacterStatSheet(), activeUnit.getCharacterStatSheet().getMaxHealth());

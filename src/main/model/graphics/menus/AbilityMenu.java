@@ -1,6 +1,7 @@
 package main.model.graphics.menus;
 
 import javafx.scene.control.Button;
+import main.exception.OutOfManaException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
@@ -28,6 +29,11 @@ public class AbilityMenu extends DefaultMenu {
         removeDuplicateAbilities(abilityList);
         for (Ability ability : abilityList) {
             Button abilityButton = new Button(ability.getAbilityName());
+            try {
+                ability.hasEnoughMana(unit);
+            } catch (OutOfManaException e) {
+                abilityButton.setDisable(true);
+            }
             abilityButtonList.add(abilityButton);
             abilityButton.setOnMouseClicked(e -> {
                 battleMenu.close();

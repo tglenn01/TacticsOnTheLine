@@ -39,6 +39,7 @@ public class TitleScreen extends DefaultScene {
 
         mainPane.getChildren().add(titlePane);
         animateBackground(mainScene, mainPane);
+
     }
 
     private void fadeToCharacterSelect(Pane fadeOutPane) {

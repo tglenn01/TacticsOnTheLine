@@ -27,6 +27,11 @@ public class MovementAbility extends Ability {
     }
 
     @Override
+    public String getEffectType() {
+        return "Movement";
+    }
+
+    @Override
     protected boolean targetsSelf() {
         return false;
     }

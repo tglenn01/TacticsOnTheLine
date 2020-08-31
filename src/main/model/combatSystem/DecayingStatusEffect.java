@@ -11,6 +11,11 @@ public abstract class DecayingStatusEffect extends StatusEffect {
         this.duration = duration;
     }
 
+    @Override
+    protected void addStatusEffectToCharacterStatusEffects(CharacterUnit receivingUnit) {
+        receivingUnit.getStatusEffects().addDecayingStatusEffect(this);
+    }
+
     public int getAmountChanged() {
         return this.amountChanged;
     }

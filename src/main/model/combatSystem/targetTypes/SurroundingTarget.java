@@ -1,6 +1,8 @@
 package main.model.combatSystem.targetTypes;
 
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
@@ -15,6 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SurroundingTarget extends TargetType {
+
+    @Override
+    public void setTargetTypeImage() {
+        this.targetTypeImage = new ImageView(new Image("resources/targetTypeImages/SurroundingTargetType.png"));
+    }
+
+
     @Override
     public List<BoardSpace> getTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility) {
         List<BoardSpace> possibleBoardSpaces = new ArrayList<>();

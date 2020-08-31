@@ -13,7 +13,7 @@ public class SmokeAbility extends StatusEffectAbility {
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(new Blind(receivingUnit, this.potency, this.duration));
+        new Blind(receivingUnit, this.potency, this.duration);
         return true;
     }
 

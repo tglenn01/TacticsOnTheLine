@@ -18,7 +18,7 @@ public class StatusEffectList extends HBox {
     public StatusEffectList(CharacterUnit unit) {
         for (StatusEffect statusEffect : unit.getStatusEffects()) {
             HBox statusEffectToolTip = new HBox();
-            ImageView icon = statusEffect.getIcon();
+            ImageView icon = new ImageView(statusEffect.getIcon());
             icon.setFitWidth(50.00);
             icon.setFitHeight(50.00);
             String condensedName = statusEffect.getCondensedName();

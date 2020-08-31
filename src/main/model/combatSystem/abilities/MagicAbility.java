@@ -10,6 +10,11 @@ public abstract class MagicAbility extends DamageAbility {
     }
 
     @Override
+    public String getEffectType() {
+        return "Magic";
+    }
+
+    @Override
     protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         int damage = (activeUnit.getCharacterStatSheet().getMagic() + this.damage)
                 - receivingUnit.getCharacterStatSheet().getResistance();

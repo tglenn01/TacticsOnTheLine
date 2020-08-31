@@ -1,11 +1,11 @@
 package main.model.boardSystem;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import main.model.boardSystem.landTypes.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 
-public class BoardSpace extends BorderPane {
+public class BoardSpace extends StackPane {
     private LandType landType;
     private CharacterUnit occupyingUnit;
     private int xCoordinate;
@@ -20,11 +20,8 @@ public class BoardSpace extends BorderPane {
 
     public void setOccupyingUnit(CharacterUnit occupyingUnit) {
         this.occupyingUnit = occupyingUnit;
-        ImageView sprite = occupyingUnit.getSpriteImageView();
-        sprite.fitWidthProperty().bind(this.widthProperty());
-        sprite.fitHeightProperty().bind(this.heightProperty());
-        this.setCenter(sprite);
-        sprite.setPreserveRatio(true);
+        Pane spritePane = occupyingUnit.getCharacterSprite();
+        this.getChildren().add(spritePane);
         this.setCenterShape(true);
         if (occupyingUnit.getBoardSpace() != this) {
             occupyingUnit.setBoardSpace(this);

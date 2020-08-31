@@ -132,8 +132,14 @@ August 29th
 + Added visual indicators of status effects
 + Audio
 + Enemy AI
-+ Update character stat menu, include current xp
++ Damage previews
++ Update character stat menu, include current xp (done)
 + Grey out unavailable options in Battle Menu (done)
-+ Health Bar working for healing
-+ Item Descriptions
++ Health Bar working for healing (done)
++ Item Descriptions (done)
++ Ability Descriptions (done)
++ Out of mana chosen again label, not fading, looks bad
++ Hovering over a unit will display attacking range
++ Main menu leaf
 + Ability Descriptions
++ Status Effects hitting allies

@@ -111,8 +111,14 @@ public abstract class Ability {
                 !this.abilityName.equals("Move");
     }
 
+    public abstract String getEffectType();
+
     public int getRange() {
         return this.range;
+    }
+
+    public TargetType getTargetType() {
+        return this.targetType;
     }
 
 

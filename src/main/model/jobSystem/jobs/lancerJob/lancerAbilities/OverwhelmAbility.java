@@ -12,7 +12,7 @@ public class OverwhelmAbility extends StatusEffectAbility {
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(new DefenseDebuff(receivingUnit, this.potency, this.duration));
+        new DefenseDebuff(receivingUnit, this.potency, this.duration);
         return true;
     }
 

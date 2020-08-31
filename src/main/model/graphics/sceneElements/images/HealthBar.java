@@ -24,13 +24,13 @@ public class HealthBar {
         healthBar.setPrefSize(200, 60);
 
         healthBar.setProgress(oldHealthPoints / maxHealthPoints);
-        Label healthPoints = new Label((int) oldHealthPoints + "/" + (int) maxHealthPoints);
-        healthPoints.setId("normalNode");
+        Label healthPointsLabel = new Label((int) oldHealthPoints + "/" + (int) maxHealthPoints);
+        healthPointsLabel.setId("normalNode");
 
 
         BorderPane layout = new BorderPane();
         layout.setLeft(healthBar);
-        layout.setCenter(healthPoints);
+        layout.setCenter(healthPointsLabel);
 
 
         Scene healthBarScene = new Scene(layout, 300, 75);
@@ -43,12 +43,16 @@ public class HealthBar {
         healthBarWindow.initStyle(StageStyle.UTILITY);
         healthBarWindow.setOpacity(0);
 
-        AnimationTimer depleteHealth = depleteHealthAnimationTimer(maxHealthPoints, oldHealthPoints, newHealthPoints, healthBar, healthPoints);
-        AnimationTimer fadeInAnimation = fadeInAnimation(depleteHealth);
+        AnimationTimer healthBarAnimation;
+        if (newHealthPoints > oldHealthPoints) healthBarAnimation = gainHealthAnimationTimer(maxHealthPoints,
+                oldHealthPoints, newHealthPoints, healthBar, healthPointsLabel);
+        else healthBarAnimation = depleteHealthAnimationTimer(maxHealthPoints,
+                oldHealthPoints, newHealthPoints, healthBar, healthPointsLabel);
+        AnimationTimer fadeInAnimation = fadeInAnimation(healthBarAnimation);
         healthBarWindow.setOnShown(e -> fadeInAnimation.start());
     }
 
-    private AnimationTimer fadeInAnimation(AnimationTimer depleteHealth) {
+    private AnimationTimer fadeInAnimation(AnimationTimer healthBarAnimation) {
         AnimationTimer fadeInAnimation = new AnimationTimer() {
             private double opacity = 0;
             private long delay = 4_000_000;
@@ -66,14 +70,16 @@ public class HealthBar {
 
                 if (opacity >= 1) {
                     stop();
-                    depleteHealth.start();
+                    healthBarAnimation.start();
                 }
             }
         };
         return fadeInAnimation;
     }
 
-    private AnimationTimer depleteHealthAnimationTimer(double maxHealthPoints, double oldHealthPoints, double newHealthPoints, ProgressBar healthBar, Label healthPoints) {
+    private AnimationTimer depleteHealthAnimationTimer(double maxHealthPoints, double oldHealthPoints,
+                                                       double newHealthPoints, ProgressBar healthBar,
+                                                       Label healthPointsLabel) {
         return new AnimationTimer() {
                 private long delay = 16_500_000;
                 private long prevTime = 0;
@@ -85,7 +91,7 @@ public class HealthBar {
                     if ((now - prevTime) >= delay) {
                         currentHealthPoints--;
                         healthBar.setProgress(currentHealthPoints / maxHealthPoints);
-                        healthPoints.setText((int) currentHealthPoints + "/" + (int) maxHealthPoints);
+                        healthPointsLabel.setText((int) currentHealthPoints + "/" + (int) maxHealthPoints);
                     }
 
                     prevTime = now;
@@ -96,6 +102,33 @@ public class HealthBar {
                     }
                 }
             };
+    }
+
+    private AnimationTimer gainHealthAnimationTimer(double maxHealthPoints, double oldHealthPoints,
+                                                    double newHealthPoints, ProgressBar healthBar,
+                                                    Label healthPointsLabel) {
+        return new AnimationTimer() {
+            private long delay = 16_500_000;
+            private long prevTime = 0;
+            private double currentHealthPoints = oldHealthPoints;
+
+            @Override
+            public void handle(long now) {
+
+                if ((now - prevTime) >= delay) {
+                    currentHealthPoints++;
+                    healthBar.setProgress(currentHealthPoints / maxHealthPoints);
+                    healthPointsLabel.setText((int) currentHealthPoints + "/" + (int) maxHealthPoints);
+                }
+
+                prevTime = now;
+
+                if (currentHealthPoints >= newHealthPoints || currentHealthPoints >= maxHealthPoints) {
+                    stop();
+                    healthBarWindow.close();
+                }
+            }
+        };
     }
 
     public void showAndWait() {

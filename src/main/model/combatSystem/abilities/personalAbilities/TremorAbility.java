@@ -1,7 +1,6 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.DecayingStatusEffect;
 import main.model.combatSystem.abilities.DamageAbility;
 import main.model.combatSystem.statusEffects.Root;
 import main.model.combatSystem.targetTypes.SurroundingTarget;
@@ -12,6 +11,11 @@ public class TremorAbility extends DamageAbility {
     public TremorAbility() {
         super("Tremor", 4, 1, 2, 6, 1.00,
                 "Damage neighbouring enemies while stopping their movement");
+    }
+
+    @Override
+    public String getEffectType() {
+        return "Physical";
     }
 
     @Override
@@ -28,8 +32,7 @@ public class TremorAbility extends DamageAbility {
     }
 
     private void rootUnit(CharacterUnit receivingUnit) {
-        DecayingStatusEffect root = new Root(receivingUnit, receivingUnit.getCharacterStatSheet().getMovement(), 2);
-        receivingUnit.getStatusEffects().addDecayingStatusEffect(root);
+        new Root(receivingUnit, receivingUnit.getCharacterStatSheet().getMovement(), 2);
     }
 
     @Override

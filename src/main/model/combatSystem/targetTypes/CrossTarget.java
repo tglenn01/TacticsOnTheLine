@@ -1,6 +1,8 @@
 package main.model.combatSystem.targetTypes;
 
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
@@ -16,6 +18,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CrossTarget extends TargetType {
+
+    @Override
+    public void setTargetTypeImage() {
+        this.targetTypeImage = new ImageView(new Image("resources/targetTypeImages/CrossTargetType.png"));
+    }
+
+
+
     @Override
     public List<BoardSpace> getTargetPattern(BoardSpace centreSpace, int range, Ability chosenAbility) {
         List<BoardSpace> possibleBoardSpaces = new LinkedList<>();
@@ -24,7 +34,7 @@ public class CrossTarget extends TargetType {
         int xPos = centreSpace.getXCoordinate();
         int yPos = centreSpace.getYCoordinate();
 
-        for (int i = 0; i <= range; i++) {
+        for (int i = 1; i <= range; i++) {
             if (xPos - i >= 0)
                 possibleBoardSpaces.add(boardSpaces[xPos - i][yPos]); // left
             if (xPos + i < currentBoard.getBoardWidth())
@@ -52,7 +62,7 @@ public class CrossTarget extends TargetType {
                     possibleBoardSpaces.add(boardSpaces[xPos + 1][yPos + i]);
             }
         }
-        return removeDuplicates(possibleBoardSpaces);
+        return possibleBoardSpaces;
     }
 
     private List<BoardSpace> removeDuplicates(List<BoardSpace> possibleBoardSpaces) {

@@ -2,7 +2,6 @@ package main.model.combatSystem.abilities.personalAbilities;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
-import main.model.combatSystem.PermanentStatusEffect;
 import main.model.combatSystem.statusEffects.Invulnerable;
 
 public class BarrierAbility extends Ability {
@@ -13,9 +12,13 @@ public class BarrierAbility extends Ability {
     }
 
     @Override
+    public String getEffectType() {
+        return "Support";
+    }
+
+    @Override
     public boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        PermanentStatusEffect invulnerable = new Invulnerable(receivingUnit, 1);
-        receivingUnit.getStatusEffects().addPermanentStatusEffect(invulnerable);
+        new Invulnerable(receivingUnit, 1);
         return true;
     }
 

@@ -15,6 +15,11 @@ public class RescueAbility extends Ability {
     }
 
     @Override
+    public String getEffectType() {
+        return "Support";
+    }
+
+    @Override
     public boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         BoardSpace closetBoardSpace = TacticBaseBattle.getInstance().getCurrentBoard().getClosetBoardSpace(activeUnit.getBoardSpace());
         receivingUnit.setBoardSpace(closetBoardSpace);

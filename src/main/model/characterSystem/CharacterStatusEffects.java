@@ -58,6 +58,7 @@ public class CharacterStatusEffects implements Iterable<StatusEffect> {
             decayingStatusEffects.remove(endedStatusEffect);
             System.out.println(endedStatusEffect.getCondensedName() + " Has ended");
         }
+        activeUnit.getCharacterSprite().updateStatusEffectIndicatorToSprite();
     }
 
     public boolean hasInvulnerable() {
@@ -98,6 +99,7 @@ public class CharacterStatusEffects implements Iterable<StatusEffect> {
     public Iterator<StatusEffect> iterator() {
         return new StatusEffectIterator();
     }
+
 
     private class StatusEffectIterator implements Iterator<StatusEffect> {
         private int cursor = 0;

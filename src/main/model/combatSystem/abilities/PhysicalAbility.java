@@ -10,6 +10,11 @@ public abstract class PhysicalAbility extends DamageAbility {
     }
 
     @Override
+    public String getEffectType() {
+        return "Physical";
+    }
+
+    @Override
     protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         int damage = (activeUnit.getCharacterStatSheet().getStrength() + this.damage) - receivingUnit.getCharacterStatSheet().getArmour();
         if (damage < 0) damage = 0;
