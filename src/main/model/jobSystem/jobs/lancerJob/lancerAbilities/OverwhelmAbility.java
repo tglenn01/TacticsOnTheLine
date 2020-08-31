@@ -6,7 +6,7 @@ import main.model.combatSystem.statusEffects.DefenseDebuff;
 
 public class OverwhelmAbility extends StatusEffectAbility {
     public OverwhelmAbility() {
-        super("Overwhelm", 20, 2, 2, 3, 2,
+        super("Overwhelm", 20, 2, 2, 2, 2,
                 "Scare all neighbouring enemies, weakening their defense");
     }
 

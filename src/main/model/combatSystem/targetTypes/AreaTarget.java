@@ -58,6 +58,7 @@ public class AreaTarget extends TargetType {
     @Override
     public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
+       // possibleBoardSpaces.forEach(space -> space.setOnMouseEntered(s -> space.setBackground(new WaterLandType().hoveredSpace())));
 
         ApplyTargetHandler applyTargetHandler = new ApplyTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets);
         setHandlersToNodes(applyTargetHandler, possibleBoardSpaces, possibleTargets);

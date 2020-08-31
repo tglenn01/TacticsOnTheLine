@@ -28,7 +28,7 @@ public class MovementTarget extends TargetType {
     }
 
     @Override
-    public void displayTargets(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) {
+    public void displayTargets(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
         TacticBaseBattle.getInstance().getCurrentBoard().displayMovementSpaces(activeUnit, possibleBoardSpaces);
     }
 

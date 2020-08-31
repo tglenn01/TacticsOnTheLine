@@ -31,8 +31,8 @@ public abstract class TargetType {
 
     // Overloaded in MovementTarget private class in the MovementAbility class, which will display
     // movement spaces instead which requires activeUnit
-    public void displayTargets(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) {
-        TacticBaseBattle.getInstance().getCurrentBoard().displayAbilitySpaces(possibleBoardSpaces);
+    public void displayTargets(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
+        TacticBaseBattle.getInstance().getCurrentBoard().displayAbilitySpaces(possibleBoardSpaces, chosenAbility);
     }
 
     public abstract void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces);

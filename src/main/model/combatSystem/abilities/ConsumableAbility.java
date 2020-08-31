@@ -1,6 +1,5 @@
 package main.model.combatSystem.abilities;
 
-import main.exception.MenuOpenedException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
@@ -16,12 +15,12 @@ public class ConsumableAbility extends SupportiveAbility {
         super("Item", 0, 1, 1, "Use an item on an ally");
     }
 
-    public void getTargets(CharacterUnit activeUnit, Consumable item) throws MenuOpenedException {
+    public void getTargets(CharacterUnit activeUnit, Consumable item) {
         ItemTarget itemTarget = (ItemTarget) this.targetType;
         List<BoardSpace> possibleBoardSpaces = itemTarget.getTargetPattern(activeUnit.getBoardSpace(), range, this);
         if (activeUnit.getClass() == NPC.class);
         else {
-            itemTarget.displayTargets(activeUnit, possibleBoardSpaces);
+            itemTarget.displayTargets(activeUnit, this, possibleBoardSpaces);
             itemTarget.setHandlers(activeUnit, item, possibleBoardSpaces);
         }
     }

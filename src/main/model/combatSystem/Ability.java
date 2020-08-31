@@ -1,7 +1,6 @@
 package main.model.combatSystem;
 
 import main.exception.AttackMissedException;
-import main.exception.MenuOpenedException;
 import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
@@ -124,11 +123,11 @@ public abstract class Ability {
 
     // calls this.getRange() as some abilities have updating ranges which will override this.getRange() to give their
     // unique range (example being Rescue Abilities range is based off current magic)
-    public void getTargets(CharacterUnit activeUnit) throws MenuOpenedException {
+    public void getTargets(CharacterUnit activeUnit) {
         List<BoardSpace> possibleBoardSpaces = this.targetType.getTargetPattern(activeUnit.getBoardSpace(), this.getRange(), this);
         if (activeUnit.getClass() == NPC.class);
         else {
-            this.targetType.displayTargets(activeUnit, possibleBoardSpaces);
+            this.targetType.displayTargets(activeUnit, this, possibleBoardSpaces);
             this.targetType.setHandlers(activeUnit, this, possibleBoardSpaces);
         }
     }

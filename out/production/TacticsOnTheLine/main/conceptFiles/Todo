@@ -138,8 +138,9 @@ August 29th
 + Health Bar working for healing (done)
 + Item Descriptions (done)
 + Ability Descriptions (done)
-+ Out of mana chosen again label, not fading, looks bad
++ Out of mana chosen again label, not fading, looks bad (done)
 + Hovering over a unit will display attacking range
 + Main menu leaf
 + Ability Descriptions
 + Status Effects hitting allies
++ Targeting BoardSapces for Area Of Effect
