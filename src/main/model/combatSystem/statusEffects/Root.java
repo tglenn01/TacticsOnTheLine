@@ -22,6 +22,10 @@ public class Root extends DecayingStatusEffect {
         this.icon = new Image("resources/statusEffects/MovementDown.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/MovementDown.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         System.out.println(receivingUnit.getCharacterName() + " is now rooted");

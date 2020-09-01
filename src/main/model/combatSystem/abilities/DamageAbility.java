@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import main.exception.AbilityTargetsSelfException;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
@@ -46,11 +48,14 @@ public abstract class DamageAbility extends Ability {
         }
     }
 
+    protected abstract void applyAdditionalEffects(CharacterUnit activeUnit, CharacterUnit receivingUnit);
+
 
     private void calculateDamageDone(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws UnitIsDeadException {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
         int defenderHealth = receivingUnitStatSheet.getHealth();
         int damage = calculateDamage(activeUnit, receivingUnit);
+        applyAdditionalEffects(activeUnit, receivingUnit);
 
         HealthBar healthBar = new HealthBar(receivingUnit.getCharacterStatSheet().getMaxHealth(), defenderHealth, defenderHealth - damage);
         healthBar.showAndWait();
@@ -90,4 +95,21 @@ public abstract class DamageAbility extends Ability {
     }
 
     protected abstract int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit);
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        int expectedDamage = calculateDamage(activeUnit, receivingUnit);
+        return new Label(Integer.toString(expectedDamage));
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
+        StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();
+        double activeUnitChanceToHit = this.accuracy + (activeUnitStatSheet.getDexterity() / 100.00)
+                - (receivingUnitStatSheet.getDexterity() / 100.00);
+        activeUnitChanceToHit *= 100;
+        int hitPercent = (int) activeUnitChanceToHit;
+        return hitPercent;
+    }
 }

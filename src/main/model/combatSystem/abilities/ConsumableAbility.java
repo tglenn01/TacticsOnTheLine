@@ -1,5 +1,6 @@
 package main.model.combatSystem.abilities;
 
+import javafx.scene.Node;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
@@ -54,6 +55,17 @@ public class ConsumableAbility extends SupportiveAbility {
     protected boolean isAreaOfEffect() {
         return false;
     }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return null;
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
+
 
     @Override
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {

@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.statusEffects.Invulnerable;
@@ -30,6 +32,16 @@ public class BarrierAbility extends Ability {
     @Override
     protected boolean isAreaOfEffect() {
         return false;
+    }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(Invulnerable.getStaticIcon());
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
     }
 
     @Override

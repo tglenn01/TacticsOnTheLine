@@ -1,5 +1,7 @@
 package main.model.jobSystem.jobs.battleMageJob.battleMageAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackDebuff;
@@ -30,6 +32,21 @@ public class CrippleAbility extends StatusEffectAbility {
     @Override
     public boolean targetsAlly() {
         return false;
+    }
+
+    @Override
+    public String getEffectType() {
+        return "Status";
+    }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(AttackDebuff.getStaticIcon());
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
     }
 
 }

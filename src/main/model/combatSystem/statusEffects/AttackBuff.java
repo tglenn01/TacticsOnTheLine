@@ -21,6 +21,10 @@ public class AttackBuff extends DecayingStatusEffect {
         this.icon = new Image("resources/statusEffects/AttackBuff.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/AttackBuff.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();

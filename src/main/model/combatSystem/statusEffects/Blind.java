@@ -21,6 +21,10 @@ public class Blind extends DecayingStatusEffect {
         this.icon = new Image("resources/statusEffects/BlindStatus.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/BlindStatus.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         System.out.println(receivingUnit.getCharacterName() + " is blinded for " + potency);

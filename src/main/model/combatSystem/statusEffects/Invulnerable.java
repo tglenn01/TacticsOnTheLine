@@ -21,6 +21,10 @@ public class Invulnerable extends PermanentStatusEffect {
         this.icon = new Image("resources/statusEffects/Invulnerable.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/Invulnerable.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
 

@@ -21,6 +21,10 @@ public class DefenseDebuff extends DecayingStatusEffect {
         this.icon = new Image("resources/statusEffects/DefenseDebuff.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/DefenseDebuff.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         StatSheet receivingUnitStatSheet = receivingUnit.getCharacterStatSheet();

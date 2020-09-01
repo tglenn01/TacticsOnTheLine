@@ -11,7 +11,7 @@ public abstract class MagicAbility extends DamageAbility {
 
     @Override
     public String getEffectType() {
-        return "Magic";
+        return "Magic Damage";
     }
 
     @Override
@@ -20,5 +20,10 @@ public abstract class MagicAbility extends DamageAbility {
                 - receivingUnit.getCharacterStatSheet().getResistance();
         if (damage < 0) damage = 0;
         return damage;
+    }
+
+    @Override
+    protected void applyAdditionalEffects(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        // base magic abilities don't apply addition effect
     }
 }

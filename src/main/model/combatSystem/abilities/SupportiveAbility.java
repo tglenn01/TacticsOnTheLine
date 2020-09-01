@@ -44,4 +44,9 @@ public abstract class SupportiveAbility extends Ability {
         System.out.println(receivingUnit.getCharacterName() + " mana is now " +
                 receivingUnitStatSheet.getMana());
     }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
 }

@@ -1,5 +1,8 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
@@ -35,6 +38,17 @@ public class RescueAbility extends Ability {
     protected boolean isAreaOfEffect() {
         return false;
     }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(new Image("resources/weapons/CrystalStaff.png"));
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
+
 
     @Override
     public boolean targetsAlly() {

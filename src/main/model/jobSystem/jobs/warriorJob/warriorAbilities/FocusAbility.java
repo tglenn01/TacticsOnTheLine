@@ -1,5 +1,7 @@
 package main.model.jobSystem.jobs.warriorJob.warriorAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackBuff;
@@ -29,6 +31,21 @@ public class FocusAbility extends StatusEffectAbility {
     @Override
     public boolean targetsAlly() {
         return false;
+    }
+
+    @Override
+    public String getEffectType() {
+        return "Status";
+    }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(AttackBuff.getStaticIcon());
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
     }
 
 }

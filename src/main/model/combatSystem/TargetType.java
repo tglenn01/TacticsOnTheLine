@@ -5,14 +5,17 @@ import javafx.event.EventHandler;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import main.model.boardSystem.BoardSpace;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
+import main.model.graphics.menus.AbilityPreview;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class TargetType {
@@ -86,7 +89,8 @@ public abstract class TargetType {
         private Ability chosenAbility;
         private List<BoardSpace> possibleBoardSpaces;
         private List<CharacterUnit> possibleTargets;
-        private List<BoardSpace> highlighedSpaces = new ArrayList<>();
+        private List<BoardSpace> highlightedSpaces = new ArrayList<>();
+        private List<AbilityPreview> displayingAbilityPreview = new LinkedList<>();
         private int cursor = 0;
 
 
@@ -130,8 +134,9 @@ public abstract class TargetType {
             removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+            displayingAbilityPreview.forEach(Stage::close);
 
-            activeUnit.takeAction(chosenAbility, highlighedSpaces);
+            activeUnit.takeAction(chosenAbility, highlightedSpaces);
         }
 
         // display what units will be targeted at that space and display ability preview
@@ -142,17 +147,23 @@ public abstract class TargetType {
                 boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR);
                 if (!possibleBoardSpaces.contains(boardSpace)) boardSpace.addEventHandler(MouseEvent.MOUSE_CLICKED, this);
             });
-            highlighedSpaces.addAll(effectedBoardSpaces);
+            highlightedSpaces.addAll(effectedBoardSpaces);
             highlightedUnit = targetUnit;
             cursor++;
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
-            // AbilityPreview abilityPreview = new AbilityPreview(activeUnit, targetUnit);
+
+            for (BoardSpace highlightedSpace : highlightedSpaces) {
+                if (highlightedSpace.isOccupied()) {
+                    AbilityPreview abilityPreview = new AbilityPreview(activeUnit, highlightedSpace.getOccupyingUnit(), chosenAbility);
+                    displayingAbilityPreview.add(abilityPreview);
+                }
+            }
         }
 
         // stop showing the ability preview and return to choosing a board space
         private void revertToTargeting(Event event) {
-            highlighedSpaces.forEach(space -> {
+            highlightedSpaces.forEach(space -> {
                 if (!possibleBoardSpaces.contains(space)) space.removeEventHandler(MouseEvent.MOUSE_CLICKED, this);
                 if (possibleBoardSpaces.contains(space))
                     space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
@@ -160,7 +171,7 @@ public abstract class TargetType {
                     space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
                 else space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
             });
-            highlighedSpaces.clear();
+            highlightedSpaces.clear();
             for (BoardSpace boardSpace : possibleBoardSpaces) {
                 boardSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
                 boardSpace.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler);
@@ -178,6 +189,8 @@ public abstract class TargetType {
             }
             if (possibleBoardSpaces.contains(boardSpace))
                 boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR);
+
+            displayingAbilityPreview.forEach(Stage::close);
         }
 
         // stop showing ability spaces and return to the menu

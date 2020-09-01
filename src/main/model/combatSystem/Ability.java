@@ -1,5 +1,6 @@
 package main.model.combatSystem;
 
+import javafx.scene.Node;
 import main.exception.AttackMissedException;
 import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
@@ -61,6 +62,9 @@ public abstract class Ability {
         if (this.getClass() != MovementAbility.class && !effectedUnits.isEmpty())
             addExperienceAfterEffectResolves(activeUnit, effectedUnits);
     }
+
+    public abstract Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit);
+    public abstract int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit);
 
     protected void addExperienceAfterEffectResolves(CharacterUnit activeUnit, List<CharacterUnit> effectedUnits) {
         activeUnit.getExperiencePoints().addExperiencePoints(activeUnit, getAverageLevel(effectedUnits));

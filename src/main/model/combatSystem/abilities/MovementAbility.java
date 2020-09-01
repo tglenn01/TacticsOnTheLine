@@ -1,5 +1,6 @@
 package main.model.combatSystem.abilities;
 
+import javafx.scene.Node;
 import main.exception.AttackMissedException;
 import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
@@ -20,6 +21,17 @@ public class MovementAbility extends Ability {
     public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
         activeUnit.setBoardSpace(targetedBoardSpaces.get(0));
     }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return null;
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
+
 
     protected boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         // this will not be called as it is called from the super takeAction which will not resolve in this class

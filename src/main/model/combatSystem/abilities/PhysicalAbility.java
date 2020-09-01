@@ -11,7 +11,7 @@ public abstract class PhysicalAbility extends DamageAbility {
 
     @Override
     public String getEffectType() {
-        return "Physical";
+        return "Physical Damage";
     }
 
     @Override
@@ -19,5 +19,10 @@ public abstract class PhysicalAbility extends DamageAbility {
         int damage = (activeUnit.getCharacterStatSheet().getStrength() + this.damage) - receivingUnit.getCharacterStatSheet().getArmour();
         if (damage < 0) damage = 0;
         return damage;
+    }
+
+    @Override
+    protected void applyAdditionalEffects(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        // base physical abilities don't apply additional effect
     }
 }

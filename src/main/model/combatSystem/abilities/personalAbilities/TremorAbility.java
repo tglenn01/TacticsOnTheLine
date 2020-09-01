@@ -1,11 +1,11 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.abilities.DamageAbility;
+import main.model.combatSystem.abilities.PhysicalAbility;
 import main.model.combatSystem.statusEffects.Root;
 import main.model.combatSystem.targetTypes.SurroundingTarget;
 
-public class TremorAbility extends DamageAbility {
+public class TremorAbility extends PhysicalAbility {
 
 
     public TremorAbility() {
@@ -14,20 +14,19 @@ public class TremorAbility extends DamageAbility {
     }
 
     @Override
-    public String getEffectType() {
-        return "Physical";
+    protected void setTargetType() {
+        this.targetType = new SurroundingTarget();
     }
 
     @Override
-    protected void setTargetType() {
-        this.targetType = new SurroundingTarget();
+    protected void applyAdditionalEffects(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        rootUnit(receivingUnit);
     }
 
     @Override
     protected int calculateDamage(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
         int damage = (activeUnit.getCharacterStatSheet().getStrength() + this.damage) - receivingUnit.getCharacterStatSheet().getArmour();
         if (damage < 0) damage = 0;
-        rootUnit(receivingUnit);
         return damage;
     }
 

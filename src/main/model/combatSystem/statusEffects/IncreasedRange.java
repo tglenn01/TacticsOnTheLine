@@ -24,6 +24,10 @@ public class IncreasedRange extends DecayingStatusEffect {
         this.icon = new Image("resources/statusEffects/RangeUp.png");
     }
 
+    public static Image getStaticIcon() {
+        return new Image("resources/statusEffects/RangeUp.png");
+    }
+
     @Override
     protected void applyStatusEffect(CharacterUnit receivingUnit, int potency) {
         for (Ability ability : receivingUnit.getAbilityList()) {

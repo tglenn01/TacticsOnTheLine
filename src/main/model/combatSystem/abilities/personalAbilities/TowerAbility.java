@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.statusEffects.IncreasedRange;
@@ -12,10 +14,7 @@ public class TowerAbility extends Ability {
                 "Root yourself increasing the range of magical abilities");
     }
 
-    @Override
-    public String getEffectType() {
-        return "Support";
-    }
+
 
     @Override
     public boolean resolveEffect(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
@@ -36,6 +35,22 @@ public class TowerAbility extends Ability {
     protected boolean isAreaOfEffect() {
         return false;
     }
+
+    @Override
+    public String getEffectType() {
+        return "Status";
+    }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(IncreasedRange.getStaticIcon());
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
+
 
     @Override
     public boolean targetsAlly() {

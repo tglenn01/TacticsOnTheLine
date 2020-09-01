@@ -1,5 +1,7 @@
 package main.model.combatSystem.abilities.personalAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.SupportiveAbility;
 
@@ -12,7 +14,7 @@ public class DeactivateAbility extends SupportiveAbility {
 
     @Override
     public String getEffectType() {
-        return "Support";
+        return "Heal";
     }
 
     @Override
@@ -35,6 +37,17 @@ public class DeactivateAbility extends SupportiveAbility {
     protected boolean isAreaOfEffect() {
         return false;
     }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new Label(Integer.toString(activeUnit.getCharacterStatSheet().getMaxHealth()));
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
+    }
+
 
     @Override
     public boolean targetsAlly() {

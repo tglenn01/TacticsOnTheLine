@@ -132,7 +132,7 @@ August 29th
 + Added visual indicators of status effects
 + Audio
 + Enemy AI
-+ Damage previews
++ Damage previews (done)
 + Update character stat menu, include current xp (done)
 + Grey out unavailable options in Battle Menu (done)
 + Health Bar working for healing (done)
@@ -144,3 +144,7 @@ August 29th
 + Ability Descriptions
 + Status Effects hitting allies
 + Targeting BoardSpaces for Area Of Effect
+
+September 1st
++ Make AbilityPreview look nice
++ Make AbilityPreview work with all targetTypes

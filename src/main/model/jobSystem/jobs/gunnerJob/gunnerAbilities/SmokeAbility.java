@@ -1,5 +1,7 @@
 package main.model.jobSystem.jobs.gunnerJob.gunnerAbilities;
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.Blind;
@@ -35,5 +37,20 @@ public class SmokeAbility extends StatusEffectAbility {
     @Override
     protected void setTargetType() {
         this.targetType = new RingTarget();
+    }
+
+    @Override
+    public String getEffectType() {
+        return "Status";
+    }
+
+    @Override
+    public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return new ImageView(Blind.getStaticIcon());
+    }
+
+    @Override
+    public int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
+        return 100;
     }
 }
