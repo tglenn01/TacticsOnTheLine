@@ -1,5 +1,6 @@
 package main.model.combatSystem.targetTypes;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -7,10 +8,12 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
 import main.model.graphics.menus.BattleMenu;
+import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
@@ -46,6 +49,12 @@ public class SurroundingTarget extends TargetType {
             if (space.isOccupied()) possibleTargets.add(space.getOccupyingUnit());
         });
 
+        for (BoardSpace boardSpace : possibleBoardSpaces) {
+            boardSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
+            boardSpace.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler);
+        }
+
+
         SurroundingTargetHandler surroundingTargetHandler = new SurroundingTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets);
 
         setHandlersToNodes(surroundingTargetHandler, possibleBoardSpaces, possibleTargets);
@@ -57,6 +66,8 @@ public class SurroundingTarget extends TargetType {
         private Ability chosenAbility;
         private List<BoardSpace> possibleBoardSpaces;
         private List<CharacterUnit> possibleTargets;
+        boolean highlighted = false;
+        private int cursor = 0;
 
         public SurroundingTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces, List<CharacterUnit> possibleTargets) {
             this.activeUnit = activeUnit;
@@ -67,15 +78,60 @@ public class SurroundingTarget extends TargetType {
 
         @Override
         public void handle(MouseEvent event) {
+            if (repeatingCall(event)) return;
+
             if (event.getButton() == MouseButton.PRIMARY) {
-                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                activeUnit.takeAction(chosenAbility, possibleBoardSpaces);
+                if (cursor == 0) {
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    possibleBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR));
+                    cursor++;
+                    highlighted = true;
+                } else {
+                    removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    activeUnit.takeAction(chosenAbility, possibleBoardSpaces);
+                }
+
             } else if (event.getButton() == MouseButton.SECONDARY) {
-                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+                if (cursor == 0) {
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+                } else {
+                    possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    possibleBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR));
+                    maintainHighlightOnMouseSpace(event);
+                    cursor--;
+                    highlighted = false;
+                }
+
             }
+        }
+
+        private void maintainHighlightOnMouseSpace(MouseEvent event) {
+            BoardSpace boardSpace;
+            if (event.getSource().getClass() == BoardSpace.class) {
+                boardSpace = (BoardSpace) event.getSource();
+
+            } else {
+                CharacterSprite sprite = (CharacterSprite) event.getSource();
+                boardSpace = sprite.getUnit().getBoardSpace();
+            }
+            if (possibleBoardSpaces.contains(boardSpace))
+                boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR);
+        }
+
+        // as boardSpace and characterSprite overlap, the handle is called twice, this prevents that
+        private boolean repeatingCall(Event event) {
+            if (event.getSource().getClass() == BoardSpace.class) {
+                BoardSpace boardSpace = (BoardSpace) event.getSource();
+                return boardSpace.isOccupied();
+            }
+            return false;
         }
     }
 }

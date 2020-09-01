@@ -1,12 +1,9 @@
 package main.model.boardSystem;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Pair;
 import main.model.boardSystem.landTypes.GrassLandType;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
-import main.model.combatSystem.Ability;
 
 import java.util.*;
 
@@ -47,6 +44,10 @@ public class Board {
     public List<BoardSpace> getMovementArea(CharacterUnit activeUnit) {
         AreaFinder areaFinder = new AreaFinder(activeUnit);
         return areaFinder.findArea();
+    }
+
+    public boolean isSpaceMovementHighlighted(BoardSpace boardSpace) {
+        return !movementHighlightedSpaces.get(boardSpace).isEmpty();
     }
 
 
@@ -158,29 +159,10 @@ public class Board {
         }
     }
 
-    public void displayAbilitySpaces(List<BoardSpace> toHighlight, Ability chosenAbility) {
+    public void displayAbilitySpaces(List<BoardSpace> toHighlight) {
         for (BoardSpace boardSpace : toHighlight) {
             boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
             abilityHighlightedSpace.add(boardSpace);
-            EventHandler<MouseEvent> hoverHandler = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if (abilityHighlightedSpace.contains(boardSpace))
-                       boardSpace.setBackground(boardSpace.getLandType().hoveredSpace());
-                    else boardSpace.removeEventHandler(MouseEvent.MOUSE_ENTERED, this);
-                }
-            };
-            boardSpace.setOnMouseEntered(hoverHandler);
-            EventHandler<MouseEvent> exitedHandler = new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-
-                    if (abilityHighlightedSpace.contains(boardSpace)) {
-                        boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
-                    } else boardSpace.removeEventHandler(MouseEvent.MOUSE_ENTERED, this);
-                }
-            };
-            boardSpace.setOnMouseExited(exitedHandler);
         }
     }
 

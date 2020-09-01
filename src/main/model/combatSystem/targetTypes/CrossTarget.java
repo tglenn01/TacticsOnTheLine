@@ -1,5 +1,6 @@
 package main.model.combatSystem.targetTypes;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -7,6 +8,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
@@ -31,35 +33,35 @@ public class CrossTarget extends TargetType {
         List<BoardSpace> possibleBoardSpaces = new LinkedList<>();
         Board currentBoard = TacticBaseBattle.getInstance().getCurrentBoard();
         BoardSpace[][] boardSpaces = currentBoard.getBoardSpaces();
-        int xPos = centreSpace.getXCoordinate();
-        int yPos = centreSpace.getYCoordinate();
+        int rootX = centreSpace.getXCoordinate();
+        int rootY = centreSpace.getYCoordinate();
 
         for (int i = 1; i <= range; i++) {
-            if (xPos - i >= 0)
-                possibleBoardSpaces.add(boardSpaces[xPos - i][yPos]); // left
-            if (xPos + i < currentBoard.getBoardWidth())
-                possibleBoardSpaces.add(boardSpaces[xPos + i][yPos]); // right
-            if (yPos + i < currentBoard.getBoardHeight())
-                possibleBoardSpaces.add(boardSpaces[xPos][yPos + i]); // up
-            if (yPos - i >= 0)
-                possibleBoardSpaces.add(boardSpaces[xPos][yPos - i]); // down
+            if (rootX - i >= 0)
+                possibleBoardSpaces.add(boardSpaces[rootX - i][rootY]); // left
+            if (rootX + i < currentBoard.getBoardWidth())
+                possibleBoardSpaces.add(boardSpaces[rootX + i][rootY]); // right
+            if (rootY + i < currentBoard.getBoardHeight())
+                possibleBoardSpaces.add(boardSpaces[rootX][rootY + i]); // up
+            if (rootY - i >= 0)
+                possibleBoardSpaces.add(boardSpaces[rootX][rootY - i]); // down
             if (i == range - 1) {
-                if ((xPos - i >= 0) && (yPos + 1 >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos - i][yPos + 1]);
-                if ((xPos - i >= 0) && (yPos - 1 >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos - i][yPos - 1]);
-                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos - 1 >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos + i][yPos - 1]);
-                if ((xPos + i < currentBoard.getBoardWidth()) && (yPos + 1 < currentBoard.getBoardHeight()))
-                    possibleBoardSpaces.add(boardSpaces[xPos + i][yPos + 1]);
-                if ((xPos - 1 >= 0) && (yPos - i >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos - 1][yPos - i]);
-                if ((xPos - 1 >= 0) && (yPos + i < currentBoard.getBoardHeight()))
-                    possibleBoardSpaces.add(boardSpaces[xPos - 1][yPos + i]);
-                if ((xPos + 1 < currentBoard.getBoardWidth()) && (yPos - i >= 0))
-                    possibleBoardSpaces.add(boardSpaces[xPos + 1][yPos - i]);
-                if ((xPos + 1 < currentBoard.getBoardWidth()) && (yPos + i < currentBoard.getBoardHeight()))
-                    possibleBoardSpaces.add(boardSpaces[xPos + 1][yPos + i]);
+                if ((rootX - i >= 0) && (rootY + 1 >= 0))
+                    possibleBoardSpaces.add(boardSpaces[rootX - i][rootY + 1]);
+                if ((rootX - i >= 0) && (rootY - 1 >= 0))
+                    possibleBoardSpaces.add(boardSpaces[rootX - i][rootY - 1]);
+                if ((rootX + i < currentBoard.getBoardWidth()) && (rootY - 1 >= 0))
+                    possibleBoardSpaces.add(boardSpaces[rootX + i][rootY - 1]);
+                if ((rootX + i < currentBoard.getBoardWidth()) && (rootY + 1 < currentBoard.getBoardHeight()))
+                    possibleBoardSpaces.add(boardSpaces[rootX + i][rootY + 1]);
+                if ((rootX - 1 >= 0) && (rootY - i >= 0))
+                    possibleBoardSpaces.add(boardSpaces[rootX - 1][rootY - i]);
+                if ((rootX - 1 >= 0) && (rootY + i < currentBoard.getBoardHeight()))
+                    possibleBoardSpaces.add(boardSpaces[rootX - 1][rootY + i]);
+                if ((rootX + 1 < currentBoard.getBoardWidth()) && (rootY - i >= 0))
+                    possibleBoardSpaces.add(boardSpaces[rootX + 1][rootY - i]);
+                if ((rootX + 1 < currentBoard.getBoardWidth()) && (rootY + i < currentBoard.getBoardHeight()))
+                    possibleBoardSpaces.add(boardSpaces[rootX + 1][rootY + i]);
             }
         }
         return possibleBoardSpaces;
@@ -101,6 +103,8 @@ public class CrossTarget extends TargetType {
         List<CharacterUnit> possibleTargets = new LinkedList<>();
         possibleBoardSpaces.forEach(space -> {
             if (space.isOccupied()) possibleTargets.add(space.getOccupyingUnit());
+            space.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
+            space.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler);
         });
 
         CrossTargetHandler crossTargetHandler = new CrossTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets,
@@ -119,6 +123,8 @@ public class CrossTarget extends TargetType {
         private List<BoardSpace> right;
         private List<BoardSpace> up;
         private List<BoardSpace> down;
+        private List<BoardSpace> highlightedBoardSpaces = new LinkedList<>();
+        private int cursor = 0;
 
         public CrossTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces, List<CharacterUnit> possibleTargets,
                                   List<BoardSpace> left, List<BoardSpace> right, List<BoardSpace> up, List<BoardSpace> down) {
@@ -134,6 +140,7 @@ public class CrossTarget extends TargetType {
 
         @Override
         public void handle(MouseEvent event) {
+            if (repeatingCall(event)) return;
             BoardSpace destination;
             if (event.getSource().getClass() == BoardSpace.class) {
                  destination = (BoardSpace) event.getSource();
@@ -142,20 +149,56 @@ public class CrossTarget extends TargetType {
                  destination = sprite.getUnit().getBoardSpace();
             }
 
-            if (event.getButton() == MouseButton.PRIMARY) {
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
 
-                if (left.contains(destination)) activeUnit.takeAction(chosenAbility, left);
-                else if (right.contains(destination)) activeUnit.takeAction(chosenAbility, right);
-                else if (up.contains(destination)) activeUnit.takeAction(chosenAbility, up);
-                else activeUnit.takeAction(chosenAbility, down);
+            if (event.getButton() == MouseButton.PRIMARY) {
+                if (cursor == 0) {
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+
+                    if (left.contains(destination)) highlightedBoardSpaces.addAll(left);
+                    else if (right.contains(destination)) highlightedBoardSpaces.addAll(right);
+                    else if (up.contains(destination)) highlightedBoardSpaces.addAll(up);
+                    else highlightedBoardSpaces.addAll(down);
+
+                    highlightedBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR));
+                    cursor++;
+                } else if (highlightedBoardSpaces.contains(destination)) {
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+
+                    if (left.contains(destination)) activeUnit.takeAction(chosenAbility, left);
+                    else if (right.contains(destination)) activeUnit.takeAction(chosenAbility, right);
+                    else if (up.contains(destination)) activeUnit.takeAction(chosenAbility, up);
+                    else activeUnit.takeAction(chosenAbility, down);
+                }
+
 
             } else if (event.getButton() == MouseButton.SECONDARY)  {
-                removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
-                TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
-                BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+                if (cursor == 0) {
+                    removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    BattleMenu.getInstance().displayCharacterMenu(activeUnit);
+                } else {
+                    highlightedBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR));
+                    highlightedBoardSpaces.clear();
+                    possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                    possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    cursor--;
+                }
+
             }
+        }
+
+        private boolean repeatingCall(Event event) {
+            if (event.getSource().getClass() == BoardSpace.class) {
+                BoardSpace boardSpace = (BoardSpace) event.getSource();
+                return boardSpace.isOccupied();
+            }
+            return false;
         }
     }
 }

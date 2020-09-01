@@ -2,7 +2,6 @@ package main.model.characterSystem;
 
 import javafx.scene.control.Label;
 import javafx.stage.Popup;
-import main.exception.MenuOpenedException;
 import main.exception.OutOfActionsException;
 import main.exception.OutOfManaException;
 import main.model.combatSystem.Ability;
@@ -73,8 +72,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
             Popup outOfManaMessage = new Popup();
             outOfManaMessage.getContent().add(new Label("Out of Mana Choose Again"));
             outOfManaMessage.show(TacticBaseBattle.getInstance().getPrimaryStage());
-        } catch (MenuOpenedException e) {
-            // menu is opened and no actions are taken
         }
     }
 
@@ -85,8 +82,6 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
             consumableAbility.getTargets(this, item);
         } catch (OutOfActionsException outOfActionsException) {
             outOfActionsException.printOutOfActionsError();
-        }  catch (MenuOpenedException e) {
-            // menu is opened and no actions are taken
         }
     }
 

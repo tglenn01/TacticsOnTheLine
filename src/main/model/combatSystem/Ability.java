@@ -127,7 +127,7 @@ public abstract class Ability {
         List<BoardSpace> possibleBoardSpaces = this.targetType.getTargetPattern(activeUnit.getBoardSpace(), this.getRange(), this);
         if (activeUnit.getClass() == NPC.class);
         else {
-            this.targetType.displayTargets(activeUnit, this, possibleBoardSpaces);
+            this.targetType.displayTargets(activeUnit, possibleBoardSpaces);
             this.targetType.setHandlers(activeUnit, this, possibleBoardSpaces);
         }
     }

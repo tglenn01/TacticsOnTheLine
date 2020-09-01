@@ -2,6 +2,7 @@ package main.model.combatSystem.targetTypes;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
@@ -45,6 +46,11 @@ public class RingTarget extends TargetType {
     @Override
     public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
         List<CharacterUnit> possibleTargets = TacticBaseBattle.getInstance().getCurrentBoard().getPossibleTargets(possibleBoardSpaces);
+
+        for (BoardSpace boardSpace : possibleBoardSpaces) {
+            boardSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
+            boardSpace.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler);
+        }
 
         ApplyTargetHandler applyTargetHandler = new ApplyTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces, possibleTargets);
         setHandlersToNodes(applyTargetHandler, possibleBoardSpaces, possibleTargets);

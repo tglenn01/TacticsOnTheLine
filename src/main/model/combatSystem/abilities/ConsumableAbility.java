@@ -20,7 +20,7 @@ public class ConsumableAbility extends SupportiveAbility {
         List<BoardSpace> possibleBoardSpaces = itemTarget.getTargetPattern(activeUnit.getBoardSpace(), range, this);
         if (activeUnit.getClass() == NPC.class);
         else {
-            itemTarget.displayTargets(activeUnit, this, possibleBoardSpaces);
+            itemTarget.displayTargets(activeUnit, possibleBoardSpaces);
             itemTarget.setHandlers(activeUnit, item, possibleBoardSpaces);
         }
     }

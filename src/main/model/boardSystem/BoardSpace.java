@@ -1,11 +1,11 @@
 package main.model.boardSystem;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 
-public class BoardSpace extends StackPane {
+public class BoardSpace extends BorderPane {
     private LandType landType;
     private CharacterUnit occupyingUnit;
     private int xCoordinate;
@@ -21,7 +21,7 @@ public class BoardSpace extends StackPane {
     public void setOccupyingUnit(CharacterUnit occupyingUnit) {
         this.occupyingUnit = occupyingUnit;
         Pane spritePane = occupyingUnit.getCharacterSprite();
-        this.getChildren().add(spritePane);
+        this.setCenter(spritePane);
         this.setCenterShape(true);
         if (occupyingUnit.getBoardSpace() != this) {
             occupyingUnit.setBoardSpace(this);

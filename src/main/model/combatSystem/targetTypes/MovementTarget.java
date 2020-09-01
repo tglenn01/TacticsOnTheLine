@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.model.boardSystem.BoardSpace;
+import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
@@ -16,6 +17,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MovementTarget extends TargetType {
+    private EventHandler<MouseEvent> exitMovementHandler = event -> {
+        BoardSpace boardSpace = (BoardSpace) event.getSource();
+        boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
+    };
 
     @Override
     public void setTargetTypeImage() {
@@ -28,12 +33,17 @@ public class MovementTarget extends TargetType {
     }
 
     @Override
-    public void displayTargets(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
+    public void displayTargets(CharacterUnit activeUnit, List<BoardSpace> possibleBoardSpaces) {
         TacticBaseBattle.getInstance().getCurrentBoard().displayMovementSpaces(activeUnit, possibleBoardSpaces);
     }
 
     @Override
     public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {
+        for (BoardSpace boardSpace : possibleBoardSpaces) {
+            boardSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
+            boardSpace.addEventHandler(MouseEvent.MOUSE_EXITED, exitMovementHandler);
+        }
+
         MovementTargetHandler movementTargetHandler = new MovementTargetHandler(activeUnit, chosenAbility, possibleBoardSpaces);
         setHandlersToNodes(movementTargetHandler, possibleBoardSpaces, null);
     }
@@ -54,6 +64,8 @@ public class MovementTarget extends TargetType {
         public void handle(MouseEvent event) {
             BoardSpace destination = (BoardSpace) event.getSource();
             if (event.getButton() == MouseButton.PRIMARY && !destination.isOccupied()) {
+                possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitMovementHandler));
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
                 removeHandlersFromNodes(this, possibleBoardSpaces, null);
 
@@ -62,6 +74,8 @@ public class MovementTarget extends TargetType {
 
                 activeUnit.takeAction(chosenAbility, targetedBoardSpaces);
             } else if (event.getButton() == MouseButton.SECONDARY)  {
+                possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
+                possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitMovementHandler));
                 removeHandlersFromNodes(this, possibleBoardSpaces, null);
                 TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(activeUnit);
                 BattleMenu.getInstance().displayCharacterMenu(activeUnit);
