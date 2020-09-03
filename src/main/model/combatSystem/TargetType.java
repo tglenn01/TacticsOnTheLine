@@ -123,13 +123,13 @@ public abstract class TargetType {
                 } else if (cursor == 0) {
                     abilityPreview(targetUnit);
                 } else if (cursor == 1 && targetUnit == highlightedUnit) {
-                    useAbility(targetUnit);
+                    useAbility();
                 }
             }
         }
 
-        // remove handlers and use abilites on targets
-        private void useAbility(CharacterUnit targetUnit) {
+        // remove handlers and use abilities on targets
+        private void useAbility() {
             TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
             removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));

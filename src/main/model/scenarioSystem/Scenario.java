@@ -12,6 +12,7 @@ public abstract class Scenario {
     protected String scenarioName;
     protected List<CharacterUnit> listOfEnemies;
     protected Board scenarioBoard;
+    protected boolean completed = false;
 
     public Scenario() {
         listOfEnemies = new ArrayList<>();
@@ -37,6 +38,14 @@ public abstract class Scenario {
     }
 
     protected abstract void setBoardLayout();
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isCompleted() {
+        return this.completed;
+    }
 
     protected abstract void setAllyCharacters(List<CharacterUnit> playableCharacters);
 

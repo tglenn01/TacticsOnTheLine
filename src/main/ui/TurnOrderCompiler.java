@@ -88,6 +88,7 @@ public class TurnOrderCompiler {
 
     public void removeDeadCharacterFromFieldedCharacters(CharacterUnit deadCharacter) throws BattleIsOverException {
         TacticBaseBattle.getInstance().getCurrentBoard().stopShowingMovementSpaces(deadCharacter);
+        fieldedCharacters.remove(deadCharacter);
         fadeDeadCharacter(deadCharacter);
         if (isBattleOver()) throw new BattleIsOverException();
     }
@@ -120,7 +121,6 @@ public class TurnOrderCompiler {
 
                 if (opacity <= 0) {
                     stop();
-                    fieldedCharacters.remove(deadCharacter);
                     deadCharacter.getBoardSpace().removeOccupyingUnit();
                 }
             }

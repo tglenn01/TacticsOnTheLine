@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
+import main.model.characterSystem.characterList.*;
 import main.model.graphics.scenes.CharacterSelect;
 import main.model.graphics.scenes.ScenarioSelectScreen;
 import main.model.itemSystem.Consumable;
@@ -23,6 +24,8 @@ import main.model.jobSystem.jobs.nobleJob.Noble;
 import main.model.jobSystem.jobs.thiefJob.Thief;
 import main.model.jobSystem.jobs.warriorJob.Warrior;
 import main.model.scenarioSystem.Scenario;
+import main.model.scenarioSystem.TrainingScenario;
+import main.model.scenarioSystem.WoodsScenario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +34,16 @@ public class TacticBaseBattle {
     private static TacticBaseBattle tacticBaseBattle;
     private List<CharacterUnit> partyMemberList;
     private List<Job> availableJobs;
+    private List<Scenario> availableScenarios;
     private Stage primaryStage;
     private Board currentBoard;
     private Battle battle;
 
     private TacticBaseBattle() {
-        partyMemberList = new ArrayList<>();
-        availableJobs = new ArrayList<>();
         initializeJobs();
+        initializePartyMemberList();
         initializeItems();
+        initializeScenarios();
     }
 
     public static TacticBaseBattle getInstance() {
@@ -49,8 +53,25 @@ public class TacticBaseBattle {
       return tacticBaseBattle;
     }
 
+    private void initializePartyMemberList() {
+        if (partyMemberList == null || partyMemberList.size() == 0) {
+            partyMemberList = new ArrayList<>();
+            CharacterUnit graham = new Graham();
+            CharacterUnit harry = new Harry();
+            CharacterUnit willow = new Willow();
+            CharacterUnit no1 = new No1();
+            CharacterUnit liam = new Liam();
+            partyMemberList.add(graham);
+            partyMemberList.add(harry);
+            partyMemberList.add(willow);
+            partyMemberList.add(no1);
+            partyMemberList.add(liam);
+        }
+    }
+
 
     private void initializeJobs() {
+        availableJobs = new ArrayList<>();
         availableJobs.add(new Archer());
         availableJobs.add(new Bard());
         availableJobs.add(new BattleMage());
@@ -73,6 +94,16 @@ public class TacticBaseBattle {
         consumables.addConsumableItem(manaPotion);
         consumables.addConsumableItem(liquidCourage);
         consumables.addConsumableItem(glassShield);
+    }
+
+    private void initializeScenarios() {
+        if (availableScenarios == null) {
+            availableScenarios = new ArrayList<>();
+            Scenario trainingScenario = new TrainingScenario();
+            Scenario woodsScenario = new WoodsScenario();
+            availableScenarios.add(trainingScenario);
+            availableScenarios.add(woodsScenario);
+        }
     }
 
     // have the player choose the classes of the characters
@@ -113,6 +144,10 @@ public class TacticBaseBattle {
         return this.availableJobs;
     }
 
+    public List<Scenario> getAvailableScenarios() {
+        return this.availableScenarios;
+    }
+
     public Board getCurrentBoard() {
         return this.currentBoard;
     }
@@ -123,5 +158,16 @@ public class TacticBaseBattle {
 
     public Battle getBattle() {
         return this.battle;
+    }
+
+    public void setAvailableScenarios(List<Scenario> scenarios) {
+        if (scenarios.size() != 0) this.availableScenarios = scenarios;
+    }
+
+    public Job getJobFromJobTitle(String jobTitle) {
+        for (Job job : availableJobs) {
+            if (job.getJobTitle().equals(jobTitle)) return job;
+        }
+        return null;
     }
 }

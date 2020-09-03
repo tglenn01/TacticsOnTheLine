@@ -15,6 +15,7 @@ import main.model.itemSystem.Consumable;
 import main.model.jobSystem.BasicAttackAbility;
 import main.model.jobSystem.Job;
 import main.ui.TacticBaseBattle;
+import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -50,6 +51,33 @@ public abstract class CharacterUnit {
         statusEffects = new CharacterStatusEffects();
         experiencePoints = new ExperiencePoints();
     }
+
+    public void setDataFromSaveData(String jobTitle, int totalExperience, JSONArray maxStats) {
+        this.setJob(TacticBaseBattle.getInstance().getJobFromJobTitle(jobTitle));
+        int level = 0;
+        while (totalExperience >= 100) {
+            level++;
+            totalExperience -= 100;
+        }
+        experiencePoints.setLevel(level);
+        experiencePoints.setCurrentExperience(totalExperience);
+
+        List<Integer> statsValue = new ArrayList<>();
+        for (int i = 0; i < maxStats.size(); i++) {
+            Long stat = (Long) maxStats.get(i);
+            statsValue.add(i, stat.intValue());
+        }
+        characterStatSheet.setMaxHealth(statsValue.get(0));
+        characterStatSheet.setMaxMana(statsValue.get(1));
+        characterStatSheet.setBaseStrength(statsValue.get(2));
+        characterStatSheet.setBaseMagic(statsValue.get(3));
+        characterStatSheet.setBaseArmour(statsValue.get(4));
+        characterStatSheet.setBaseResistance(statsValue.get(5));
+        characterStatSheet.setBaseSpeed(statsValue.get(6));
+        characterStatSheet.setBaseDexterity(statsValue.get(7));
+        characterStatSheet.setMovement(statsValue.get(8));
+    }
+
 
     protected abstract void setPersonalStatBonuses();
     protected abstract void setCharacterSprite();

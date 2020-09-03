@@ -41,7 +41,10 @@ public class RescueAbility extends Ability {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(new Image("resources/weapons/CrystalStaff.png"));
+        ImageView imageView = new ImageView(new Image("resources/weapons/CrystalStaff.png"));
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(42);
+        return imageView;
     }
 
     @Override

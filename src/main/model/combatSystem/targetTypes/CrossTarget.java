@@ -6,12 +6,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
+import main.model.graphics.menus.AbilityPreview;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
@@ -124,6 +126,7 @@ public class CrossTarget extends TargetType {
         private List<BoardSpace> up;
         private List<BoardSpace> down;
         private List<BoardSpace> highlightedBoardSpaces = new LinkedList<>();
+        private List<AbilityPreview> displayingAbilityPreview = new LinkedList<>();
         private int cursor = 0;
 
         public CrossTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces, List<CharacterUnit> possibleTargets,
@@ -160,6 +163,13 @@ public class CrossTarget extends TargetType {
                     else if (up.contains(destination)) highlightedBoardSpaces.addAll(up);
                     else highlightedBoardSpaces.addAll(down);
 
+                    for (BoardSpace highlightedSpace : highlightedBoardSpaces) {
+                        if (highlightedSpace.isOccupied()) {
+                            AbilityPreview abilityPreview = new AbilityPreview(activeUnit, highlightedSpace.getOccupyingUnit(), chosenAbility);
+                            displayingAbilityPreview.add(abilityPreview);
+                        }
+                    }
+
                     highlightedBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR));
                     cursor++;
                 } else if (highlightedBoardSpaces.contains(destination)) {
@@ -167,6 +177,7 @@ public class CrossTarget extends TargetType {
                     removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
                     possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
                     possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
+                    displayingAbilityPreview.forEach(Stage::close);
 
                     if (left.contains(destination)) activeUnit.takeAction(chosenAbility, left);
                     else if (right.contains(destination)) activeUnit.takeAction(chosenAbility, right);
@@ -185,6 +196,7 @@ public class CrossTarget extends TargetType {
                 } else {
                     highlightedBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR));
                     highlightedBoardSpaces.clear();
+                    displayingAbilityPreview.forEach(Stage::close);
                     possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
                     possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
                     cursor--;

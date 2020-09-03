@@ -51,8 +51,8 @@ public class TrainingScenario extends Scenario {
     protected void setEnemies() {
         int i = 1;
         for (CharacterUnit enemy : listOfEnemies) {
-            scenarioBoard.setCharacterToBoardSpace(enemy, (int) (scenarioBoard.getBoardWidth() - i),
-                    (int) (scenarioBoard.getBoardHeight() - i));
+            scenarioBoard.setCharacterToBoardSpace(enemy, (int) (scenarioBoard.getBoardWidth() - i - 3),
+                    (int) (scenarioBoard.getBoardHeight() - 6));
             i++;
         }
     }

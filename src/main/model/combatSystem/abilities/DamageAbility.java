@@ -57,8 +57,10 @@ public abstract class DamageAbility extends Ability {
         int damage = calculateDamage(activeUnit, receivingUnit);
         applyAdditionalEffects(activeUnit, receivingUnit);
 
-        HealthBar healthBar = new HealthBar(receivingUnit.getCharacterStatSheet().getMaxHealth(), defenderHealth, defenderHealth - damage);
+        HealthBar healthBar = new HealthBar(receivingUnit, receivingUnit.getCharacterStatSheet().getMaxHealth(), defenderHealth, defenderHealth - damage);
         healthBar.showAndWait();
+
+        effectPopupAnimation(receivingUnit, damage, "damageNode");
 
 
         defenderHealth = defenderHealth - damage;
@@ -72,7 +74,10 @@ public abstract class DamageAbility extends Ability {
             throw new UnitIsDeadException(receivingUnit);
         }
         receivingUnitStatSheet.setHealth(defenderHealth);
+
+
     }
+
 
     private void checkIfAbilityHit(CharacterUnit activeUnit, CharacterUnit receivingUnit) throws AttackMissedException {
         StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
@@ -110,6 +115,7 @@ public abstract class DamageAbility extends Ability {
                 - (receivingUnitStatSheet.getDexterity() / 100.00);
         activeUnitChanceToHit *= 100;
         int hitPercent = (int) activeUnitChanceToHit;
+        if (hitPercent > 100) hitPercent = 100;
         return hitPercent;
     }
 }

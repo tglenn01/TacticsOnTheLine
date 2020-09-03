@@ -8,8 +8,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.model.graphics.DefaultScene;
 import main.model.scenarioSystem.Scenario;
-import main.model.scenarioSystem.TrainingScenario;
-import main.model.scenarioSystem.WoodsScenario;
 import main.ui.TacticBaseBattle;
 
 public class ScenarioSelectScreen extends DefaultScene {
@@ -45,20 +43,15 @@ public class ScenarioSelectScreen extends DefaultScene {
     private HBox getPossibleScenarios() {
         HBox scenarios = new HBox();
 
-        Scenario trainingScenario = new TrainingScenario();
-        Scenario woodsScenario = new WoodsScenario();
+        for (Scenario scenario : TacticBaseBattle.getInstance().getAvailableScenarios()) {
+            Button scenarioButton = new Button(scenario.getScenarioName());
+            scenarioButton.setPrefSize(200, 150);
+            scenarioButton.setId("fancyNode");
+            scenarioButton.setOnMouseClicked(e -> TacticBaseBattle.getInstance().startBattle(scenario));
+            if (scenario.isCompleted()) scenarioButton.setDisable(true);
+            scenarios.getChildren().add(scenarioButton);
+        }
 
-        Button trainingScenarioButton = new Button(trainingScenario.getScenarioName());
-        trainingScenarioButton.setPrefSize(200, 150);
-        trainingScenarioButton.setId("fancyNode");
-        Button woodsScenarioButton = new Button(woodsScenario.getScenarioName());
-        woodsScenarioButton.setPrefSize(200, 150);
-        woodsScenarioButton.setId("fancyNode");
-
-        trainingScenarioButton.setOnMouseClicked(e -> TacticBaseBattle.getInstance().startBattle(trainingScenario));
-        woodsScenarioButton.setOnMouseClicked(event -> TacticBaseBattle.getInstance().startBattle(woodsScenario));
-
-        scenarios.getChildren().addAll(trainingScenarioButton, woodsScenarioButton);
         scenarios.setAlignment(Pos.CENTER);
         scenarios.setSpacing(50.0);
 

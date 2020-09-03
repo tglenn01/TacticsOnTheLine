@@ -1,12 +1,14 @@
 package main.model.graphics.sceneElements.images;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import main.model.characterSystem.CharacterUnit;
 import main.ui.TacticBaseBattle;
 
 import static main.model.graphics.DefaultScene.CSS_FILE;
@@ -14,12 +16,12 @@ import static main.model.graphics.DefaultScene.CSS_FILE;
 public class HealthBar {
     private Stage healthBarWindow;
 
-    public HealthBar(double maxHealthPoints, double oldHealthPoints, double newHealthPoints) {
-        initializeGraphics(maxHealthPoints, oldHealthPoints, newHealthPoints);
+    public HealthBar(CharacterUnit receivingUnit, double maxHealthPoints, double oldHealthPoints, double newHealthPoints) {
+        initializeGraphics(receivingUnit, maxHealthPoints, oldHealthPoints, newHealthPoints);
     }
 
 
-    private void initializeGraphics(double maxHealthPoints, double oldHealthPoints, double newHealthPoints) {
+    private void initializeGraphics(CharacterUnit receivingUnit, double maxHealthPoints, double oldHealthPoints, double newHealthPoints) {
         ProgressBar healthBar = new ProgressBar();
         healthBar.setPrefSize(200, 60);
 
@@ -36,12 +38,15 @@ public class HealthBar {
         Scene healthBarScene = new Scene(layout, 300, 75);
         healthBarScene.getStylesheets().add(CSS_FILE);
 
-
         healthBarWindow = new Stage();
         healthBarWindow.setScene(healthBarScene);
         healthBarWindow.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         healthBarWindow.initStyle(StageStyle.UTILITY);
         healthBarWindow.setOpacity(0);
+
+        Bounds bounds = receivingUnit.getCharacterSprite().localToScreen(receivingUnit.getCharacterSprite().getBoundsInLocal());
+        healthBarWindow.setX(bounds.getMinX() - (healthBarScene.getWidth() / 4));
+        healthBarWindow.setY(bounds.getMaxY());
 
         AnimationTimer healthBarAnimation;
         if (newHealthPoints > oldHealthPoints) healthBarAnimation = gainHealthAnimationTimer(maxHealthPoints,
@@ -81,7 +86,7 @@ public class HealthBar {
                                                        double newHealthPoints, ProgressBar healthBar,
                                                        Label healthPointsLabel) {
         return new AnimationTimer() {
-                private long delay = 16_500_000;
+                private long delay = 16_000_000;
                 private long prevTime = 0;
                 private double currentHealthPoints = oldHealthPoints;
 
@@ -108,7 +113,7 @@ public class HealthBar {
                                                     double newHealthPoints, ProgressBar healthBar,
                                                     Label healthPointsLabel) {
         return new AnimationTimer() {
-            private long delay = 16_500_000;
+            private long delay = 16_000_000;
             private long prevTime = 0;
             private double currentHealthPoints = oldHealthPoints;
 

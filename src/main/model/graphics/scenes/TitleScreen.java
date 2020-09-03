@@ -16,7 +16,7 @@ public class TitleScreen extends DefaultScene {
     }
 
     protected void initializeGraphics() {
-        Pane titlePane = new Pane();
+        //Pane titlePane = new Pane();
 
         Label tacticOnTheLine = new Label("Tactics On The Line");
         tacticOnTheLine.setId("tacticsOnTheLineLabel");
@@ -25,7 +25,7 @@ public class TitleScreen extends DefaultScene {
         Label chooseCharacterButton = new Label("Start New Adventure");
         chooseCharacterButton.setId("mainMenuElement");
         chooseCharacterButton.setAlignment(Pos.CENTER_LEFT);
-        chooseCharacterButton.setOnMouseClicked(e -> fadeToCharacterSelect(titlePane));
+        chooseCharacterButton.setOnMouseClicked(e -> new CharacterSelect());
 
         Label closeButton = new Label("Exit");
         closeButton.setId("mainMenuElement");
@@ -35,9 +35,9 @@ public class TitleScreen extends DefaultScene {
         layout.getChildren().addAll(tacticOnTheLine, chooseCharacterButton, closeButton);
         layout.setAlignment(Pos.CENTER_LEFT);
         layout.setSpacing(10.00);
-        titlePane.getChildren().add(layout);
+        //titlePane.getChildren().add(layout);
 
-        mainPane.getChildren().add(titlePane);
+        mainPane.getChildren().add(layout);
         animateBackground(mainScene, mainPane);
 
     }

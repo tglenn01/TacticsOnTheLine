@@ -1,6 +1,14 @@
 package main.model.combatSystem;
 
+import javafx.animation.PathTransition;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.stage.Popup;
+import javafx.util.Duration;
 import main.exception.AttackMissedException;
 import main.exception.OutOfManaException;
 import main.exception.UnitIsDeadException;
@@ -142,5 +150,43 @@ public abstract class Ability {
 
     public void setRange(int newRange) {
         this.range = newRange;
+    }
+
+    protected static void effectPopupAnimation(CharacterUnit receivingUnit, int effectAmount, String id) {
+        Popup damageOutcomePopup = new Popup();
+        Label damageLabel = new Label(Integer.toString(effectAmount));
+        damageOutcomePopup.getContent().add(damageLabel);
+        damageLabel.setId(id);
+
+        damageOutcomePopup.setOnShown(handle -> {
+            Bounds bounds = receivingUnit.getCharacterSprite().localToScreen(receivingUnit.getCharacterSprite().getBoundsInLocal());
+            Path path = new Path();
+            MoveTo moveTo = new MoveTo(bounds.getMinX() + (bounds.getWidth() / 2), bounds.getMinY() + (bounds.getHeight() / 2));
+
+            double random = Math.random();
+            double endLocation;
+            boolean sweepFlag;
+            if (random > 0.49) {
+                endLocation = bounds.getMaxX() + 15;
+                sweepFlag = true;
+            }
+            else {
+                endLocation = bounds.getMinX() - 15;
+                sweepFlag = false;
+            }
+
+            ArcTo arcTo = new ArcTo(6, 9, 0, endLocation, bounds.getMaxY() - 15, false, sweepFlag);
+            path.getElements().add(moveTo);
+            path.getElements().add(arcTo);
+
+            PathTransition pathTransition = new PathTransition();
+            pathTransition.setPath(path);
+            pathTransition.setNode(damageOutcomePopup.getContent().get(0));
+            pathTransition.setCycleCount(1);
+            pathTransition.setDuration(Duration.seconds(2));
+            pathTransition.setOnFinished(e -> damageOutcomePopup.hide());
+            pathTransition.play();
+        });
+        damageOutcomePopup.show(receivingUnit.getCharacterSprite(), 0 ,0);
     }
 }

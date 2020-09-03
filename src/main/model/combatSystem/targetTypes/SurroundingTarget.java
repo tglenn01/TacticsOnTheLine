@@ -6,17 +6,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
+import main.model.graphics.menus.AbilityPreview;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.ui.TacticBaseBattle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SurroundingTarget extends TargetType {
@@ -66,6 +69,7 @@ public class SurroundingTarget extends TargetType {
         private Ability chosenAbility;
         private List<BoardSpace> possibleBoardSpaces;
         private List<CharacterUnit> possibleTargets;
+        List<AbilityPreview> displayingAbilityPreviews = new LinkedList<>();
         boolean highlighted = false;
         private int cursor = 0;
 
@@ -85,11 +89,19 @@ public class SurroundingTarget extends TargetType {
                     possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
                     possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
                     possibleBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.HOVER_HIGHLIGHT_COLOR));
+                    for (BoardSpace highlightedSpace : possibleBoardSpaces) {
+                        if (highlightedSpace.isOccupied()) {
+                            AbilityPreview abilityPreview = new AbilityPreview(activeUnit, highlightedSpace.getOccupyingUnit(), chosenAbility);
+                            displayingAbilityPreviews.add(abilityPreview);
+                        }
+                    }
+
                     cursor++;
                     highlighted = true;
                 } else {
                     removeHandlersFromNodes(this, possibleBoardSpaces, possibleTargets);
                     TacticBaseBattle.getInstance().getCurrentBoard().stopShowingAbilitySpaces();
+                    displayingAbilityPreviews.forEach(Stage::close);
                     activeUnit.takeAction(chosenAbility, possibleBoardSpaces);
                 }
 
@@ -105,6 +117,7 @@ public class SurroundingTarget extends TargetType {
                     possibleBoardSpaces.forEach(space -> space.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
                     possibleBoardSpaces.forEach(space -> space.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR));
                     maintainHighlightOnMouseSpace(event);
+                    displayingAbilityPreviews.forEach(Stage::close);
                     cursor--;
                     highlighted = false;
                 }

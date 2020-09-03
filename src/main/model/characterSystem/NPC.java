@@ -48,7 +48,8 @@ public class NPC extends CharacterUnit {
 
     @Override
     public void startTurn() {
-        System.out.println("It is " + this.characterName + "'s turn");
+        TacticBaseBattle.getInstance().getBattle().endTurn();
+        /*System.out.println("It is " + this.characterName + "'s turn");
         statusEffects.updateStatusEffect(this);
         this.actionTokens = ACTIONS_PER_TURN;
         this.movementToken = true;
@@ -57,7 +58,7 @@ public class NPC extends CharacterUnit {
 
         if (isEnemyInRange(targetableEnemySpaces) && actionTokens > 0) targetEnemy(targetableEnemySpaces);
         else if (isAllyInRange(targetableAllySpaces) && actionTokens > 0) supportAlly(targetableAllySpaces);
-        else takeMovement(Job.move);
+        else takeMovement(Job.move);*/
     }
 
     private List<BoardSpace> getTargetableEnemySpaces() {

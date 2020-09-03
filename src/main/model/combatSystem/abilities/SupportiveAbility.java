@@ -22,8 +22,11 @@ public abstract class SupportiveAbility extends Ability {
             healAmount = newHealth - initialHealth;
         }
 
-        HealthBar healthBar = new HealthBar(maxHealth, initialHealth, newHealth);
+        HealthBar healthBar = new HealthBar(receivingUnit, maxHealth, initialHealth, newHealth);
         healthBar.showAndWait();
+
+        effectPopupAnimation(receivingUnit, healAmount, "healingNode");
+
 
 
         receivingUnitStatSheet.setHealth(newHealth);
@@ -31,6 +34,7 @@ public abstract class SupportiveAbility extends Ability {
         System.out.println(receivingUnit.getCharacterName() + " health is now " +
                 receivingUnitStatSheet.getHealth());
     }
+
 
     public static void gainMana(CharacterUnit receivingUnit, StatSheet receivingUnitStatSheet, int manaGainAmount) {
         int initialMana = receivingUnitStatSheet.getMana();

@@ -1,20 +1,18 @@
 package main.model.graphics;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.RotateTransition;
+import javafx.animation.*;
+import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import main.ui.TacticBaseBattle;
-
-import java.io.FileInputStream;
 
 public abstract class DefaultScene {
     public final static double FINAL_WIDTH = 1040;
@@ -41,34 +39,50 @@ public abstract class DefaultScene {
     }
 
     protected void animateBackground(Scene scene, Pane pane) {
-        try {
-            FileInputStream input = new FileInputStream("D:\\CPSC\\PERSONAL PROJECTS\\TacticsOnTheLine\\src\\resources\\AnimatedLeaf.png");
-            Image leafImage = new Image(input);
-            ImageView leafImageView = new ImageView(leafImage);
-            leafImageView.setFitHeight(50.0);
-            leafImageView.setPreserveRatio(true);
-            pane.getChildren().add(leafImageView);
+        ImageView leafImage = new ImageView();
+        leafImage.setImage(setRandomLeaf());
+        leafImage.setFitHeight(50.0);
+        leafImage.setPreserveRatio(true);
+        pane.getChildren().add(leafImage);
+
+        Bounds bounds = mainPane.localToScene(mainPane.getBoundsInLocal(), true);
 
 
-            RotateTransition rotateTransition = new RotateTransition(Duration.seconds(20));
-            rotateTransition.setByAngle(45f);
-            rotateTransition.setNode(leafImageView);
+        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(6));
+        rotateTransition.setAutoReverse(true);
+        rotateTransition.setCycleCount(Animation.INDEFINITE);
+        rotateTransition.setByAngle(45f);
+        rotateTransition.setNode(leafImage);
 
-            PathTransition pathTransition = new PathTransition();
-            pathTransition.setDuration(Duration.seconds(20));
-            pathTransition.setNode(leafImageView);
-            pathTransition.setPath(new Line(getRandomNumberForStartOfPath(scene), -100, getRandomNumberForEndOfPath(scene), scene.getHeight() + 100));
-            pathTransition.play();
+        double sceneWidth = scene.getWidth();
+        double sceneHeight = scene.getHeight();
 
-            ParallelTransition sequentialTransition = new ParallelTransition(rotateTransition, pathTransition);
-            sequentialTransition.play();
-            sequentialTransition.setOnFinished(e -> {
-                pathTransition.setPath(new Line(getRandomNumberForStartOfPath(scene), -100, getRandomNumberForEndOfPath(scene) / 2, scene.getHeight() + 100));
-                sequentialTransition.play();
-            });
-        } catch (Exception e) {
-            //
-        }
+        Path path = new Path();
+        CubicCurveTo cubicCurveTo = new CubicCurveTo(-(sceneWidth / 4), -(sceneHeight / 4) - 100,
+                ((sceneWidth * 3)/ 4), ((sceneHeight *3) / 4) + 100,
+                ((sceneWidth / 2) + leafImage.getFitWidth()),
+                ((sceneHeight / 2) + leafImage.getFitHeight()));
+        MoveTo moveTo = new MoveTo(-((sceneWidth / 2)+ leafImage.getFitWidth()), -((sceneHeight / 2) + leafImage.getFitHeight()));
+        path.getElements().addAll(moveTo, cubicCurveTo);
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setDuration(Duration.seconds(20));
+        pathTransition.setNode(leafImage);
+        pathTransition.setPath(path);
+
+        ParallelTransition sequentialTransition = new ParallelTransition(rotateTransition, pathTransition);
+        sequentialTransition.playFromStart();
+        sequentialTransition.setOnFinished(e -> {
+            leafImage.setImage(setRandomLeaf());
+            sequentialTransition.playFromStart();
+        });
+    }
+
+    private Image setRandomLeaf() {
+        double random = Math.random();
+        int leafNumber;
+        if (random < 0.50) leafNumber = 0;
+        else leafNumber = 1;
+        return new Image("resources/ExtraImages/AnimatedLeaf" + leafNumber + ".png");
     }
 
     protected void fadeMainPaneToGivenPane(Pane givenPane) {
@@ -81,12 +95,12 @@ public abstract class DefaultScene {
     }
 
     // top right
-    private double getRandomNumberForStartOfPath(Scene window) {
-        return Math.random() * (window.getWidth() - (window.getWidth() / 2) + 1) + (window.getWidth() / 2);
+    private double getRandomNumberForStartOfPath() {
+        return (Math.random() * (mainScene.getWidth() / 2)) + (mainScene.getWidth() / 2);
     }
 
     // bottom left
-    private double getRandomNumberForEndOfPath(Scene window) {
-        return Math.random() * (window.getWidth() / 2 + 1);
+    private double getRandomNumberForEndOfPath(Scene scene) {
+        return Math.random() * (mainScene.getWidth() / 2);
     }
 }

@@ -63,3 +63,19 @@
     -fx-background-color: grey;
 }
 
+#damageNode {
+    -fx-font-size: 24px;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-text-fill: #991a1a;
+    -fx-stroke-width: 1;
+}
+
+#healingNode {
+    -fx-font-size: 24px;
+    -fx-font-family: "TubeOfCorn";
+    -fx-stroke: #000000;
+    -fx-text-fill: #02c9c3;
+    -fx-stroke-width: 1;
+}
+

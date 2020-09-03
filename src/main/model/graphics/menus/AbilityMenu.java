@@ -1,11 +1,13 @@
 package main.model.graphics.menus;
 
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseButton;
 import main.exception.OutOfManaException;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
+import main.model.graphics.sceneElements.images.AbilityDescription;
 import main.model.jobSystem.BasicAttackAbility;
 
 import java.util.ArrayList;
@@ -34,10 +36,20 @@ public class AbilityMenu extends DefaultMenu {
             } catch (OutOfManaException e) {
                 abilityButton.setDisable(true);
             }
+
+            AbilityDescription abilityDescription = new AbilityDescription(ability);
             abilityButtonList.add(abilityButton);
-            abilityButton.setOnMouseClicked(e -> {
-                battleMenu.close();
-                unit.useAbility(ability);
+            abilityButton.setOnMousePressed(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    battleMenu.close();
+                    unit.useAbility(ability);
+                } else if (e.getButton() == MouseButton.SECONDARY) {
+                    abilityDescription.display(e.getScreenX(), e.getScreenY());
+                }
+            });
+
+            abilityButton.setOnMouseReleased(e -> {
+                if (abilityDescription.isShowing()) abilityDescription.close();
             });
         }
     }

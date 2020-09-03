@@ -42,8 +42,10 @@ public class CharacterSelect extends DefaultScene {
 
     // called when you open this screen for the first time
     public CharacterSelect() {
-        partyMemberList = new ArrayList<>();
-        initializeCharacterList();
+        partyMemberList = TacticBaseBattle.getInstance().getPartyMemberList();
+        partySize = partyMemberList.size();
+        activeCharacter = partyMemberList.get(characterCursor);
+        activeJob = activeCharacter.getCharacterJob();
         initializeGraphics();
     }
 

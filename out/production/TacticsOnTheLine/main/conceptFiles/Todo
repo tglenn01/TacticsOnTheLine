@@ -129,10 +129,10 @@ August 8th
 + start creating nicer graphics
 
 August 29th
-+ Added visual indicators of status effects
++ Added visual indicators of status effects (done)
 + Audio
 + Enemy AI
-+ Damage previews
++ Damage previews (done)
 + Update character stat menu, include current xp (done)
 + Grey out unavailable options in Battle Menu (done)
 + Health Bar working for healing (done)
@@ -140,7 +140,15 @@ August 29th
 + Ability Descriptions (done)
 + Out of mana chosen again label, not fading, looks bad (done)
 + Hovering over a unit will display attacking range (done)
-+ Main menu leaf
-+ Ability Descriptions
++ Main menu leaf (done)
++ Ability Descriptions (done)
 + Status Effects hitting allies
 + Targeting BoardSpaces for Area Of Effect
+
+September 1st
++ Make AbilityPreview look nice
++ Make AbilityPreview work with all targetTypes (done)
++ Damage numbers popping off screen (done)
++ After a won map you can save character jobs and level (done)
++ Experience bar
++ Game Loop

@@ -1,5 +1,6 @@
 package main.model.graphics.menus;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -26,7 +27,6 @@ public class AbilityPreview extends Stage {
         Label healthValue = new Label(Integer.toString(receivingUnitStatSheet.getHealth()));
         healthValue.setAlignment(Pos.CENTER);
         Node effectValue = chosenAbility.getExpectedResultsLabel(activeUnit, receivingUnit);
-        effectValue.autosize();
         Label percentHitValue = new Label(Integer.toString(chosenAbility.getHitChance(activeUnit, receivingUnit)));
 
         layout.add(healthLabel, 0, 0);
@@ -40,15 +40,18 @@ public class AbilityPreview extends Stage {
         layout.setHgap(16.00);
         layout.getChildren().forEach(node -> node.setId("normalNode"));
         layout.getStylesheets().add(CSS_FILE);
-        layout.autosize();
 
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(layout, 250, 75);
+
+        Bounds bounds = receivingUnit.getCharacterSprite().localToScreen(receivingUnit.getCharacterSprite().getBoundsInLocal());
+        this.setX(bounds.getMinX() - (scene.getWidth() / 4) + 10);
+        this.setY(bounds.getMaxY());
+        this.setTitle(activeUnit.getCharacterName() + " -> " + receivingUnit.getCharacterName());
         this.setResizable(false);
         this.initStyle(StageStyle.UTILITY);
         this.initOwner(TacticBaseBattle.getInstance().getPrimaryStage());
         this.setScene(scene);
-        this.setX(receivingUnit.getCharacterSprite().getLayoutX());
-        this.setY(receivingUnit.getCharacterSprite().getLayoutY());
+
         this.show();
     }
 }
