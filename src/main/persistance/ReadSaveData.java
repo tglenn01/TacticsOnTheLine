@@ -24,7 +24,7 @@ public class ReadSaveData {
                 JSONArray jsonArray = (JSONArray) savedUnit.get("maxStatList");
                 String unitJobName = (String) savedUnit.get("unitJob");
                 Long savedExperience = (Long) savedUnit.get("totalExperience");
-                Integer totalExperience = savedExperience.intValue();
+                int totalExperience = savedExperience.intValue();
                 partyMember.setDataFromSaveData(unitJobName, totalExperience, jsonArray);
             }
 

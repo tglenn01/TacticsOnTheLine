@@ -151,4 +151,4 @@ September 1st
 + Damage numbers popping off screen (done)
 + After a won map you can save character jobs and level (done)
 + Experience bar
-+ Game Loop
++ Unit moves boardspace, movement range will change (done)

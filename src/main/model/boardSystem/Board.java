@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import main.model.boardSystem.landTypes.GrassLandType;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
+import main.ui.TacticBaseBattle;
 
 import java.util.*;
 
@@ -34,6 +35,16 @@ public class Board {
     public void setCharacterToBoardSpace(CharacterUnit unit, int xValue, int yValue) {
         BoardSpace chosenBoardSpace = boardSpaces[xValue][yValue];
         chosenBoardSpace.setOccupyingUnit(unit);
+    }
+
+    public void updateAllMovementPreviews(CharacterUnit movedUnit) {
+        for (CharacterUnit partyMember : TacticBaseBattle.getInstance().getPartyMemberList()) {
+            if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() != partyMember &&
+                    partyMember.isMovementRangeIsVisable()) {
+                this.stopShowingMovementSpaces(partyMember);
+                this.displayMovementSpaces(partyMember, this.getMovementArea(partyMember));
+            }
+        }
     }
 
     public BoardSpace getBoardSpace(int xValue, int yValue) {

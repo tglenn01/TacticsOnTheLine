@@ -4,6 +4,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
+import main.ui.TacticBaseBattle;
 
 public class BoardSpace extends BorderPane {
     private LandType landType;
@@ -26,6 +27,12 @@ public class BoardSpace extends BorderPane {
         if (occupyingUnit.getBoardSpace() != this) {
             occupyingUnit.setBoardSpace(this);
         }
+        try {
+            TacticBaseBattle.getInstance().getCurrentBoard().updateAllMovementPreviews(occupyingUnit);
+        } catch (NullPointerException e) {
+            // ignore if the board is not initializedYet
+        }
+
     }
 
     public void removeOccupyingUnit() {

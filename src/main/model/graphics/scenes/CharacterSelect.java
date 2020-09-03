@@ -14,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.characterList.*;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
@@ -56,23 +55,6 @@ public class CharacterSelect extends DefaultScene {
         activeCharacter = partyMemberList.get(partySize - 1);
         characterCursor = partySize - 1;
         initializeGraphics();
-    }
-
-    private void initializeCharacterList() {
-        CharacterUnit graham = new Graham();
-        CharacterUnit harry = new Harry();
-        CharacterUnit willow = new Willow();
-        CharacterUnit no1 = new No1();
-        CharacterUnit liam = new Liam();
-        partyMemberList.add(graham);
-        partyMemberList.add(harry);
-        partyMemberList.add(willow);
-        partyMemberList.add(no1);
-        partyMemberList.add(liam);
-        TacticBaseBattle.getInstance().setPartyMemberList(partyMemberList);
-        partySize = partyMemberList.size();
-        activeCharacter = partyMemberList.get(characterCursor);
-        activeJob = activeCharacter.getCharacterJob();
     }
 
     protected void initializeGraphics() {

@@ -133,11 +133,11 @@ public abstract class CharacterUnit {
     }
 
 
-    public void setBoardSpace(BoardSpace boardSpace) {
+    public void setBoardSpace(BoardSpace newBoardSpace) {
         if (this.boardSpace != null && this.boardSpace.getOccupyingUnit() == this) this.boardSpace.removeOccupyingUnit();
-        this.boardSpace = boardSpace;
-        if (boardSpace.getOccupyingUnit() != this) {
-            boardSpace.setOccupyingUnit(this);
+        this.boardSpace = newBoardSpace;
+        if (newBoardSpace.getOccupyingUnit() != this) {
+            newBoardSpace.setOccupyingUnit(this);
         }
     }
 

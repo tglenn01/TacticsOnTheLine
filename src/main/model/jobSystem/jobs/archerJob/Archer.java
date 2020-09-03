@@ -28,11 +28,11 @@ public class Archer extends Job {
     protected void initializeJobStats() {
         this.jobHealth = 34;
         this.jobMana = 30;
-        this.jobStrength = 100;
+        this.jobStrength = 10;
         this.jobMagic = 8;
         this.jobArmour = 4;
         this.jobResistance = 4;
-        this.jobSpeed = 120;
+        this.jobSpeed = 12;
         this.jobDexterity = 12;
         this.jobMovement = StatSheet.BASE_MOVEMENT;
         this.attackRange = 4;
