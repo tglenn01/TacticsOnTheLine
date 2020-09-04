@@ -12,7 +12,7 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public abstract class DefaultScene {
     public final static double FINAL_WIDTH = 1040;

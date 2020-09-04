@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public class RescueAbility extends Ability {
     private CharacterUnit unitWithThisAbility;

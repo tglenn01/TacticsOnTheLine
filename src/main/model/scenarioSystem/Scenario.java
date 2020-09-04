@@ -3,7 +3,7 @@ package main.model.scenarioSystem;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.scenes.BattleInterface;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;

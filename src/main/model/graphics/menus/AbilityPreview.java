@@ -11,7 +11,7 @@ import javafx.stage.StageStyle;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import static main.model.graphics.DefaultScene.CSS_FILE;
 

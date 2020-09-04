@@ -7,8 +7,6 @@ import main.model.combatSystem.abilities.personalAbilities.BarrierAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.clericJob.Cleric;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-
 public class Liam extends PlayableCharacterUnit {
     private final int personalHealthBoost = 4;
     private final int personalManaBoost = 4;
@@ -52,6 +50,6 @@ public class Liam extends PlayableCharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/liamCharacterSprites/liam_portrait.jpg");
     }
 }

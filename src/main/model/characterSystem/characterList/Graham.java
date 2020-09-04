@@ -7,8 +7,6 @@ import main.model.combatSystem.abilities.personalAbilities.RescueAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.archerJob.Archer;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-
 public class Graham extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
     private final int personalManaBoost = 2;
@@ -44,7 +42,7 @@ public class Graham extends PlayableCharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/grahamCharacterSprites/graham_portrait.jpg");
     }
 
     @Override

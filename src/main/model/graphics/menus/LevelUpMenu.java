@@ -16,7 +16,7 @@ import javafx.util.Duration;
 import main.model.boardSystem.landTypes.WaterLandType;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.ExperiencePoints;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;

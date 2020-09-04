@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.model.graphics.DefaultScene;
 import main.model.scenarioSystem.Scenario;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public class ScenarioSelectScreen extends DefaultScene {
 

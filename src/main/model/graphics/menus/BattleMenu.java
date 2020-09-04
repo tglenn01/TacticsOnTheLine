@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.model.characterSystem.CharacterUnit;
 import main.model.itemSystem.ConsumableItemInventory;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public class BattleMenu extends Stage {
     private static BattleMenu battleMenu;

@@ -7,8 +7,6 @@ import main.model.combatSystem.abilities.personalAbilities.DeactivateAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.thiefJob.Thief;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-
 public class No1 extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
     private final int personalManaBoost = 0;
@@ -52,6 +50,6 @@ public class No1 extends PlayableCharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/no1CharacterSprites/no1_portrait.jpg");
     }
 }

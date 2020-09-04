@@ -12,7 +12,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.menus.AbilityPreview;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

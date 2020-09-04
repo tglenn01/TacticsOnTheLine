@@ -1,4 +1,4 @@
-package main.ui;
+package main.model.battleSystem;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;

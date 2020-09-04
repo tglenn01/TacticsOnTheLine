@@ -12,7 +12,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.StatusEffect;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.menus.CharacterStatsMenu;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import static main.model.boardSystem.BoardSpace.BOARD_SPACE_SIZE;
 

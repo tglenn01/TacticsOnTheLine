@@ -1,4 +1,4 @@
-package main.ui;
+package main.model.battleSystem;
 
 import javafx.stage.Stage;
 import main.model.boardSystem.Board;

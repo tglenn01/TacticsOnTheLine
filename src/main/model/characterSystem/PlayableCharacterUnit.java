@@ -12,7 +12,7 @@ import main.model.graphics.menus.LevelUpMenu;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.jobSystem.Job;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public abstract class PlayableCharacterUnit extends CharacterUnit {
     protected Ability personalAbility;

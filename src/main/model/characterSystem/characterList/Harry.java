@@ -7,8 +7,6 @@ import main.model.combatSystem.abilities.personalAbilities.TremorAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.warriorJob.Warrior;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-
 public class Harry extends PlayableCharacterUnit {
     private final int personalHealthBoost = 8;
     private final int personalManaBoost = 0;
@@ -52,6 +50,6 @@ public class Harry extends PlayableCharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/harryCharacterSprites/harry_portrait.jpg");
     }
 }

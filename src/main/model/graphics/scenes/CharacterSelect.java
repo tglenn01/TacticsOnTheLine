@@ -17,10 +17,11 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.DefaultScene;
 import main.model.graphics.JobButton;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.list.AbilitiesList;
 import main.model.graphics.sceneElements.list.CharacterStatChart;
 import main.model.jobSystem.Job;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,12 +88,10 @@ public class CharacterSelect extends DefaultScene {
         GridPane.setHalignment(previousButton, HPos.LEFT);
         GridPane.setValignment(previousButton, VPos.BOTTOM);
 
-        //fadeMainPaneToGivenPane(grid);
         Scene characterSelectScene = new Scene(grid, FINAL_WIDTH, FINAL_HEIGHT);
         grid.setId("defaultBackground");
         addCSS(characterSelectScene);
         TacticBaseBattle.getInstance().getPrimaryStage().setScene(characterSelectScene);
-        //mainPane.getChildren().add(grid);
     }
 
     private Pane initializeJobButtons() {
@@ -138,7 +137,8 @@ public class CharacterSelect extends DefaultScene {
 
     private Pane characterPortrait() {
         Pane window = new Pane();
-        ImageView portrait = activeCharacter.getCharacterPortrait();
+        CharacterPortrait characterPortrait = activeCharacter.getCharacterPortrait();
+        ImageView portrait = characterPortrait.getPortrait();
         portrait.fitWidthProperty().bind(window.widthProperty());
         portrait.fitHeightProperty().bind(window.heightProperty());
         portrait.setPreserveRatio(false);

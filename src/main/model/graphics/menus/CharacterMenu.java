@@ -2,7 +2,7 @@ package main.model.graphics.menus;
 
 import javafx.scene.control.Button;
 import main.model.characterSystem.CharacterUnit;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.ArrayList;
 import java.util.List;

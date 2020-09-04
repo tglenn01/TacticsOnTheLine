@@ -14,7 +14,7 @@ import main.model.graphics.sceneElements.images.CharacterSprite;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.BasicAttackAbility;
 import main.model.jobSystem.Job;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -176,8 +176,8 @@ public abstract class CharacterUnit {
     public BoardSpace getBoardSpace() { return this.boardSpace; }
     public List<Ability> getAbilityList() { return this.abilityList; }
     public StatSheet getCharacterStatSheet() { return characterStatSheet; }
-    public ImageView getCharacterPortrait() {
-        return this.characterPortrait.getPortrait();
+    public CharacterPortrait getCharacterPortrait() {
+        return this.characterPortrait;
     }
     public ImageView getSpriteImageView() { return this.sprite.getSprite(); }
     public CharacterSprite getCharacterSprite() { return this.sprite; }

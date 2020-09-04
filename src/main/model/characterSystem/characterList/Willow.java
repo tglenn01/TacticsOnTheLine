@@ -7,8 +7,6 @@ import main.model.combatSystem.abilities.personalAbilities.TowerAbility;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.jobSystem.jobs.battleMageJob.BattleMage;
 
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
-
 public class Willow extends PlayableCharacterUnit {
     private final int personalHealthBoost = 0;
     private final int personalManaBoost = 10;
@@ -52,6 +50,6 @@ public class Willow extends PlayableCharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/willowCharacterSprites/willow_portrait.jpg");
     }
 }

@@ -4,7 +4,7 @@ import javafx.util.Pair;
 import main.model.boardSystem.landTypes.GrassLandType;
 import main.model.boardSystem.landTypes.LandType;
 import main.model.characterSystem.CharacterUnit;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.*;
 

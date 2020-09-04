@@ -11,7 +11,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.TargetType;
 import main.model.graphics.menus.BattleMenu;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.LinkedList;
 import java.util.List;

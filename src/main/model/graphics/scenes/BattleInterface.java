@@ -7,8 +7,8 @@ import main.model.boardSystem.Board;
 import main.model.boardSystem.BoardSpace;
 import main.model.graphics.DefaultScene;
 import main.model.scenarioSystem.Scenario;
-import main.ui.Battle;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.Battle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public class BattleInterface extends DefaultScene {
     private Board board;

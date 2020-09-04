@@ -16,7 +16,7 @@ import main.model.combatSystem.TargetType;
 import main.model.graphics.menus.AbilityPreview;
 import main.model.graphics.menus.BattleMenu;
 import main.model.graphics.sceneElements.images.CharacterSprite;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 import java.util.LinkedList;
 import java.util.List;

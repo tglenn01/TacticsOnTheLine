@@ -23,8 +23,9 @@ import main.model.characterSystem.ExperiencePoints;
 import main.model.characterSystem.StatSheet;
 import main.model.graphics.sceneElements.images.CharacterJobLabel;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
+import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.list.StatusEffectList;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 
 
@@ -40,7 +41,6 @@ public class CharacterStatsMenu {
         window.setTitle("Ability Menu!");
 
         GridPane grid = new GridPane();
-        grid.setGridLinesVisible(true);
         grid.setPadding(new Insets(10, 10, 10, 10));
         Pane portrait = characterPortrait(unit);
         Pane sprite = characterSprite(unit);
@@ -122,7 +122,8 @@ public class CharacterStatsMenu {
 
     private static Pane characterPortrait(CharacterUnit unit) {
         Pane window = new Pane();
-        ImageView portrait = unit.getCharacterPortrait();
+        CharacterPortrait characterPortrait = unit.getCharacterPortrait();
+        ImageView portrait = characterPortrait.getPortrait();
         portrait.fitWidthProperty().bind(window.widthProperty());
         portrait.fitHeightProperty().bind(window.heightProperty());
         portrait.setPreserveRatio(false);

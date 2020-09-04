@@ -2,7 +2,7 @@ package main.persistance;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.scenarioSystem.Scenario;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

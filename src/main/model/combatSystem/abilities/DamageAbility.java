@@ -11,7 +11,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
 import main.model.combatSystem.Ability;
 import main.model.graphics.sceneElements.images.HealthBar;
-import main.ui.TacticBaseBattle;
+import main.model.battleSystem.TacticBaseBattle;
 
 public abstract class DamageAbility extends Ability {
     protected int damage;

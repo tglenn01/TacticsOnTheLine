@@ -3,6 +3,7 @@ package main.ui;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import main.model.battleSystem.TacticBaseBattle;
 import main.model.graphics.scenes.TitleScreen;
 import main.persistance.ReadSaveData;
 

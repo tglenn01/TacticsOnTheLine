@@ -1,6 +1,7 @@
 package main.model.characterSystem;
 
 import main.exception.NoTargetsInRangeException;
+import main.model.battleSystem.TacticBaseBattle;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.characterList.characterSprites.EnemySprite;
 import main.model.combatSystem.Ability;
@@ -11,13 +12,10 @@ import main.model.combatSystem.targetTypes.SelfTarget;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.itemSystem.Consumable;
 import main.model.jobSystem.Job;
-import main.ui.TacticBaseBattle;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import static main.model.graphics.sceneElements.images.CharacterPortrait.ESTELLE_PORTRAIT;
 
 public class NPC extends CharacterUnit {
 
@@ -39,7 +37,7 @@ public class NPC extends CharacterUnit {
 
     @Override
     protected void setCharacterPortrait() {
-        this.characterPortrait = new CharacterPortrait(ESTELLE_PORTRAIT);
+        this.characterPortrait = new CharacterPortrait("resources/enemyCharacterSprites/enemy_portrait.jpg");
     }
 
     protected void addPersonalAbilityToAbilityList() {
