@@ -85,6 +85,10 @@ public abstract class PlayableCharacterUnit extends CharacterUnit {
         }
     }
 
+    public void addExperienceAfterEffectResolves(Integer averageLevel) {
+        this.experiencePoints.addExperiencePoints(this, averageLevel);
+    }
+
     // if it is a movement ability, if movement token is false don't take action
     // if it is a normal ability, if we have no action token then don't take action
     private void hasActionToken(Ability chosenAbility) throws OutOfActionsException {

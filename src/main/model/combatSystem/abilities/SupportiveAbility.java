@@ -22,6 +22,8 @@ public abstract class SupportiveAbility extends Ability {
             healAmount = newHealth - initialHealth;
         }
 
+
+
         HealthBar healthBar = new HealthBar(receivingUnit, maxHealth, initialHealth, newHealth);
         healthBar.showAndWait();
 

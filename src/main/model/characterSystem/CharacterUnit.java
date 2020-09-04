@@ -141,6 +141,8 @@ public abstract class CharacterUnit {
         }
     }
 
+    public abstract void addExperienceAfterEffectResolves(Integer averageLevel);
+
     public List<BoardSpace> getMovementRange() {
         Board board = TacticBaseBattle.getInstance().getCurrentBoard();
         List<BoardSpace> possibleSpaces = new LinkedList<>();

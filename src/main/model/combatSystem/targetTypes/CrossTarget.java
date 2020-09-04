@@ -69,13 +69,6 @@ public class CrossTarget extends TargetType {
         return possibleBoardSpaces;
     }
 
-    private List<BoardSpace> removeDuplicates(List<BoardSpace> possibleBoardSpaces) {
-        List<BoardSpace> filteredList = new LinkedList<>();
-        for (BoardSpace boardSpace : possibleBoardSpaces) {
-            if (!filteredList.contains(boardSpace)) filteredList.add(boardSpace);
-        }
-        return filteredList;
-    }
 
     @Override
     public void setHandlers(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces) {

@@ -6,6 +6,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import main.exception.BattleIsOverException;
 import main.model.characterSystem.CharacterUnit;
+import main.model.characterSystem.NPC;
 import main.model.graphics.scenes.DefeatScreen;
 import main.model.graphics.scenes.VictoryScreen;
 import main.model.scenarioSystem.Scenario;
@@ -55,9 +56,10 @@ public class Battle {
 
     private void startNewTurn(CharacterUnit activeCharacter) {
         if (activeCharacter.isAlive()) {
+            this.setActiveCharacter(activeCharacter);
+            if (TacticBaseBattle.getInstance().getPartyMemberList().contains(activeCharacter)) activeCharacter.startTurn();
             startOfTurnNotification(activeCharacter);
-            this.activeCharacter = activeCharacter;
-            activeCharacter.startTurn();
+            // activeCharacter.startTurn(); called in startOfTurnNNotification
         } else endTurn();
     }
 
@@ -89,12 +91,21 @@ public class Battle {
 
                 if (opacity >= 1) {
                     stop();
+                    if (activeCharacter.getClass() == NPC.class){
+                        startOfTurnPopup.hide();
+                        activeCharacter.startTurn();
+                    }
+                    Runtime.getRuntime().gc();
                 }
             }
         }.start());
 
         Stage primaryStage = TacticBaseBattle.getInstance().getPrimaryStage();
         startOfTurnPopup.show(primaryStage, primaryStage.getWidth() / 2.00, primaryStage.getHeight() / 2.00);
+    }
+
+    private void setActiveCharacter(CharacterUnit activeCharacter) {
+        this.activeCharacter = activeCharacter;
     }
 
     public void endTurn() {

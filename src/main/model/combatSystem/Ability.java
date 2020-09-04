@@ -29,7 +29,6 @@ public abstract class Ability {
     protected int range;
     protected int areaOfEffect;
     protected String abilityDescription;
-
     protected TargetType targetType;
 
     public Ability(String abilityName, int manaCost, int range, int areaOfEffect, String abilityDescription) {
@@ -68,14 +67,14 @@ public abstract class Ability {
             }
         }
         if (this.getClass() != MovementAbility.class && !effectedUnits.isEmpty())
-            addExperienceAfterEffectResolves(activeUnit, effectedUnits);
+            calculateExperience(activeUnit, effectedUnits);
     }
 
     public abstract Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit);
     public abstract int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit);
 
-    protected void addExperienceAfterEffectResolves(CharacterUnit activeUnit, List<CharacterUnit> effectedUnits) {
-        activeUnit.getExperiencePoints().addExperiencePoints(activeUnit, getAverageLevel(effectedUnits));
+    protected void calculateExperience(CharacterUnit activeUnit, List<CharacterUnit> effectedUnits) {
+        activeUnit.addExperienceAfterEffectResolves(getAverageLevel(effectedUnits));
     }
 
     protected Integer getAverageLevel(List<CharacterUnit> effectedUnits) {
@@ -199,4 +198,5 @@ public abstract class Ability {
         });
         damageOutcomePopup.show(receivingUnit.getCharacterSprite(), 0 ,0);
     }
+
 }

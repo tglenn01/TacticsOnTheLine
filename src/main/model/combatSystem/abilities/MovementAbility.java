@@ -1,8 +1,6 @@
 package main.model.combatSystem.abilities;
 
 import javafx.scene.Node;
-import main.exception.AttackMissedException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
@@ -18,7 +16,7 @@ public class MovementAbility extends Ability {
     }
 
     @Override
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) throws AttackMissedException, UnitIsDeadException {
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> targetedBoardSpaces) {
         activeUnit.setBoardSpace(targetedBoardSpaces.get(0));
     }
 

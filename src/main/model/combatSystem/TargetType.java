@@ -35,6 +35,7 @@ public abstract class TargetType {
         setTargetTypeImage();
     }
 
+
     public abstract void setTargetTypeImage();
 
     public ImageView getTargetTypeImage() {
