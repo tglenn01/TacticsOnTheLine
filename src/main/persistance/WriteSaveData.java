@@ -2,6 +2,7 @@ package main.persistance;
 
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.StatSheet;
+import main.model.scenarioSystem.Scenario;
 import main.ui.TacticBaseBattle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,10 +10,10 @@ import org.json.simple.JSONObject;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class SetSaveData {
+public class WriteSaveData {
 
-    public SetSaveData(String account) throws IOException {
-        JSONObject jsonCharacterList = new JSONObject();
+    public WriteSaveData(String account) throws IOException {
+        JSONObject jsonObject = new JSONObject();
 
         for (CharacterUnit unit : TacticBaseBattle.getInstance().getPartyMemberList()) {
             JSONObject unitObject = new JSONObject();
@@ -34,12 +35,17 @@ public class SetSaveData {
             unitObject.put("unitJob", unitJob);
             unitObject.put("totalExperience", totalExperience);
             unitObject.put("maxStatList", maxStatList);
-            jsonCharacterList.put(unitName, unitObject);
+            jsonObject.put(unitName, unitObject);
         }
 
+        for (Scenario scenario : TacticBaseBattle.getInstance().getAvailableScenarios()) {
+            JSONObject scenarioObject = new JSONObject();
+            scenarioObject.put("isComplete", scenario.isCompleted());
+            jsonObject.put(scenario.getScenarioName(), scenarioObject);
+        }
 
         try (FileWriter file = new FileWriter(account)) {
-            file.write(jsonCharacterList.toJSONString());
+            file.write(jsonObject.toJSONString());
         }
     }
 }

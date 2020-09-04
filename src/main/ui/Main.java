@@ -29,7 +29,6 @@ public class Main extends Application {
         primaryStage.setMinWidth(FINAL_WIDTH);
         primaryStage.setMinHeight(FINAL_HEIGHT);
 
-
         Font.loadFont(new FileInputStream("src/resources/fonts/tube-of-corn/TubeOfCorn.ttf"), 20);
 
         new TitleScreen();

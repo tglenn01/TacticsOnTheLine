@@ -35,6 +35,7 @@ public abstract class DamageAbility extends Ability {
             return false;
         } catch (AttackMissedException attackMissedException) {
             attackMissedException.printMissedAttackMessage();
+            effectPopupAnimation(targetedUnit, "MISS", "fancyNode");
             return false;
         } catch (UnitIsInvulnerableException unitIsInvulnerableException) {
             CharacterStatusEffects csf = targetedUnit.getStatusEffects();
@@ -60,7 +61,7 @@ public abstract class DamageAbility extends Ability {
         HealthBar healthBar = new HealthBar(receivingUnit, receivingUnit.getCharacterStatSheet().getMaxHealth(), defenderHealth, defenderHealth - damage);
         healthBar.showAndWait();
 
-        effectPopupAnimation(receivingUnit, damage, "damageNode");
+        effectPopupAnimation(receivingUnit, Integer.toString(damage), "damageNode");
 
 
         defenderHealth = defenderHealth - damage;

@@ -152,10 +152,10 @@ public abstract class Ability {
         this.range = newRange;
     }
 
-    protected static void effectPopupAnimation(CharacterUnit receivingUnit, int effectAmount, String id) {
+    protected static void effectPopupAnimation(CharacterUnit receivingUnit, String effectAmount, String id) {
         Runtime.getRuntime().gc();
         Popup damageOutcomePopup = new Popup();
-        Label damageLabel = new Label(Integer.toString(effectAmount));
+        Label damageLabel = new Label(effectAmount);
         damageOutcomePopup.getContent().add(damageLabel);
         damageLabel.setId(id);
 

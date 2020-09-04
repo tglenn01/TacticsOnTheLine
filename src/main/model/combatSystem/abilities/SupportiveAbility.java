@@ -25,7 +25,7 @@ public abstract class SupportiveAbility extends Ability {
         HealthBar healthBar = new HealthBar(receivingUnit, maxHealth, initialHealth, newHealth);
         healthBar.showAndWait();
 
-        effectPopupAnimation(receivingUnit, healAmount, "healingNode");
+        effectPopupAnimation(receivingUnit, Integer.toString(healAmount), "healingNode");
 
 
 

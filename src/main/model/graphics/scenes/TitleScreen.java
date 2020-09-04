@@ -19,7 +19,7 @@ public class TitleScreen extends DefaultScene {
         //Pane titlePane = new Pane();
 
         Label tacticOnTheLine = new Label("Tactics On The Line");
-        tacticOnTheLine.setId("tacticsOnTheLineLabel");
+        tacticOnTheLine.setId("headerLabel");
         tacticOnTheLine.setAlignment(Pos.CENTER_LEFT);
 
         Label chooseCharacterButton = new Label("Start New Adventure");

@@ -1,6 +1,7 @@
 package main.persistance;
 
 import main.model.characterSystem.CharacterUnit;
+import main.model.scenarioSystem.Scenario;
 import main.ui.TacticBaseBattle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -15,11 +16,12 @@ public class ReadSaveData {
 
     public ReadSaveData(String account) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
+        TacticBaseBattle tacticBaseBattle = TacticBaseBattle.getInstance();
 
         try (Reader reader = new FileReader(account)) {
 
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
-            for (CharacterUnit partyMember : TacticBaseBattle.getInstance().getPartyMemberList()) {
+            for (CharacterUnit partyMember : tacticBaseBattle.getPartyMemberList()) {
                 JSONObject savedUnit = (JSONObject) jsonObject.get(partyMember.getCharacterName());
                 JSONArray jsonArray = (JSONArray) savedUnit.get("maxStatList");
                 String unitJobName = (String) savedUnit.get("unitJob");
@@ -28,6 +30,11 @@ public class ReadSaveData {
                 partyMember.setDataFromSaveData(unitJobName, totalExperience, jsonArray);
             }
 
+            for (Scenario scenario : tacticBaseBattle.getAvailableScenarios()) {
+                JSONObject savedScenario = (JSONObject) jsonObject.get(scenario.getScenarioName());
+                scenario.setCompleted((Boolean) savedScenario.get("isComplete"));
+            }
+            tacticBaseBattle.updateCompletedScenario();
         }
     }
 }

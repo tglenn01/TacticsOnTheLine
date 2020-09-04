@@ -101,7 +101,7 @@ public abstract class CharacterUnit {
             TacticBaseBattle.getInstance().getBattle().removeDeadCharacter(unitIsDeadException.getDeadUnit());
         } finally {
             removeActionToken(ability);
-            if (!LevelUpMenu.isDisplaying) {
+            if (!LevelUpMenu.isDisplaying && !TacticBaseBattle.getInstance().getBattle().getTurnOrder().isBattleOver()) {
                 if (actionTokens <= 0 && !movementToken) TacticBaseBattle.getInstance().getBattle().endTurn();
                 else takeNextAction();
             }

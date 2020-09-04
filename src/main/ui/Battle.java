@@ -121,7 +121,10 @@ public class Battle {
         try{
             turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
         } catch (BattleIsOverException e) {
-            if (turnOrder.didUserWin()) new VictoryScreen();
+            if (turnOrder.didUserWin()) {
+                activeScenario.setCompleted(true);
+                new VictoryScreen();
+            }
             else new DefeatScreen();
         }
     }

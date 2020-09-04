@@ -47,10 +47,10 @@ public class TacticBaseBattle {
     }
 
     public static TacticBaseBattle getInstance() {
-      if (tacticBaseBattle == null) {
-          tacticBaseBattle = new TacticBaseBattle();
-      }
-      return tacticBaseBattle;
+        if (tacticBaseBattle == null) {
+            tacticBaseBattle = new TacticBaseBattle();
+        }
+        return tacticBaseBattle;
     }
 
     private void initializePartyMemberList() {
@@ -97,13 +97,23 @@ public class TacticBaseBattle {
     }
 
     private void initializeScenarios() {
-        if (availableScenarios == null) {
-            availableScenarios = new ArrayList<>();
-            Scenario trainingScenario = new TrainingScenario();
-            Scenario woodsScenario = new WoodsScenario();
-            availableScenarios.add(trainingScenario);
-            availableScenarios.add(woodsScenario);
+        availableScenarios = new ArrayList<>();
+        Scenario trainingScenario = new TrainingScenario();
+        Scenario woodsScenario = new WoodsScenario();
+        availableScenarios.add(trainingScenario);
+        availableScenarios.add(woodsScenario);
+    }
+
+    public void updateCompletedScenario() {
+        boolean noAvailableScenarios = true;
+        for (Scenario scenario : availableScenarios) {
+            if (!scenario.isCompleted()) {
+                noAvailableScenarios = false;
+                break;
+            }
         }
+
+        if (noAvailableScenarios) availableScenarios.forEach(scenario -> scenario.setCompleted(false));
     }
 
     // have the player choose the classes of the characters

@@ -5,7 +5,7 @@ import main.model.jobSystem.Job;
 import java.util.List;
 
 public class StatSheet {
-    public static int BASE_MOVEMENT = 10;
+    public static int BASE_MOVEMENT = 4;
     private int health;
     private int mana;
     private int strength;
