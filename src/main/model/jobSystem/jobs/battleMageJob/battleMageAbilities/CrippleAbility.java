@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackDebuff;
+import main.model.graphics.menus.AbilityPreview;
 
 public class CrippleAbility extends StatusEffectAbility {
     public CrippleAbility() {
@@ -41,7 +42,9 @@ public class CrippleAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(AttackDebuff.getStaticIcon());
+        ImageView imageView = new ImageView(AttackDebuff.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

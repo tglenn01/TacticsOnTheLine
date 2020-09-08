@@ -6,6 +6,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.Blind;
 import main.model.combatSystem.targetTypes.RingTarget;
+import main.model.graphics.menus.AbilityPreview;
 
 public class SmokeAbility extends StatusEffectAbility {
     public SmokeAbility() {
@@ -46,7 +47,9 @@ public class SmokeAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(Blind.getStaticIcon());
+        ImageView imageView = new ImageView(Blind.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

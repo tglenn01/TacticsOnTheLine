@@ -58,15 +58,6 @@ public class CharacterStatsMenu {
                 BattleMenu.getInstance().displayCharacterMenu(unit);
         });
         characterJob.setAlignment(Pos.CENTER);
-        /*grid.add(portrait, 0, 0, 4, 8);
-        grid.add(sprite, 0, 8, 2, 2);
-        grid.add(characterName, 4, 0, 3, 1);
-        grid.add(characterJob, 4, 1, 3, 1);
-        grid.add(hpAndMpLayout, 7, 0, 3, 1);
-        grid.add(experienceLayout, 7, 1, 3, 1);
-        grid.add(statChart, 4, 2, 6, 6);
-        grid.add(statusEffectBar, 2, 8,8, 2);
-        grid.add(closeButton, 9, 9, 1, 1);*/
 
 
         GridPane.setConstraints(portrait, 0,0, 4, 8);
@@ -80,18 +71,6 @@ public class CharacterStatsMenu {
         GridPane.setConstraints(closeButton, 9, 9, 1, 2);
 
         grid.getChildren().addAll(portrait, sprite, characterName, characterJob, hpAndMpLayout, experienceLayout, statChart, statusEffectBar, closeButton);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         grid.setPrefSize(1000, 800);

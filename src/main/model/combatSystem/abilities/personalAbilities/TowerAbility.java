@@ -6,6 +6,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.statusEffects.IncreasedRange;
 import main.model.combatSystem.statusEffects.Root;
+import main.model.graphics.menus.AbilityPreview;
 
 public class TowerAbility extends Ability {
 
@@ -43,7 +44,9 @@ public class TowerAbility extends Ability {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(IncreasedRange.getStaticIcon());
+        ImageView imageView = new ImageView(IncreasedRange.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

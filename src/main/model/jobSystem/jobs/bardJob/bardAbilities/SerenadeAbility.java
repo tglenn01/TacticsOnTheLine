@@ -6,6 +6,7 @@ import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.DefenseBuff;
 import main.model.combatSystem.statusEffects.DefenseDebuff;
+import main.model.graphics.menus.AbilityPreview;
 
 public class SerenadeAbility extends StatusEffectAbility {
     public SerenadeAbility() {
@@ -41,7 +42,9 @@ public class SerenadeAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(DefenseDebuff.getStaticIcon());
+        ImageView imageView = new ImageView(DefenseDebuff.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.Ability;
 import main.model.combatSystem.statusEffects.Invulnerable;
+import main.model.graphics.menus.AbilityPreview;
 
 public class BarrierAbility extends Ability {
 
@@ -36,7 +37,9 @@ public class BarrierAbility extends Ability {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(Invulnerable.getStaticIcon());
+        ImageView imageView = new ImageView(Invulnerable.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -53,5 +54,10 @@ public class AbilityPreview extends Stage {
         this.setScene(scene);
 
         this.show();
+    }
+
+    public static void fitImageViewToAbilityView(ImageView imageView) {
+        imageView.setFitHeight(42);
+        imageView.setPreserveRatio(true);
     }
 }

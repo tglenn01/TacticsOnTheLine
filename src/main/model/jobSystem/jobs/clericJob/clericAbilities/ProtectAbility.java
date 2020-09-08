@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.DefenseBuff;
+import main.model.graphics.menus.AbilityPreview;
 
 public class ProtectAbility extends StatusEffectAbility {
     public ProtectAbility() {
@@ -40,7 +41,9 @@ public class ProtectAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(DefenseBuff.getStaticIcon());
+        ImageView imageView = new ImageView(DefenseBuff.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

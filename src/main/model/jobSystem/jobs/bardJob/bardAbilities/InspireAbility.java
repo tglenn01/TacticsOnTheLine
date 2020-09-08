@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.AttackBuff;
+import main.model.graphics.menus.AbilityPreview;
 
 public class InspireAbility extends StatusEffectAbility {
     public InspireAbility() {
@@ -40,7 +41,9 @@ public class InspireAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(AttackBuff.getStaticIcon());
+        ImageView imageView = new ImageView(AttackBuff.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override

@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import main.model.characterSystem.CharacterUnit;
 import main.model.combatSystem.abilities.StatusEffectAbility;
 import main.model.combatSystem.statusEffects.DefenseDebuff;
+import main.model.graphics.menus.AbilityPreview;
 
 public class OverwhelmAbility extends StatusEffectAbility {
     public OverwhelmAbility() {
@@ -40,7 +41,9 @@ public class OverwhelmAbility extends StatusEffectAbility {
 
     @Override
     public Node getExpectedResultsLabel(CharacterUnit activeUnit, CharacterUnit receivingUnit) {
-        return new ImageView(DefenseDebuff.getStaticIcon());
+        ImageView imageView = new ImageView(DefenseDebuff.getStaticIcon());
+        AbilityPreview.fitImageViewToAbilityView(imageView);
+        return imageView;
     }
 
     @Override
