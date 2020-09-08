@@ -104,6 +104,18 @@ public class Battle {
         startOfTurnPopup.show(primaryStage, primaryStage.getWidth() / 2.00, primaryStage.getHeight() / 2.00);
     }
 
+    public void removeDeadCharacter(CharacterUnit deadCharacter) {
+        try{
+            turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
+        } catch (BattleIsOverException e) {
+            if (turnOrder.didUserWin()) {
+                activeScenario.setCompleted(true);
+                new VictoryScreen();
+            }
+            else new DefeatScreen();
+        }
+    }
+
     private void setActiveCharacter(CharacterUnit activeCharacter) {
         this.activeCharacter = activeCharacter;
     }
@@ -121,25 +133,10 @@ public class Battle {
     public TurnOrderCompiler getTurnOrder() {
         return turnOrder;
     }
-
     public CharacterUnit getActiveCharacter() { return activeCharacter; }
-
     public List<CharacterUnit> getEnemyCharacters() {
         return this.enemyCharacters;
     }
-
-    public void removeDeadCharacter(CharacterUnit deadCharacter) {
-        try{
-            turnOrder.removeDeadCharacterFromFieldedCharacters(deadCharacter);
-        } catch (BattleIsOverException e) {
-            if (turnOrder.didUserWin()) {
-                activeScenario.setCompleted(true);
-                new VictoryScreen();
-            }
-            else new DefeatScreen();
-        }
-    }
-
     public Scenario getActiveScenario() {
         return this.activeScenario;
     }

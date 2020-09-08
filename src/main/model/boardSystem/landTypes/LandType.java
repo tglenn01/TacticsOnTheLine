@@ -46,12 +46,6 @@ public abstract class LandType {
         return new Background(highlightFill);
     }
 
-    public Background hoveredSpace() {
-        BackgroundFill highlightFill = new BackgroundFill(hoverHighlightColour,
-                new CornerRadii(5), new Insets(0));
-        return new Background(highlightFill);
-    }
-
     public boolean isTerrainable() {
         return this.getClass() == GrassLandType.class;
     }

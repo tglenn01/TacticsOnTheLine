@@ -15,11 +15,9 @@ public class TurnOrderCompiler {
     private static int HIGHEST_VALUE = 100;
     private static int SPEED_CONSTANT = 15;
     private Map<CharacterUnit, Integer> fieldedCharacters;
-    private List<CharacterUnit> charactersReadyToTakeAction;
 
     public TurnOrderCompiler(List<CharacterUnit> playableCharacters, List<CharacterUnit> enemies) {
         fieldedCharacters = new LinkedHashMap<>();
-        charactersReadyToTakeAction = new ArrayList<>();
         insertListIntoActiveCharacters(playableCharacters);
         insertListIntoActiveCharacters(enemies);
     }
@@ -31,6 +29,7 @@ public class TurnOrderCompiler {
     }
 
     public List<CharacterUnit> updateTurnOrder() {
+        List<CharacterUnit> charactersReadyToTakeAction = new ArrayList<>();
         for (Map.Entry<CharacterUnit, Integer> entry : fieldedCharacters.entrySet()) {
             CharacterUnit unit = entry.getKey();
             Integer turnValue = entry.getValue();
@@ -72,10 +71,6 @@ public class TurnOrderCompiler {
             }
         }
         return alivePlayableCharacters;
-    }
-
-    public List<CharacterUnit> getCharactersReadyToTakeAction() {
-        return charactersReadyToTakeAction;
     }
 
     public List<CharacterUnit> getFieldedCharacters() {

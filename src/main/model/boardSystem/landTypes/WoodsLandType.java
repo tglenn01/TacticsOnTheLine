@@ -8,8 +8,6 @@ import javafx.scene.paint.Color;
 
 public class WoodsLandType extends LandType {
 
-    public WoodsLandType() {
-    }
 
     protected void setTileColor() {
         this.tileColor = new Color(0, .30, 0, 1);

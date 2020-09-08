@@ -28,7 +28,7 @@ public class BoardSpace extends BorderPane {
             occupyingUnit.setBoardSpace(this);
         }
         try {
-            TacticBaseBattle.getInstance().getCurrentBoard().updateAllMovementPreviews(occupyingUnit);
+            TacticBaseBattle.getInstance().getCurrentBoard().updateAllMovementPreviews();
         } catch (NullPointerException e) {
             // ignore if the board is not initializedYet
         }
@@ -50,27 +50,9 @@ public class BoardSpace extends BorderPane {
     }
 
 
-    public boolean isValidMovementSpace(BoardSpace currentSpace, int movement) {
-        if (!this.landType.isTerrainable()) return false;
-        if (this.occupyingUnit != null) return false;
-        return isInRange(currentSpace, movement);
-    }
-
     public boolean isTerrainable() {
         if (!this.landType.isTerrainable()) return false;
         return this.occupyingUnit == null;
-    }
-
-
-    public boolean isValidAbilitySpace(BoardSpace currentSpace, int range) {
-        return isInRange(currentSpace, range);
-    }
-
-    private boolean isInRange(BoardSpace currentSpace, int movement) {
-        int simpleX = this.xCoordinate - currentSpace.getXCoordinate();
-        int simpleY = this.yCoordinate - currentSpace.getYCoordinate();
-
-        return (Math.abs(simpleX) + Math.abs(simpleY)) <= movement;
     }
 
     public void changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR colour) {

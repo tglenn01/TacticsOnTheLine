@@ -3,10 +3,7 @@ package main.model.battleSystem;
 import javafx.stage.Stage;
 import main.model.boardSystem.Board;
 import main.model.characterSystem.CharacterUnit;
-import main.model.characterSystem.StatSheet;
 import main.model.characterSystem.characterList.*;
-import main.model.graphics.scenes.CharacterSelect;
-import main.model.graphics.scenes.ScenarioSelectScreen;
 import main.model.itemSystem.Consumable;
 import main.model.itemSystem.ConsumableItemInventory;
 import main.model.itemSystem.items.GlassShieldConsumable;
@@ -81,7 +78,7 @@ public class TacticBaseBattle {
         availableJobs.add(new Noble());
         availableJobs.add(new Thief());
         availableJobs.add(new Warrior());
-        StatSheet.updateMaxStats(availableJobs);
+        availableJobs.forEach(Job::updateMaxStats);
     }
 
     private void initializeItems() {
@@ -116,14 +113,11 @@ public class TacticBaseBattle {
         if (noAvailableScenarios) availableScenarios.forEach(scenario -> scenario.setCompleted(false));
     }
 
-    // have the player choose the classes of the characters
-    public void characterSelect() {
-        new CharacterSelect();
-    }
-
-    // have the user pick a scenario
-    public void scenarioSelect() {
-        new ScenarioSelectScreen();
+    public Job getJobFromJobTitle(String jobTitle) {
+        for (Job job : availableJobs) {
+            if (job.getJobTitle().equals(jobTitle)) return job;
+        }
+        return null;
     }
 
     public void startBattle(Scenario scenario) {
@@ -168,16 +162,5 @@ public class TacticBaseBattle {
 
     public Battle getBattle() {
         return this.battle;
-    }
-
-    public void setAvailableScenarios(List<Scenario> scenarios) {
-        if (scenarios.size() != 0) this.availableScenarios = scenarios;
-    }
-
-    public Job getJobFromJobTitle(String jobTitle) {
-        for (Job job : availableJobs) {
-            if (job.getJobTitle().equals(jobTitle)) return job;
-        }
-        return null;
     }
 }

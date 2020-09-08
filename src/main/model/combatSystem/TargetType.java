@@ -29,8 +29,6 @@ public abstract class TargetType {
         boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.ABILITY_HIGHLIGHT_COLOUR);
     };
 
-
-
     public TargetType() {
         setTargetTypeImage();
     }
@@ -92,7 +90,7 @@ public abstract class TargetType {
         private List<CharacterUnit> possibleTargets;
         private List<BoardSpace> highlightedSpaces = new ArrayList<>();
         private List<AbilityPreview> displayingAbilityPreview = new LinkedList<>();
-        private int cursor = 0;
+        private int phase = 0;
 
 
         public ApplyTargetHandler(CharacterUnit activeUnit, Ability chosenAbility, List<BoardSpace> possibleBoardSpaces,
@@ -108,7 +106,7 @@ public abstract class TargetType {
             if (repeatingCall(event)) return;
 
             if (event.getButton() == MouseButton.SECONDARY) {
-                if (cursor == 0) {
+                if (phase == 0) {
                     returnToMenu();
                 } else {
                     revertToTargeting(event);
@@ -121,9 +119,9 @@ public abstract class TargetType {
 
                 if (highlightedUnit != null && targetUnit != highlightedUnit) {
                     revertToTargeting(event);
-                } else if (cursor == 0) {
+                } else if (phase == 0) {
                     abilityPreview(targetUnit);
-                } else if (cursor == 1 && targetUnit == highlightedUnit) {
+                } else if (phase == 1 && targetUnit == highlightedUnit) {
                     useAbility();
                 }
             }
@@ -150,7 +148,7 @@ public abstract class TargetType {
             });
             highlightedSpaces.addAll(effectedBoardSpaces);
             highlightedUnit = targetUnit;
-            cursor++;
+            phase++;
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler));
             possibleBoardSpaces.forEach(space -> space.removeEventHandler(MouseEvent.MOUSE_EXITED, exitHandler));
 
@@ -177,7 +175,7 @@ public abstract class TargetType {
                 boardSpace.addEventHandler(MouseEvent.MOUSE_ENTERED, hoverHandler);
                 boardSpace.addEventHandler(MouseEvent.MOUSE_EXITED, exitHandler);
             }
-            cursor = 0;
+            phase = 0;
             highlightedUnit = null;
 
             BoardSpace boardSpace;

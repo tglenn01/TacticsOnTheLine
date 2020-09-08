@@ -15,7 +15,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import main.model.characterSystem.CharacterUnit;
 import main.model.graphics.DefaultScene;
-import main.model.graphics.JobButton;
+import main.model.graphics.sceneElements.buttons.JobButton;
 import main.model.graphics.sceneElements.images.CharacterNameLabel;
 import main.model.graphics.sceneElements.images.CharacterPortrait;
 import main.model.graphics.sceneElements.list.AbilitiesList;

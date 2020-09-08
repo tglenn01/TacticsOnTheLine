@@ -37,7 +37,7 @@ public class Board {
         chosenBoardSpace.setOccupyingUnit(unit);
     }
 
-    public void updateAllMovementPreviews(CharacterUnit movedUnit) {
+    public void updateAllMovementPreviews() {
         for (CharacterUnit partyMember : TacticBaseBattle.getInstance().getPartyMemberList()) {
             if (TacticBaseBattle.getInstance().getBattle().getActiveCharacter() != partyMember &&
                     partyMember.isMovementRangeIsVisable()) {
@@ -62,14 +62,7 @@ public class Board {
     }
 
 
-    // remove the colour to either movement highlighted or normal
-    public void stopShowingAbilitySpaces() {
-        for (BoardSpace boardSpace : abilityHighlightedSpace) {
-            if (movementHighlightedSpaces.get(boardSpace).isEmpty()) boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
-            else boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
-        }
-        abilityHighlightedSpace.clear();
-    }
+
 
     // find the closest boardSpace to the given board space. Start by checking above, right, down, left.
     // the x and y cursor must stay within the bounds of the board
@@ -116,9 +109,6 @@ public class Board {
         return !abilityHighlightedSpace.isEmpty();
     }
 
-    public List<BoardSpace> getAbilityHighlightedSpace() {
-        return this.abilityHighlightedSpace;
-    }
 
     private class AreaFinder {
         private CharacterUnit activeUnit;
@@ -177,15 +167,6 @@ public class Board {
         }
     }
 
-    public List<CharacterUnit> getPossibleTargets(List<BoardSpace> boardSpaces) {
-        List<CharacterUnit> possibleTargets = new ArrayList<>();
-        for (BoardSpace boardSpace : boardSpaces) {
-            if (boardSpace.isOccupied()) possibleTargets.add(boardSpace.getOccupyingUnit());
-        }
-        return possibleTargets;
-    }
-
-
     public void stopShowingMovementSpaces(CharacterUnit unit) {
         for (BoardSpace[] possibleSpaces : this.boardSpaces) {
             for (BoardSpace possibleSpace : possibleSpaces) {
@@ -196,5 +177,22 @@ public class Board {
                 }
             }
         }
+    }
+
+    // remove the colour to either movement highlighted or normal
+    public void stopShowingAbilitySpaces() {
+        for (BoardSpace boardSpace : abilityHighlightedSpace) {
+            if (movementHighlightedSpaces.get(boardSpace).isEmpty()) boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NORMAL);
+            else boardSpace.changeSpaceColour(LandType.BOARD_SPACE_HIGHLIGHT_COLOUR.NON_ACTIVE_UNIT_MOVEMENT_HIGHLIGHT_COLOUR);
+        }
+        abilityHighlightedSpace.clear();
+    }
+
+    public List<CharacterUnit> getPossibleTargets(List<BoardSpace> boardSpaces) {
+        List<CharacterUnit> possibleTargets = new ArrayList<>();
+        for (BoardSpace boardSpace : boardSpaces) {
+            if (boardSpace.isOccupied()) possibleTargets.add(boardSpace.getOccupyingUnit());
+        }
+        return possibleTargets;
     }
 }

@@ -84,23 +84,4 @@ public abstract class DefaultScene {
         else leafNumber = 1;
         return new Image("resources/ExtraImages/AnimatedLeaf" + leafNumber + ".png");
     }
-
-    protected void fadeMainPaneToGivenPane(Pane givenPane) {
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1));
-        fadeIn.setNode(givenPane);
-        fadeIn.setToValue(1.00);
-        fadeIn.setFromValue(0.00);
-        fadeIn.setOnFinished(e -> mainPane.getChildren().add(givenPane));
-        fadeIn.play();
-    }
-
-    // top right
-    private double getRandomNumberForStartOfPath() {
-        return (Math.random() * (mainScene.getWidth() / 2)) + (mainScene.getWidth() / 2);
-    }
-
-    // bottom left
-    private double getRandomNumberForEndOfPath(Scene scene) {
-        return Math.random() * (mainScene.getWidth() / 2);
-    }
 }

@@ -112,7 +112,6 @@ public class ExperiencePoints {
         };
 
 
-
         Map<LevelUpButton, Integer> growthRateList = new LinkedHashMap<>();
         growthRateList.put(healthButton, statSheet.getHealthGrowthRate());
         growthRateList.put(manaButton, statSheet.getManaGrowthRate());

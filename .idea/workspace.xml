@@ -1,24 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a166f29-7d07-48ed-94af-142bab27f333" name="Default Changelist" comment="">
+    <list default="true" id="8a166f29-7d07-48ed-94af-142bab27f333" name="Default Changelist" comment="+ Removed uncommented code as well as moved getters and setters to bottom of classes&#10;+ Added css to character stat bar">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/menus/CharacterStatsMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/menus/CharacterStatsMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/resources/estellePortrait.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/combatSystem/abilities/personalAbilities/BarrierAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/combatSystem/abilities/personalAbilities/BarrierAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/combatSystem/abilities/personalAbilities/TowerAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/combatSystem/abilities/personalAbilities/TowerAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/menus/AbilityPreview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/menus/AbilityPreview.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/menus/CharacterStatsMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/menus/CharacterStatsMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/archerJob/archerAbilities/HinderAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/archerJob/archerAbilities/HinderAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/bardJob/bardAbilities/InspireAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/bardJob/bardAbilities/InspireAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/bardJob/bardAbilities/SerenadeAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/bardJob/bardAbilities/SerenadeAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/battleMageJob/battleMageAbilities/CrippleAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/battleMageJob/battleMageAbilities/CrippleAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/clericJob/clericAbilities/ProtectAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/clericJob/clericAbilities/ProtectAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/gunnerJob/gunnerAbilities/SmokeAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/gunnerJob/gunnerAbilities/SmokeAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/lancerJob/lancerAbilities/OverwhelmAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/lancerJob/lancerAbilities/OverwhelmAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/thiefJob/thiefAbilities/BlindAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/thiefJob/thiefAbilities/BlindAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/warriorJob/warriorAbilities/FocusAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/jobs/warriorJob/warriorAbilities/FocusAbility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/estellePortrait.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/saveData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/saveData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/Battle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/Battle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TacticBaseBattle.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TacticBaseBattle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TurnOrderCompiler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TurnOrderCompiler$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TurnOrderCompiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/battleSystem/TurnOrderCompiler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/Board$AreaFinder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/Board$AreaFinder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/BoardSpace.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/BoardSpace.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/GrassLandType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/GrassLandType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/LandType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/LandType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/WaterLandType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/WaterLandType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/WoodsLandType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/boardSystem/landTypes/WoodsLandType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/CharacterUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/CharacterUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/ExperiencePoints$LevelUpButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/ExperiencePoints$LevelUpButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/ExperiencePoints.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/ExperiencePoints.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/StatSheet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/characterSystem/StatSheet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/Ability.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/Ability.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/TargetType$ApplyTargetHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/TargetType$ApplyTargetHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/TargetType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/TargetType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/abilities/personalAbilities/BarrierAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/abilities/personalAbilities/BarrierAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/abilities/personalAbilities/TowerAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/combatSystem/abilities/personalAbilities/TowerAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/DefaultScene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/DefaultScene.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/JobButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/menus/AbilityPreview.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/menus/AbilityPreview.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/sceneElements/buttons/ItemButton.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/sceneElements/list/CharacterStatChart.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/sceneElements/list/CharacterStatChart.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/scenes/CharacterSelect.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/scenes/CharacterSelect.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/itemSystem/Equipable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/Job.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/Job.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/archerJob/archerAbilities/HinderAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/archerJob/archerAbilities/HinderAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/bardJob/bardAbilities/InspireAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/bardJob/bardAbilities/InspireAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/bardJob/bardAbilities/SerenadeAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/bardJob/bardAbilities/SerenadeAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/battleMageJob/battleMageAbilities/CrippleAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/battleMageJob/battleMageAbilities/CrippleAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/clericJob/clericAbilities/ProtectAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/clericJob/clericAbilities/ProtectAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/gunnerJob/gunnerAbilities/SmokeAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/gunnerJob/gunnerAbilities/SmokeAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/lancerJob/lancerAbilities/OverwhelmAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/lancerJob/lancerAbilities/OverwhelmAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/thiefJob/thiefAbilities/BlindAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/thiefJob/thiefAbilities/BlindAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/warriorJob/warriorAbilities/FocusAbility.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/jobSystem/jobs/warriorJob/warriorAbilities/FocusAbility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/ui/tacticsOnTheLine.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/ui/tacticsOnTheLine.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/resources/TacticsOnTheLineTitleScreenLogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/battleSystem/Battle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/battleSystem/Battle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/battleSystem/TacticBaseBattle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/battleSystem/TacticBaseBattle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/battleSystem/TurnOrderCompiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/battleSystem/TurnOrderCompiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/BoardSpace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/BoardSpace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/GrassLandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/GrassLandType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/LandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/LandType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/WaterLandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/WaterLandType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/WoodsLandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/boardSystem/landTypes/WoodsLandType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/characterSystem/CharacterUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/characterSystem/CharacterUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/characterSystem/ExperiencePoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/characterSystem/ExperiencePoints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/characterSystem/StatSheet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/characterSystem/StatSheet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/combatSystem/Ability.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/combatSystem/Ability.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/combatSystem/TargetType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/combatSystem/TargetType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/DefaultScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/DefaultScene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/JobButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/sceneElements/buttons/JobButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/sceneElements/buttons/ItemButton.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/sceneElements/list/CharacterStatChart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/sceneElements/list/CharacterStatChart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/graphics/scenes/CharacterSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/scenes/CharacterSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/itemSystem/Equipable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/model/jobSystem/Job.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/jobSystem/Job.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/ui/tacticsOnTheLine.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/ui/tacticsOnTheLine.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/TacticsOnTheLineTitleScreenLogo.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,13 +161,13 @@
       <recent name="D:\CPSC\PERSONAL PROJECTS\TacticsOnTheLine\src\main\model\graphics\sceneElements\images" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.findPossibleMovementSpacesTest">
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.ui.Main" />
       <module name="TacticsOnTheLine" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="main.model.combatSystem.*" />
+          <option name="PATTERN" value="main.ui.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -127,11 +175,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScenicView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.scenicview.ScenicView" />
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.Main" />
+      <module name="TacticsOnTheLine" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.scenicview.*" />
+          <option name="PATTERN" value="main.model.combatSystem.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -170,7 +219,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="mathTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="findPossibleMovementSpacesTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TacticsOnTheLine" />
       <extension name="coverage">
         <pattern>
@@ -179,20 +228,19 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="test.model" />
-      <option name="MAIN_CLASS_NAME" value="test.model.mathTest" />
-      <option name="METHOD_NAME" value="test" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="test.model.findPossibleMovementSpacesTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.findPossibleMovementSpacesTest" />
+        <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.PersistingTest" />
         <item itemvalue="JUnit.PersistingTest.testCharacterUnitData" />
-        <item itemvalue="Application.ScenicView" />
-        <item itemvalue="JUnit.mathTest.test" />
       </list>
     </recent_temporary>
   </component>
@@ -215,13 +263,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587942068167</updated>
-    </task>
-    <task id="LOCAL-00016" summary="OutOfManaException now will be thrown before you are asked to choose a target instead of after">
-      <created>1589329951638</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1589329951638</updated>
     </task>
     <task id="LOCAL-00017" summary="Took to updating area of effect, now will properly work. Must fill in stubs for inherited methods in the NPC class to make area of effect work correctly for NPC's as well">
       <created>1589342378821</created>
@@ -559,7 +600,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599602876953</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="+ All units now have a unique portrait">
+      <created>1599603833881</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1599603833881</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -622,8 +670,8 @@
     <MESSAGE value="- Solved Memory problems when multiple units are being attacked at once" />
     <MESSAGE value="+ Added miss as a popup option during combat&#10;+ Updated Victory and Defeat Screen&#10;+ User can now save the scenarios they have completed" />
     <MESSAGE value="+ Updated Enemy Ai to now correctly work" />
-    <MESSAGE value="+ All units now have a unique portrait" />
-    <option name="LAST_COMMIT_MESSAGE" value="+ All units now have a unique portrait" />
+    <MESSAGE value="+ StatusEffect abilities AbilityPreview's not correctly fit within the bounds of the preview" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ StatusEffect abilities AbilityPreview's not correctly fit within the bounds of the preview" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="261" key="#Customize_Data_Views" timestamp="1596396078970">
@@ -694,38 +742,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="715" y="221" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1596395086057" />
-    <state x="596" y="186" key="CommitChangelistDialog2" timestamp="1599602875533">
+    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2" timestamp="1599606944578">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="596" y="186" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599602875533" />
+    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1599606944578" />
     <state width="483" height="466" key="DebuggerActiveHint" timestamp="1599104833477">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="483" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1599104833477" />
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1599183875155">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1599603808493">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599183875155" />
-    <state x="600" y="338" key="FileChooserDialogImpl" timestamp="1599232971360">
+    <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599603808493" />
+    <state x="600" y="338" key="FileChooserDialogImpl" timestamp="1599606837304">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="600" y="338" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599232971360" />
-    <state width="1898" height="239" key="GridCell.Tab.0.bottom" timestamp="1599603228014">
+    <state x="600" y="338" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599606837304" />
+    <state x="786" y="419" key="GitRewordDialog" timestamp="1599603905156">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599603228014" />
-    <state width="1898" height="239" key="GridCell.Tab.0.center" timestamp="1599603228014">
+    <state x="786" y="419" key="GitRewordDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599603905156" />
+    <state width="1898" height="239" key="GridCell.Tab.0.bottom" timestamp="1599606603709">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599603228014" />
-    <state width="1898" height="239" key="GridCell.Tab.0.left" timestamp="1599603228014">
+    <state width="1898" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599606603709" />
+    <state width="1898" height="239" key="GridCell.Tab.0.center" timestamp="1599606603709">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599603228014" />
-    <state width="1898" height="239" key="GridCell.Tab.0.right" timestamp="1599603228014">
+    <state width="1898" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599606603709" />
+    <state width="1898" height="239" key="GridCell.Tab.0.left" timestamp="1599606603709">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599603228014" />
+    <state width="1898" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599606603709" />
+    <state width="1898" height="239" key="GridCell.Tab.0.right" timestamp="1599606603709">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1898" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599606603709" />
     <state width="1898" height="236" key="GridCell.Tab.1.bottom" timestamp="1599236053241">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -754,14 +806,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="775" y="452" key="ReplaceDuplicatesPrompt/0.0.1920.1040@0.0.1920.1040" timestamp="1594053282121" />
-    <state x="461" y="150" key="SettingsEditor" timestamp="1599602974811">
+    <state x="461" y="150" key="SettingsEditor" timestamp="1599606938747">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="150" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1599602974811" />
-    <state x="1032" y="255" key="Vcs.Push.Dialog.v2" timestamp="1599602948688">
+    <state x="461" y="150" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1599606938747" />
+    <state x="1032" y="255" key="Vcs.Push.Dialog.v2" timestamp="1599603843399">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1032" y="255" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599602948688" />
+    <state x="1032" y="255" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599603843399" />
     <state x="656" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1599597425572">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -770,10 +822,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="685" y="469" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1040@0.0.1920.1040" timestamp="1598752507090" />
-    <state x="769" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599233433271">
+    <state x="769" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1599606950827">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="769" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599233433271" />
+    <state x="769" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599606950827" />
     <state x="1302" y="317" width="540" height="501" key="extract.method.dialog" timestamp="1599157768059">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -832,7 +884,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/model/battleSystem/TacticBaseBattle.java</url>
-          <line>137</line>
+          <line>131</line>
           <properties class="main.model.battleSystem.TacticBaseBattle">
             <option name="EMULATED" value="true" />
           </properties>
@@ -848,7 +900,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/model/characterSystem/CharacterUnit.java</url>
-          <line>117</line>
+          <line>107</line>
           <properties class="main.model.characterSystem.CharacterUnit" method="removeActionToken">
             <option name="EMULATED" value="true" />
           </properties>

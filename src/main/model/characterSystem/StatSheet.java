@@ -2,8 +2,6 @@ package main.model.characterSystem;
 
 import main.model.jobSystem.Job;
 
-import java.util.List;
-
 public class StatSheet {
     public static int BASE_MOVEMENT = 4;
     private int health;
@@ -433,12 +431,6 @@ public class StatSheet {
         return this.dexterityGrowthRate;
     }
 
-    public static void updateMaxStats(List<Job> availableJobs) {
-        for (Job job : availableJobs) {
-            job.updateMaxStats();
-        }
-    }
-
     public void setAllStatsToMax() {
         this.health = maxHealth;
         this.mana = maxMana;
@@ -449,5 +441,4 @@ public class StatSheet {
         this.speed = baseSpeed;
         this.dexterity = baseDexterity;
     }
-
 }

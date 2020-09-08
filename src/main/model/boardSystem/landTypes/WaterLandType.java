@@ -8,11 +8,6 @@ import javafx.scene.paint.Color;
 
 public class WaterLandType extends LandType {
 
-    public WaterLandType() {
-        super();
-
-    }
-
     protected void setTileColor() {
         this.tileColor = new Color(0, 0, 0.5, 1.0);
     }

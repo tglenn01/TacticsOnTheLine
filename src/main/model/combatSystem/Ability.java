@@ -9,16 +9,18 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Popup;
 import javafx.util.Duration;
-import main.exception.AttackMissedException;
 import main.exception.OutOfManaException;
-import main.exception.UnitIsDeadException;
 import main.model.boardSystem.BoardSpace;
 import main.model.characterSystem.CharacterUnit;
 import main.model.characterSystem.NPC;
 import main.model.characterSystem.StatSheet;
+import main.model.combatSystem.abilities.ConsumableAbility;
 import main.model.combatSystem.abilities.MovementAbility;
+import main.model.combatSystem.abilities.personalAbilities.DeactivateAbility;
 import main.model.combatSystem.targetTypes.AreaTarget;
 import main.model.combatSystem.targetTypes.SelfTarget;
+import main.model.jobSystem.BasicAttackAbility;
+import main.model.jobSystem.DefendAbility;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,18 +48,7 @@ public abstract class Ability {
         else this.targetType = new AreaTarget();
     }
 
-    public String getAbilityName() {
-        return abilityName;
-    }
-
-
-
-    protected abstract boolean targetsSelf();
-
-    protected abstract boolean isAreaOfEffect();
-
-    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces)
-            throws AttackMissedException, UnitIsDeadException {
+    public void takeAction(CharacterUnit activeUnit, List<BoardSpace> chosenBoardSpaces) {
         List<CharacterUnit> effectedUnits = new LinkedList<>();
         for (BoardSpace boardSpace : chosenBoardSpaces) {
             if (boardSpace.isOccupied()) {
@@ -74,10 +65,10 @@ public abstract class Ability {
     public abstract int getHitChance(CharacterUnit activeUnit, CharacterUnit receivingUnit);
 
     protected void calculateExperience(CharacterUnit activeUnit, List<CharacterUnit> effectedUnits) {
-        activeUnit.addExperienceAfterEffectResolves(getAverageLevel(effectedUnits));
+        activeUnit.addExperienceAfterEffectResolves(getAverageLevelOfTargets(effectedUnits));
     }
 
-    protected Integer getAverageLevel(List<CharacterUnit> effectedUnits) {
+    protected Integer getAverageLevelOfTargets(List<CharacterUnit> effectedUnits) {
         int totalLevels = 0;
         for (CharacterUnit effectedUnit : effectedUnits) {
             totalLevels += effectedUnit.getLevel();
@@ -107,30 +98,14 @@ public abstract class Ability {
         if (activeUnitStatSheet.getMana() <= manaCost) throw new OutOfManaException();
     }
 
-    public void payManaCost(CharacterUnit activeUnit) {
-        StatSheet activeUnitStatSheet = activeUnit.getCharacterStatSheet();
-        activeUnitStatSheet.setMana(activeUnitStatSheet.getMana() - manaCost);
-    }
 
-    public abstract boolean targetsAlly();
 
     public boolean isUnique() {
-        return !this.abilityName.equals("Attack") &&
-                !this.abilityName.equals("Defend") &&
-                !this.abilityName.equals("Item") &&
-                !this.abilityName.equals("Move");
+        return this.getClass() != BasicAttackAbility.class &&
+                this.getClass() != DefendAbility.class &&
+                this.getClass() != ConsumableAbility.class &&
+                this.getClass() != MovementAbility.class;
     }
-
-    public abstract String getEffectType();
-
-    public int getRange() {
-        return this.range;
-    }
-
-    public TargetType getTargetType() {
-        return this.targetType;
-    }
-
 
     // calls this.getRange() as some abilities have updating ranges which will override this.getRange() to give their
     // unique range (example being Rescue Abilities range is based off current magic)
@@ -144,12 +119,10 @@ public abstract class Ability {
     }
 
     public boolean endsTurn() {
-        return this.abilityName.equals("Defend") || this.abilityName.equals("Deactivate");
+        return this.getClass() == DefendAbility.class|| this.getClass() == DeactivateAbility.class;
     }
 
-    public void setRange(int newRange) {
-        this.range = newRange;
-    }
+
 
     protected static void effectPopupAnimation(CharacterUnit receivingUnit, String effectAmount, String id) {
         Runtime.getRuntime().gc();
@@ -199,4 +172,21 @@ public abstract class Ability {
         damageOutcomePopup.show(receivingUnit.getCharacterSprite(), 0 ,0);
     }
 
+
+    public String getAbilityName() {
+        return abilityName;
+    }
+    protected abstract boolean targetsSelf();
+    protected abstract boolean isAreaOfEffect();
+    public abstract boolean targetsAlly();
+    public abstract String getEffectType();
+    public void setRange(int newRange) {
+        this.range = newRange;
+    }
+    public int getRange() {
+        return this.range;
+    }
+    public TargetType getTargetType() {
+        return this.targetType;
+    }
 }

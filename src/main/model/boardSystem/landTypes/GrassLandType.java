@@ -8,9 +8,6 @@ import javafx.scene.paint.Color;
 
 public class GrassLandType extends LandType {
 
-    public GrassLandType() {
-    }
-
     protected void setTileColor() {
         this.tileColor = new Color(0, 0.5, 0, 1.0);
     }
