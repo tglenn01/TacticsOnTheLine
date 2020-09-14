@@ -31,10 +31,9 @@ public class BattleInterface extends DefaultScene {
             }
         }
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setPrefWidth(FINAL_WIDTH);
+        scrollPane.setPrefHeight(FINAL_HEIGHT);
         scrollPane.setContent(boardLayout);
         Scene newScene = new Scene(scrollPane);
         addCSS(newScene);

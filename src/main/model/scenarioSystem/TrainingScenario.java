@@ -27,7 +27,7 @@ public class TrainingScenario extends Scenario {
 
     @Override
     protected void setBoardLayout() {
-        this.scenarioBoard = new Board(10, 10);
+        this.scenarioBoard = new Board(7, 6);
         for (BoardSpace[] boardSpaceArray : scenarioBoard.getBoardSpaces()) {
             for (BoardSpace boardSpace : boardSpaceArray) {
                 boardSpace.setLandType(new GrassLandType());
@@ -51,8 +51,8 @@ public class TrainingScenario extends Scenario {
     protected void setEnemies() {
         int i = 1;
         for (CharacterUnit enemy : listOfEnemies) {
-            scenarioBoard.setCharacterToBoardSpace(enemy, (int) (scenarioBoard.getBoardWidth() - i - 3),
-                    (int) (scenarioBoard.getBoardHeight() - 6));
+            scenarioBoard.setCharacterToBoardSpace(enemy, (int) (scenarioBoard.getBoardWidth() - i - 2),
+                    (int) (scenarioBoard.getBoardHeight() - 2));
             i++;
         }
     }
