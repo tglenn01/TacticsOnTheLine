@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8a166f29-7d07-48ed-94af-142bab27f333" name="Default Changelist" comment="+ Removed uncommented code as well as moved getters and setters to bottom of classes&#10;+ Added css to character stat bar">
+    <list default="true" id="8a166f29-7d07-48ed-94af-142bab27f333" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <list id="554be286-8860-4992-bc05-23918f62b123" name="Test Commit" comment="">
+      <change afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/sceneElements/buttons/JobButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/scenes/BattleInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/graphics/scenes/BattleInterface.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/scenarioSystem/TrainingScenario.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TacticsOnTheLine/main/model/scenarioSystem/TrainingScenario.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/model/graphics/scenes/BattleInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/graphics/scenes/BattleInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/model/scenarioSystem/TrainingScenario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/model/scenarioSystem/TrainingScenario.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +58,41 @@
       </set>
     </option>
   </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
+      <ranges>
+        <range start1="3" end1="4" start2="3" end2="8" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="5" end1="5" start2="9" end2="11" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="6" end1="7" start2="12" end2="12" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="54" end1="54" start2="59" end2="94" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="72" end1="72" start2="112" end2="113" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="73" end1="74" start2="114" end2="115" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="202" end1="202" start2="243" end2="244" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="207" end1="214" start2="249" end2="249" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="550" end1="551" start2="585" end2="593" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="589" end1="590" start2="631" end2="631" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="614" end1="615" start2="655" end2="657" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="621" end1="622" start2="663" end2="664" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="624" end1="625" start2="666" end2="667" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="685" end1="686" start2="727" end2="728" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="688" end1="689" start2="730" end2="731" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="697" end1="698" start2="739" end2="740" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="700" end1="701" start2="742" end2="743" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="705" end1="706" start2="747" end2="748" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="708" end1="710" start2="750" end2="752" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="712" end1="714" start2="754" end2="756" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="716" end1="718" start2="758" end2="760" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="720" end1="721" start2="762" end2="763" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="745" end1="746" start2="787" end2="788" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="748" end1="749" start2="790" end2="791" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="753" end1="754" start2="795" end2="796" changelist="554be286-8860-4992-bc05-23918f62b123" />
+        <range start1="756" end1="758" start2="798" end2="804" changelist="8a166f29-7d07-48ed-94af-142bab27f333" />
+        <range start1="760" end1="761" start2="806" end2="807" changelist="554be286-8860-4992-bc05-23918f62b123" />
+        <range start1="793" end1="794" start2="839" end2="840" changelist="554be286-8860-4992-bc05-23918f62b123" />
+        <range start1="796" end1="797" start2="842" end2="843" changelist="554be286-8860-4992-bc05-23918f62b123" />
+      </ranges>
+    </file>
+  </component>
   <component name="ProjectId" id="1b6AFo4YJTv3ObdESzNNlZ9iZno" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -70,8 +110,9 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../gitHubProjects" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../gitHubProjects/TacticsOnTheLine" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -200,17 +241,11 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="8a166f29-7d07-48ed-94af-142bab27f333" name="Default Changelist" comment="" />
+      <changelist id="554be286-8860-4992-bc05-23918f62b123" name="Test Commit" comment="" />
       <created>1587942068167</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587942068167</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Refactored the CharacterUnit hierarchy so area of effect attacks work for both NPC's and PlayableCharacterUnit's targeting allies and enemies.&#10;Introduced a max health system so units cannot be overhealed.">
-      <created>1589394611355</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1589394611355</updated>
     </task>
     <task id="LOCAL-00019" summary="CharacterUnits now will only be affected by statusEffects for a set amount of turns">
       <created>1589404783199</created>
@@ -548,7 +583,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599607003234</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="+ Updated combat scene to be in a fixed window size">
+      <created>1600112489076</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1600112489076</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -587,7 +629,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="+ Added the rescue personal ability for Graham&#10;+ Each character now has a unique CharacterSprite" />
     <MESSAGE value="+ Changed how targeting baord space and units work to now probe nearby spaces instead of the whole board" />
     <MESSAGE value="+ Attacking before taking a movement no longer soft locks the game" />
     <MESSAGE value="+ Updated Status Effects system&#10;+ Updated Item Effects and they now correctly target&#10;+ Updated Job abilities to be stand alone" />
@@ -612,17 +653,18 @@
     <MESSAGE value="+ Updated Enemy Ai to now correctly work" />
     <MESSAGE value="+ StatusEffect abilities AbilityPreview's not correctly fit within the bounds of the preview" />
     <MESSAGE value="+ Removed uncommented code as well as moved getters and setters to bottom of classes&#10;+ Added css to character stat bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="+ Removed uncommented code as well as moved getters and setters to bottom of classes&#10;+ Added css to character stat bar" />
+    <MESSAGE value="+ Updated combat scene to be in a fixed window size" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ Updated combat scene to be in a fixed window size" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="261" key="#Customize_Data_Views" timestamp="1596396078970">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="657" y="261" key="#Customize_Data_Views/0.0.1920.1040@0.0.1920.1040" timestamp="1596396078970" />
-    <state x="552" y="177" key="#Notifications" timestamp="1598753053776">
+    <state x="552" y="177" key="#Notifications" timestamp="1600112507278">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="177" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1598753053776" />
+    <state x="552" y="177" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1600112507278" />
     <state x="552" y="177" key="#Project_Structure" timestamp="1598754985554">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -683,10 +725,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="715" y="221" key="#xdebugger.evaluate/0.0.1920.1040@0.0.1920.1040" timestamp="1596395086057" />
-    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2" timestamp="1600112457028">
+    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2" timestamp="1600137280289">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1600112457028" />
+    <state x="596" y="186" width="738" height="813" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1600137280289" />
     <state width="483" height="466" key="DebuggerActiveHint" timestamp="1599104833477">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -695,30 +737,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="92" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600112446755" />
-    <state x="600" y="338" key="FileChooserDialogImpl" timestamp="1600109962824">
+    <state x="600" y="338" key="FileChooserDialogImpl" timestamp="1600136631865">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="600" y="338" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600109962824" />
+    <state x="600" y="338" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600136631865" />
     <state x="786" y="419" key="GitRewordDialog" timestamp="1599603905156">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="786" y="419" key="GitRewordDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1599603905156" />
-    <state width="1898" height="239" key="GridCell.Tab.0.bottom" timestamp="1600111096356">
+    <state width="1898" height="239" key="GridCell.Tab.0.bottom" timestamp="1600135011426">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600111096356" />
-    <state width="1898" height="239" key="GridCell.Tab.0.center" timestamp="1600111096356">
+    <state width="1898" height="239" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600135011426" />
+    <state width="1898" height="239" key="GridCell.Tab.0.center" timestamp="1600135011426">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600111096356" />
-    <state width="1898" height="239" key="GridCell.Tab.0.left" timestamp="1600111096356">
+    <state width="1898" height="239" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600135011426" />
+    <state width="1898" height="239" key="GridCell.Tab.0.left" timestamp="1600135011426">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600111096356" />
-    <state width="1898" height="239" key="GridCell.Tab.0.right" timestamp="1600111096356">
+    <state width="1898" height="239" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600135011426" />
+    <state width="1898" height="239" key="GridCell.Tab.0.right" timestamp="1600135011426">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1898" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600111096356" />
+    <state width="1898" height="239" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600135011426" />
     <state width="1898" height="236" key="GridCell.Tab.1.bottom" timestamp="1599236053241">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -743,10 +785,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="672" y="234" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598726919671" />
-    <state x="625" y="217" key="NewModule_or_Project.wizard" timestamp="1600109990633">
+    <state x="625" y="217" key="NewModule_or_Project.wizard" timestamp="1600136688109">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="625" y="217" key="NewModule_or_Project.wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1600109990633" />
+    <state x="625" y="217" key="NewModule_or_Project.wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1600136688109" />
     <state x="775" y="452" key="ReplaceDuplicatesPrompt" timestamp="1594053282121">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -754,8 +796,12 @@
     <state x="461" y="150" key="SettingsEditor" timestamp="1600112401927">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="461" y="150" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1600112401927" />
-    <state x="1032" y="255" key="Vcs.Push.Dialog.v2" timestamp="1599607009438">
+    <state x="461" y="150" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1600135009284" />
+    <state x="807" y="434" key="VCS.ChangelistChooser" timestamp="1600136159799">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="807" y="434" key="VCS.ChangelistChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600136159799" />
+    <state x="1032" y="255" key="Vcs.Push.Dialog.v2" timestamp="1600112496648">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1032" y="255" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1599607009438" />
