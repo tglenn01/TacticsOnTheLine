@@ -153,3 +153,7 @@ September 1st
 + Experience bar
 + Miss popup (done)
 + Unit moves boardspace, movement range will change (done)
+
+
+TODO
++ When Game ends reset character status effects

@@ -143,8 +143,10 @@ public class Board {
             int yPos = currentSpace.getYCoordinate();
             int xPos = currentSpace.getXCoordinate();
             if (yPos - 1 >= 0 && prevDirection != 2) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos][yPos - 1], 0));
-            if (xPos + 1 < boardSpaces[0].length && prevDirection != 3) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos + 1][yPos], 1));
-            if (yPos + 1 < boardSpaces.length && prevDirection != 0) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos][yPos + 1], 2));
+            if (xPos + 1 < boardSpaces.length && prevDirection != 3)
+                neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos + 1][yPos], 1));
+            if (yPos + 1 < boardSpaces[0].length && prevDirection != 0)
+                neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos][yPos + 1], 2));
             if (xPos - 1 >= 0 && prevDirection != 1) neighbouringBoardSpaces.add(new Pair<>(boardSpaces[xPos - 1][yPos], 3));
             return neighbouringBoardSpaces;
         }

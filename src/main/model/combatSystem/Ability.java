@@ -1,12 +1,9 @@
 package main.model.combatSystem;
 
-import javafx.animation.PathTransition;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import main.exception.OutOfManaException;
@@ -125,12 +122,22 @@ public abstract class Ability {
 
 
     protected static void effectPopupAnimation(CharacterUnit receivingUnit, String effectAmount, String id) {
-        Runtime.getRuntime().gc();
         Popup damageOutcomePopup = new Popup();
         Label damageLabel = new Label(effectAmount);
         damageOutcomePopup.getContent().add(damageLabel);
         damageLabel.setId(id);
-
+        damageOutcomePopup.setOnShown(handle -> {
+            FadeTransition popUpFade = new FadeTransition();
+            popUpFade.setNode(damageLabel);
+            popUpFade.setFromValue(1.00);
+            popUpFade.setToValue(0.00);
+            popUpFade.setDelay(Duration.seconds(2));
+            popUpFade.play();
+            popUpFade.setOnFinished(finishHandle -> {
+                damageOutcomePopup.hide();
+            });
+        });
+        /*
         damageOutcomePopup.setOnShown(handle -> {
             Bounds bounds = receivingUnit.getCharacterSprite().localToScreen(receivingUnit.getCharacterSprite().getBoundsInLocal());
             Path path = new Path();
@@ -169,7 +176,16 @@ public abstract class Ability {
             });
             pathTransition.play();
         });
-        damageOutcomePopup.show(receivingUnit.getCharacterSprite(), 0 ,0);
+        */
+        Bounds bounds = receivingUnit.getCharacterSprite().localToScreen(receivingUnit.getCharacterSprite().getBoundsInLocal());
+        int minX = (int) bounds.getMinX();
+        int minY = (int) bounds.getMaxY();
+        int boundsWidth = (int) bounds.getWidth();
+        int boundsHeight = (int) bounds.getHeight();
+        damageOutcomePopup.show(receivingUnit.getCharacterSprite(),
+                minX + boundsWidth - 20,
+                minY - boundsHeight + 50);
+
     }
 
 
