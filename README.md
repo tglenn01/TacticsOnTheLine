@@ -1,4 +1,8 @@
 # TacticsOnTheLine
+
+Java Requirement:
+- jdk contains JavaFX, recommened Corretto-1.8.0_372
+
 Tactics based strategy game
 Users will go through the process of creating a unique party with a wide variety of jobs to choose from.
 After selecting their party they are then tasked with choosing on a scenario with which to fight enemies.
